@@ -1,0 +1,8 @@
+# Dependencias y trabajo de imágenes
+node_modules/
+_imgwork/
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.log

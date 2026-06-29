@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VOLT STORE CO | Tecnología y servicio técnico en Convención</title>
+  <meta name="description" content="Venta de celulares, iPhone, accesorios, portátiles, televisores y servicio técnico de celulares en Convención, Norte de Santander. Compra iPhone a crédito o de contado." />
+  <meta name="theme-color" content="#0B0B0F" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <meta name="author" content="VOLT STORE CO" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="VOLT STORE CO | Tecnología y servicio técnico en Convención" />
+  <meta property="og:description" content="Celulares, iPhone, accesorios, portátiles, televisores y servicio técnico en Convención, Norte de Santander. iPhone a crédito y de contado." />
+  <meta property="og:image" content="img/og.jpg" />
+  <meta property="og:locale" content="es_CO" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- SEO: datos estructurados -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ElectronicsStore",
+    "name": "VOLT STORE CO",
+    "description": "Venta de celulares, iPhone, accesorios, portátiles y televisores. Servicio técnico de celulares en Convención, Norte de Santander.",
+    "image": "img/og.jpg",
+    "telephone": "+573171076290",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Convención",
+      "addressRegion": "Norte de Santander",
+      "addressCountry": "CO"
+    },
+    "sameAs": [
+      "https://www.instagram.com/voltstoreco",
+      "https://www.tiktok.com/@voltstoreco21"
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ============ PANTALLA DE CARGA ============ -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader__inner">
+      <div class="loader__logo">
+        <svg class="bolt-anim" viewBox="0 0 64 64" width="76" height="76" aria-hidden="true">
+          <defs>
+            <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#FFE14D"/>
+              <stop offset="1" stop-color="#FFC400"/>
+            </linearGradient>
+          </defs>
+          <path class="bolt-path" d="M35 8 L18 35 H30 L27 56 L46 27 H33 L38 8 Z" fill="url(#lg)" />
+        </svg>
+        <div class="loader__wordmark">
+          <span class="lm-volt">VOLT</span><span class="lm-store">STORE CO</span>
+        </div>
+      </div>
+      <div class="loader__bar"><span></span></div>
+      <p class="loader__text">Cargando experiencia VOLT…</p>
+    </div>
+  </div>
+
+  <!-- ============ HEADER ============ -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="#inicio" class="brand" aria-label="VOLT STORE CO inicio">
+        <span class="brand__mark">
+          <svg viewBox="0 0 64 64" width="34" height="34" aria-hidden="true">
+            <path d="M35 8 L18 35 H30 L27 56 L46 27 H33 L38 8 Z" fill="var(--volt)" />
+          </svg>
+        </span>
+        <span class="brand__text"><b>VOLT</b> STORE CO</span>
+      </a>
+
+      <nav class="nav" id="nav" aria-label="Navegación principal">
+        <a href="#inicio">Inicio</a>
+        <a href="#productos">Productos</a>
+        <a href="#iphone">iPhone a crédito</a>
+        <a href="#servicio">Servicio técnico</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+
+      <div class="header__actions">
+        <a class="btn btn--wa header__wa" href="https://wa.me/573171076290?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20web%20de%20VOLT%20STORE%20CO%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n." target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.515 5.26l-.999 3.648 3.973-1.607zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          WhatsApp
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Menú móvil -->
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <nav aria-label="Navegación móvil">
+      <a href="#inicio">Inicio</a>
+      <a href="#productos">Productos</a>
+      <a href="#iphone">iPhone a crédito</a>
+      <a href="#servicio">Servicio técnico</a>
+      <a href="#beneficios">Beneficios</a>
+      <a href="#galeria">Galería</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <a class="btn btn--wa btn--block" href="https://wa.me/573171076290?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20web%20de%20VOLT%20STORE%20CO%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n." target="_blank" rel="noopener">Escríbenos por WhatsApp</a>
+  </div>
+  <div class="overlay" id="overlay"></div>
+
+  <main>
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="inicio">
+      <div class="hero__bg" aria-hidden="true">
+        <div class="grid-glow"></div>
+        <div class="orb orb--1"></div>
+        <div class="orb orb--2"></div>
+      </div>
+      <div class="container hero__inner">
+        <div class="hero__content reveal">
+          <span class="eyebrow"><i class="dot"></i> Convención, Norte de Santander</span>
+          <h1>Tecnología, celulares y servicio técnico en <span class="hl">Convención</span></h1>
+          <p class="hero__sub">En VOLT STORE CO encuentras celulares, iPhone, accesorios, portátiles, televisores y reparación de equipos con atención confiable y rápida.</p>
+          <div class="hero__badge"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M13 2 L4 14 H11 L9 22 L20 9 H13 Z"/></svg> iPhone a crédito y de contado</div>
+          <div class="hero__cta">
+            <a class="btn btn--wa btn--lg" href="https://wa.me/573171076290?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20web%20de%20VOLT%20STORE%20CO%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n." target="_blank" rel="noopener">Escribir por WhatsApp</a>
+            <a class="btn btn--ghost btn--lg" href="#productos">Ver productos</a>
+          </div>
+          <ul class="hero__stats">
+            <li><strong>+5</strong><span>Categorías de productos</span></li>
+            <li><strong>Tienda</strong><span>Física en Convención</span></li>
+            <li><strong>Servicio</strong><span>Técnico confiable</span></li>
+          </ul>
+        </div>
+        <div class="hero__media reveal">
+          <div class="hero__frame">
+            <img src="img/cases.webp" alt="iPhones con accesorios MagSafe disponibles en VOLT STORE CO" width="900" height="1100" loading="eager" />
+            <div class="hero__chip hero__chip--top"><svg viewBox="0 0 24 24" width="15" height="15"><path fill="currentColor" d="M13 2 L4 14 H11 L9 22 L20 9 H13 Z"/></svg> Energía VOLT</div>
+            <div class="hero__chip hero__chip--bottom">📍 Atención personalizada</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MARQUEE / TIRA ============ -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>Celulares</span><i>⚡</i><span>iPhone</span><i>⚡</i><span>Portátiles</span><i>⚡</i><span>Televisores</span><i>⚡</i><span>Accesorios</span><i>⚡</i><span>Servicio Técnico</span><i>⚡</i>
+        <span>Celulares</span><i>⚡</i><span>iPhone</span><i>⚡</i><span>Portátiles</span><i>⚡</i><span>Televisores</span><i>⚡</i><span>Accesorios</span><i>⚡</i><span>Servicio Técnico</span><i>⚡</i>
+      </div>
+    </div>
+
+    <!-- ============ PRODUCTOS ============ -->
+    <section class="section" id="productos">
+      <div class="container">
+        <header class="section__head reveal">
+          <span class="kicker">Productos</span>
+          <h2>Productos tecnológicos para tu día a día</h2>
+          <p>Encuentra dispositivos y accesorios seleccionados para que estés siempre conectado.</p>
+        </header>
+
+        <div class="cards">
+          <article class="card reveal">
+            <div class="card__img"><img src="img/store.webp" alt="Celulares disponibles en VOLT STORE CO" loading="lazy" width="800" height="600" /></div>
+            <div class="card__body">
+              <h3>Celulares</h3>
+              <p>Equipos móviles para todos los estilos, necesidades y presupuestos.</p>
+              <a class="btn btn--soft" href="https://wa.me/573171076290?text=Hola%2C%20quiero%20consultar%20disponibilidad%20de%20celulares%20en%20VOLT%20STORE%20CO." target="_blank" rel="noopener">Consultar disponibilidad</a>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <div class="card__img"><img src="img/products.webp" alt="iPhone disponible a crédito y de contado" loading="lazy" width="800" height="600" /><span class="tag">A crédito</span></div>
+            <div class="card__body">
+              <h3>iPhone</h3>
+              <p>Modelos seleccionados de iPhone disponibles a crédito y de contado.</p>
+              <a class="btn btn--soft" href="https://wa.me/573171076290?text=Hola%2C%20quiero%20consultar%20iPhone%20disponibles%20en%20VOLT%20STORE%20CO." target="_blank" rel="noopener">Consultar disponibilidad</a>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <div class="card__img"><img src="img/laptop.webp" alt="Portátiles para estudio y trabajo" loading="lazy" width="800" height="600" /></div>
+            <div class="card__body">
+              <h3>Portátiles</h3>
+              <p>Equipos ideales para estudio, trabajo y productividad.</p>
+              <a class="btn btn--soft" href="https://wa.me/573171076290?text=Hola%2C%20quiero%20consultar%20disponibilidad%20de%20port%C3%A1tiles%20en%20VOLT%20STORE%20CO." target="_blank" rel="noopener">Consultar disponibilidad</a>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <div class="card__img"><img src="img/tv.webp" alt="Televisores para entretenimiento en casa" loading="lazy" width="800" height="600" /></div>
+            <div class="card__body">
+              <h3>Televisores</h3>
+              <p>Tecnología para entretenimiento en casa con excelente calidad de imagen.</p>
+              <a class="btn btn--soft" href="https://wa.me/573171076290?text=Hola%2C%20quiero%20consultar%20disponibilidad%20de%20televisores%20en%20VOLT%20STORE%20CO." target="_blank" rel="noopener">Consultar disponibilidad</a>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <div class="card__img"><img src="img/cases.webp" alt="Accesorios tecnológicos: cargadores, audífonos y protectores" loading="lazy" width="800" height="600" /></div>
+            <div class="card__body">
+              <h3>Accesorios tecnológicos</h3>
+              <p>Cargadores, audífonos, cables, protectores, soportes y más.</p>
+              <a class="btn btn--soft" href="https://wa.me/573171076290?text=Hola%2C%20quiero%20consultar%20accesorios%20tecnol%C3%B3gicos%20en%20VOLT%20STORE%20CO." target="_blank" rel="noopener">Consultar disponibilidad</a>
+            </div>
+          </article>
+
+          <article class="card card--cta reveal">
+            <div class="card__body">
+              <span class="card__icon"><svg viewBox="0 0 24 24" width="26" height="26"><path fill="currentColor" d="M13 2 L4 14 H11 L9 22 L20 9 H13 Z"/></svg></span>
+              <h3>¿No ves lo que buscas?</h3>
+              <p>Escríbenos y te ayudamos a encontrar el equipo o accesorio que necesitas.</p>
+              <a class="btn btn--wa" href="https://wa.me/573171076290?text=Hola%2C%20busco%20un%20producto%20espec%C3%ADfico.%20%C2%BFMe%20pueden%20ayudar%3F" target="_blank" rel="noopener">Preguntar por WhatsApp</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ IPHONE A CRÉDITO ============ -->
+    <section class="section iphone" id="iphone">
+      <div class="container iphone__inner">
+        <div class="iphone__media reveal">
+          <div class="iphone__frame">
+            <img src="img/products.webp" alt="iPhone disponible a crédito y de contado en VOLT STORE CO" loading="lazy" width="800" height="900" />
+          </div>
+          <div class="iphone__glow" aria-hidden="true"></div>
+        </div>
+        <div class="iphone__content reveal">
+          <span class="kicker">iPhone</span>
+          <h2>Estrena iPhone hoy</h2>
+          <p class="lead">En VOLT STORE CO puedes comprar tu iPhone a crédito o de contado, con atención personalizada y asesoría para elegir el modelo ideal para ti.</p>
+          <ul class="ticks">
+            <li>Opciones de pago a crédito</li>
+            <li>Compra de contado</li>
+            <li>Asesoría personalizada</li>
+            <li>Modelos según disponibilidad</li>
+            <li>Atención directa por WhatsApp</li>
+          </ul>
+          <div class="iphone__cta">
+            <a class="btn btn--volt btn--lg" href="https://wa.me/573171076290?text=Hola%2C%20quiero%20consultar%20los%20iPhone%20disponibles%20en%20VOLT%20STORE%20CO." target="_blank" rel="noopener">Consultar iPhone disponibles</a>
+            <a class="btn btn--ghost btn--lg" href="https://wa.me/573171076290?text=Hola%2C%20quiero%20cotizar%20un%20iPhone%20(cr%C3%A9dito%20o%20contado)%20en%20VOLT%20STORE%20CO." target="_blank" rel="noopener">Cotizar por WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SERVICIO TÉCNICO ============ -->
+    <section class="section service" id="servicio">
+      <div class="container">
+        <header class="section__head reveal">
+          <span class="kicker">Servicio técnico</span>
+          <h2>Servicio técnico confiable</h2>
+          <p>Revisamos tu equipo, identificamos la falla y te damos una solución clara, rápida y confiable.</p>
+        </header>
+
+        <div class="service__grid">
+          <div class="srv reveal"><span class="srv__ic">🔍</span><h3>Diagnóstico de celulares</h3><p>Identificamos la falla de tu equipo con precisión.</p></div>
+          <div class="srv reveal"><span class="srv__ic">📱</span><h3>Cambio de pantalla</h3><p>Reemplazo de pantalla con buen acabado.</p></div>
+          <div class="srv reveal"><span class="srv__ic">🔋</span><h3>Cambio de batería</h3><p>Recupera la autonomía de tu dispositivo.</p></div>
+          <div class="srv reveal"><span class="srv__ic">🔌</span><h3>Reparación de puerto de carga</h3><p>Soluciones para que vuelva a cargar bien.</p></div>
+          <div class="srv reveal"><span class="srv__ic">💻</span><h3>Reparación de software</h3><p>Optimización y solución de fallas de sistema.</p></div>
+          <div class="srv reveal"><span class="srv__ic">🛠️</span><h3>Mantenimiento preventivo</h3><p>Limpieza y revisión para alargar la vida útil.</p></div>
+          <div class="srv reveal"><span class="srv__ic"></span><h3 class="srv__apple"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M16.365 1.43c0 1.14-.42 2.2-1.13 3.02-.78.9-2.06 1.6-3.13 1.51-.13-1.06.42-2.2 1.06-2.94.78-.86 2.13-1.5 3.2-1.59zM20.5 17.2c-.6 1.4-.9 2-1.67 3.24-1.07 1.72-2.58 3.86-4.45 3.88-1.66.02-2.08-1.08-4.33-1.07-2.25.01-2.72 1.09-4.38 1.07-1.87-.02-3.3-1.95-4.37-3.67C-1.2 16.5-2.05 9.8 1.5 6.6c1.27-1.14 2.92-1.81 4.5-1.81 1.66 0 2.7 1.09 4.07 1.09 1.33 0 2.14-1.09 4.07-1.09 1.4 0 2.89.76 3.95 2.08-3.47 1.9-2.9 6.86 1.91 9.33z"/></svg> Reparaciones de iPhone</h3><p>Atención dedicada para tu equipo Apple.</p></div>
+          <div class="srv srv--soon reveal"><span class="srv__ic">⭐</span><h3>Especializados en iPhone</h3><p>Servicio especializado en iPhone.</p><span class="soon">Próximamente</span></div>
+        </div>
+
+        <div class="service__cta reveal">
+          <a class="btn btn--volt btn--lg" href="https://wa.me/573171076290?text=Hola%2C%20quiero%20agendar%20una%20revisi%C3%B3n%20de%20mi%20equipo%20en%20VOLT%20STORE%20CO." target="_blank" rel="noopener">Agendar revisión por WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BENEFICIOS ============ -->
+    <section class="section benefits" id="beneficios">
+      <div class="container">
+        <header class="section__head reveal">
+          <span class="kicker">Confianza</span>
+          <h2>¿Por qué elegir VOLT STORE CO?</h2>
+          <p>Tecnología que conecta contigo, con atención cercana y soluciones reales.</p>
+        </header>
+        <div class="benefits__grid">
+          <div class="ben reveal"><span class="ben__ic">🤝</span><h3>Atención personalizada</h3><p>Te asesoramos según lo que realmente necesitas.</p></div>
+          <div class="ben reveal"><span class="ben__ic">✨</span><h3>Productos de calidad</h3><p>Tecnología seleccionada para tu día a día.</p></div>
+          <div class="ben reveal"><span class="ben__ic">📲</span><h3>iPhone a crédito y de contado</h3><p>Opciones de pago que se ajustan a ti.</p></div>
+          <div class="ben reveal"><span class="ben__ic">🛠️</span><h3>Servicio técnico confiable</h3><p>Diagnóstico claro y reparaciones honestas.</p></div>
+          <div class="ben reveal"><span class="ben__ic">📍</span><h3>En Convención, N. de Santander</h3><p>Tienda física con atención cercana.</p></div>
+          <div class="ben reveal"><span class="ben__ic">💬</span><h3>Contacto rápido por WhatsApp</h3><p>Respuesta ágil para resolver tus dudas.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GALERÍA ============ -->
+    <section class="section gallery" id="galeria">
+      <div class="container">
+        <header class="section__head reveal">
+          <span class="kicker">Galería</span>
+          <h2>Conoce nuestros productos</h2>
+          <p>Explora algunos de los equipos, accesorios y productos disponibles en VOLT STORE CO.</p>
+        </header>
+        <div class="gallery__grid">
+          <figure class="g-item g-item--tall reveal"><img src="img/cases.webp" alt="iPhones con accesorios MagSafe" loading="lazy" /></figure>
+          <figure class="g-item reveal"><img src="img/products.webp" alt="iPhone 14 y equipos disponibles" loading="lazy" /></figure>
+          <figure class="g-item reveal"><img src="img/store.webp" alt="Vitrina con celulares y accesorios" loading="lazy" /></figure>
+          <figure class="g-item reveal"><img src="img/team.webp" alt="Equipo de VOLT STORE CO atendiendo" loading="lazy" /></figure>
+          <figure class="g-item g-item--wide reveal"><img src="img/taller.webp" alt="Servicio técnico de VOLT STORE CO" loading="lazy" /></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA ============ -->
+    <section class="cta-band">
+      <div class="cta-band__bg" aria-hidden="true"><div class="bolt-line"></div></div>
+      <div class="container cta-band__inner reveal">
+        <h2>¿Buscas celular, iPhone o reparación para tu equipo?</h2>
+        <p>Escríbenos y recibe atención personalizada. Te ayudamos a encontrar el producto o servicio que necesitas.</p>
+        <a class="btn btn--wa btn--xl" href="https://wa.me/573171076290?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20web%20de%20VOLT%20STORE%20CO%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n." target="_blank" rel="noopener">Escribir ahora por WhatsApp</a>
+      </div>
+    </section>
+
+    <!-- ============ CONTACTO ============ -->
+    <section class="section contact" id="contacto">
+      <div class="container contact__inner">
+        <div class="contact__info reveal">
+          <span class="kicker">Contacto</span>
+          <h2>Hablemos por WhatsApp</h2>
+          <p class="lead">Atención personalizada para compra de equipos, accesorios y servicio técnico.</p>
+          <ul class="contact__list">
+            <li><span class="ci">🏪</span><div><strong>VOLT STORE CO</strong><small>Tienda de tecnología y servicio técnico</small></div></li>
+            <li><span class="ci">📍</span><div><strong>Ubicación</strong><small>Convención, Norte de Santander, Colombia</small></div></li>
+            <li><span class="ci">📱</span><div><strong>WhatsApp</strong><small>317 107 6290</small></div></li>
+          </ul>
+          <div class="contact__socials">
+            <a href="https://www.instagram.com/voltstoreco" target="_blank" rel="noopener" aria-label="Instagram de VOLT STORE CO">Instagram</a>
+            <a href="https://www.tiktok.com/@voltstoreco21" target="_blank" rel="noopener" aria-label="TikTok de VOLT STORE CO">TikTok</a>
+          </div>
+        </div>
+        <div class="contact__card reveal">
+          <div class="contact__card-glow" aria-hidden="true"></div>
+          <span class="brand__mark brand__mark--lg">
+            <svg viewBox="0 0 64 64" width="44" height="44" aria-hidden="true"><path d="M35 8 L18 35 H30 L27 56 L46 27 H33 L38 8 Z" fill="var(--volt)" /></svg>
+          </span>
+          <h3>Escríbenos ahora</h3>
+          <p>Te respondemos lo más rápido posible para resolver tus dudas o cotizar tu equipo.</p>
+          <a class="btn btn--wa btn--block btn--lg" href="https://wa.me/573171076290?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20web%20de%20VOLT%20STORE%20CO%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n." target="_blank" rel="noopener">Contactar por WhatsApp</a>
+          <span class="contact__num">317 107 6290</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="#inicio" class="brand">
+          <span class="brand__mark"><svg viewBox="0 0 64 64" width="32" height="32" aria-hidden="true"><path d="M35 8 L18 35 H30 L27 56 L46 27 H33 L38 8 Z" fill="var(--volt)" /></svg></span>
+          <span class="brand__text"><b>VOLT</b> STORE CO</span>
+        </a>
+        <p>Tecnología, accesorios y servicio técnico para tu día a día.</p>
+        <div class="footer__socials">
+          <a href="https://www.instagram.com/voltstoreco" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.tiktok.com/@voltstoreco21" target="_blank" rel="noopener">TikTok</a>
+        </div>
+      </div>
+      <div class="footer__col">
+        <h4>Enlaces rápidos</h4>
+        <a href="#inicio">Inicio</a>
+        <a href="#productos">Productos</a>
+        <a href="#servicio">Servicio técnico</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+      <div class="footer__col">
+        <h4>Contacto</h4>
+        <a href="https://wa.me/573171076290" target="_blank" rel="noopener">WhatsApp: 317 107 6290</a>
+        <span>Convención, Norte de Santander, Colombia</span>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© <span id="year"></span> VOLT STORE CO. Todos los derechos reservados.</p>
+      <p>Tecnología que conecta contigo ⚡</p>
+    </div>
+  </footer>
+
+  <!-- WhatsApp flotante -->
+  <a class="wa-float" href="https://wa.me/573171076290?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20web%20de%20VOLT%20STORE%20CO%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n." target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+    <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.515 5.26l-.999 3.648 3.973-1.607zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+    <span class="wa-float__pulse"></span>
+  </a>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox__close" id="lbClose" aria-label="Cerrar">&times;</button>
+    <img src="" alt="" id="lbImg" />
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
