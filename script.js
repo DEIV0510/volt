@@ -40,8 +40,8 @@
   if (grid) {
     const pagesEl = document.getElementById('catalogPages');
     const filters = document.getElementById('catalogFilters');
-    const section = document.getElementById('catalogo');
-    const PAGE_SIZE = 6;
+    const viewport = document.getElementById('catalogViewport');
+    const PAGE_SIZE = 6;            // modelos por "pantalla"
     let brand = 'all';
     let page = 1;
 
@@ -61,30 +61,48 @@
       </article>`;
     }
 
-    function render(scroll) {
+    function totalPages() {
+      const count = CATALOG.filter(p => brand === 'all' || p.brand === brand).length;
+      return Math.max(1, Math.ceil(count / PAGE_SIZE));
+    }
+
+    // Renderiza TODOS los modelos de la marca en una pista horizontal deslizable
+    function build() {
       const list = CATALOG.filter(p => brand === 'all' || p.brand === brand);
-      const totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
-      if (page > totalPages) page = totalPages;
-      const start = (page - 1) * PAGE_SIZE;
-      const slice = list.slice(start, start + PAGE_SIZE);
+      grid.innerHTML = list.map((p, i) => cardHTML(p, i + 1)).join('');
+      page = 1;
+      viewport.scrollLeft = 0;
+      renderPages();
+    }
 
-      grid.innerHTML = slice.map((p, i) => cardHTML(p, start + i + 1)).join('');
-
-      // Paginación numerada 1 · 2 · 3
+    // Botones numerados 1 · 2 · 3 (deslizan el carrusel horizontalmente, NO mueven la página)
+    function renderPages() {
+      const tp = totalPages();
       let html = '';
-      if (totalPages > 1) {
+      if (tp > 1) {
         html += `<button class="page-btn page-btn--nav" data-go="prev" ${page === 1 ? 'disabled' : ''} aria-label="Anterior">‹</button>`;
-        for (let n = 1; n <= totalPages; n++) {
+        for (let n = 1; n <= tp; n++) {
           html += `<button class="page-btn${n === page ? ' is-active' : ''}" data-go="${n}" aria-label="Página ${n}"${n === page ? ' aria-current="page"' : ''}>${n}</button>`;
         }
-        html += `<button class="page-btn page-btn--nav" data-go="next" ${page === totalPages ? 'disabled' : ''} aria-label="Siguiente">›</button>`;
+        html += `<button class="page-btn page-btn--nav" data-go="next" ${page === tp ? 'disabled' : ''} aria-label="Siguiente">›</button>`;
       }
       pagesEl.innerHTML = html;
+    }
 
-      if (scroll) {
-        const top = section.getBoundingClientRect().top + window.scrollY - 64;
-        window.scrollTo({ top, behavior: 'smooth' });
-      }
+    function cardStep() {
+      const c = grid.querySelector('.model');
+      if (!c) return viewport.clientWidth;
+      const cs = getComputedStyle(grid);
+      const gap = parseFloat(cs.columnGap || cs.gap || 0) || 0;
+      return c.getBoundingClientRect().width + gap;
+    }
+
+    function goTo(n) {
+      const tp = totalPages();
+      page = Math.min(tp, Math.max(1, n));
+      // Desliza el carrusel horizontalmente al inicio de ese grupo de 6 (NO mueve la página)
+      viewport.scrollTo({ left: (page - 1) * PAGE_SIZE * cardStep(), behavior: 'smooth' });
+      renderPages();
     }
 
     filters.addEventListener('click', e => {
@@ -96,23 +114,30 @@
         c.setAttribute('aria-selected', on ? 'true' : 'false');
       });
       brand = btn.dataset.brand;
-      page = 1;
-      render(false);
+      build();
     });
 
     pagesEl.addEventListener('click', e => {
       const btn = e.target.closest('.page-btn');
       if (!btn || btn.disabled) return;
       const go = btn.dataset.go;
-      const list = CATALOG.filter(p => brand === 'all' || p.brand === brand);
-      const totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
-      if (go === 'prev') page = Math.max(1, page - 1);
-      else if (go === 'next') page = Math.min(totalPages, page + 1);
-      else page = parseInt(go, 10);
-      render(true);
+      if (go === 'prev') goTo(page - 1);
+      else if (go === 'next') goTo(page + 1);
+      else goTo(parseInt(go, 10));
     });
 
-    render(false);
+    // Al deslizar manualmente, actualiza el número activo
+    let scrollTmr;
+    viewport.addEventListener('scroll', () => {
+      clearTimeout(scrollTmr);
+      scrollTmr = setTimeout(() => {
+        const idx = Math.round(viewport.scrollLeft / cardStep());
+        const cur = Math.floor(idx / PAGE_SIZE) + 1;
+        if (cur !== page) { page = cur; renderPages(); }
+      }, 120);
+    }, { passive: true });
+
+    build();
   }
 
   /* ---- Pantalla de carga ---- */
