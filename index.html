@@ -66,6 +66,7 @@
       <nav class="nav" id="nav" aria-label="Navegación principal">
         <a href="#inicio">Inicio</a>
         <a href="#productos">Productos</a>
+        <a href="#catalogo">Catálogo</a>
         <a href="#iphone">iPhone a crédito</a>
         <a href="#servicio">Servicio técnico</a>
         <a href="#contacto">Contacto</a>
@@ -88,6 +89,7 @@
     <nav aria-label="Navegación móvil">
       <a href="#inicio">Inicio</a>
       <a href="#productos">Productos</a>
+      <a href="#catalogo">Catálogo</a>
       <a href="#iphone">iPhone a crédito</a>
       <a href="#servicio">Servicio técnico</a>
       <a href="#beneficios">Beneficios</a>
@@ -204,6 +206,29 @@
             </div>
           </article>
         </div>
+      </div>
+    </section>
+
+    <!-- ============ CATÁLOGO POR MARCAS ============ -->
+    <section class="section section--soft catalog" id="catalogo">
+      <div class="container">
+        <header class="section__head reveal">
+          <span class="kicker">Catálogo</span>
+          <h2>Equipos disponibles por marca</h2>
+          <p>Explora modelos de las principales marcas. Las fotos reales de cada equipo se irán actualizando; por ahora consúltanos disponibilidad y precio por WhatsApp.</p>
+        </header>
+
+        <div class="catalog__filters reveal" id="catalogFilters" role="tablist" aria-label="Filtrar por marca">
+          <button class="chip is-active" data-brand="all" role="tab" aria-selected="true">Todos</button>
+          <button class="chip" data-brand="apple" role="tab" aria-selected="false">Apple</button>
+          <button class="chip" data-brand="samsung" role="tab" aria-selected="false">Samsung</button>
+          <button class="chip" data-brand="xiaomi" role="tab" aria-selected="false">Xiaomi</button>
+          <button class="chip" data-brand="motorola" role="tab" aria-selected="false">Motorola</button>
+        </div>
+
+        <div class="catalog__grid" id="catalogGrid"><!-- generado por JS --></div>
+
+        <p class="catalog__note reveal">¿Buscas un modelo que no aparece aquí? <a href="https://wa.me/573171076290?text=Hola%2C%20busco%20un%20modelo%20espec%C3%ADfico%20de%20celular.%20%C2%BFTienen%20disponibilidad%3F" target="_blank" rel="noopener">Escríbenos por WhatsApp</a> y te confirmamos disponibilidad.</p>
       </div>
     </section>
 
