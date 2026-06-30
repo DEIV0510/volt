@@ -491,7 +491,15 @@ section{position:relative}
   .hero__frame img{height:420px}
   .hero__stats{gap:18px}
   .hero__stats li+li{padding-left:18px}
-  .cards{grid-template-columns:1fr}
+  .cards{grid-template-columns:repeat(2,1fr);gap:12px}
+  .card__body{padding:14px 13px 16px}
+  .card__body h3{font-size:1.02rem;margin-bottom:6px}
+  .card__body p{font-size:.83rem;line-height:1.45;margin-bottom:12px}
+  .card .btn--soft{width:100%;font-size:.8rem;padding:.7em .5em}
+  .card--cta .card__body{padding:22px 14px}
+  .card--cta .card__icon{width:46px;height:46px;margin-bottom:10px}
+  .card--cta h3{font-size:1rem}
+  .card--cta .btn{width:100%;font-size:.8rem;padding:.7em .5em}
   .service__grid{grid-template-columns:1fr}
   .benefits__grid{grid-template-columns:1fr}
   .catalog__track{gap:14px}
