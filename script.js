@@ -38,12 +38,20 @@
 
   const grid = document.getElementById('catalogGrid');
   if (grid) {
-    grid.innerHTML = CATALOG.map(p => {
+    const pagesEl = document.getElementById('catalogPages');
+    const filters = document.getElementById('catalogFilters');
+    const section = document.getElementById('catalogo');
+    const PAGE_SIZE = 6;
+    let brand = 'all';
+    let page = 1;
+
+    function cardHTML(p, n) {
       const msg = encodeURIComponent('Hola, quiero consultar disponibilidad y precio del ' + p.name + ' en VOLT STORE CO.');
       const media = p.img
         ? `<img src="${p.img}" alt="${p.name}" loading="lazy" />`
         : `<span class="model__icon">${PHONE_SVG}</span><span class="model__soon">Foto próximamente</span>`;
       return `<article class="model" data-brand="${p.brand}">
+        <span class="model__num">${n}</span>
         <div class="model__media${p.img ? ' has-img' : ''}">${media}</div>
         <div class="model__body">
           <span class="model__brand">${BRAND_NAME[p.brand] || ''}</span>
@@ -51,9 +59,34 @@
           <a class="btn btn--soft" href="https://wa.me/573171076290?text=${msg}" target="_blank" rel="noopener">Consultar</a>
         </div>
       </article>`;
-    }).join('');
+    }
 
-    const filters = document.getElementById('catalogFilters');
+    function render(scroll) {
+      const list = CATALOG.filter(p => brand === 'all' || p.brand === brand);
+      const totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+      if (page > totalPages) page = totalPages;
+      const start = (page - 1) * PAGE_SIZE;
+      const slice = list.slice(start, start + PAGE_SIZE);
+
+      grid.innerHTML = slice.map((p, i) => cardHTML(p, start + i + 1)).join('');
+
+      // Paginación numerada 1 · 2 · 3
+      let html = '';
+      if (totalPages > 1) {
+        html += `<button class="page-btn page-btn--nav" data-go="prev" ${page === 1 ? 'disabled' : ''} aria-label="Anterior">‹</button>`;
+        for (let n = 1; n <= totalPages; n++) {
+          html += `<button class="page-btn${n === page ? ' is-active' : ''}" data-go="${n}" aria-label="Página ${n}"${n === page ? ' aria-current="page"' : ''}>${n}</button>`;
+        }
+        html += `<button class="page-btn page-btn--nav" data-go="next" ${page === totalPages ? 'disabled' : ''} aria-label="Siguiente">›</button>`;
+      }
+      pagesEl.innerHTML = html;
+
+      if (scroll) {
+        const top = section.getBoundingClientRect().top + window.scrollY - 64;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    }
+
     filters.addEventListener('click', e => {
       const btn = e.target.closest('.chip');
       if (!btn) return;
@@ -62,11 +95,24 @@
         c.classList.toggle('is-active', on);
         c.setAttribute('aria-selected', on ? 'true' : 'false');
       });
-      const b = btn.dataset.brand;
-      grid.querySelectorAll('.model').forEach(m => {
-        m.style.display = (b === 'all' || m.dataset.brand === b) ? '' : 'none';
-      });
+      brand = btn.dataset.brand;
+      page = 1;
+      render(false);
     });
+
+    pagesEl.addEventListener('click', e => {
+      const btn = e.target.closest('.page-btn');
+      if (!btn || btn.disabled) return;
+      const go = btn.dataset.go;
+      const list = CATALOG.filter(p => brand === 'all' || p.brand === brand);
+      const totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+      if (go === 'prev') page = Math.max(1, page - 1);
+      else if (go === 'next') page = Math.min(totalPages, page + 1);
+      else page = parseInt(go, 10);
+      render(true);
+    });
+
+    render(false);
   }
 
   /* ---- Pantalla de carga ---- */
