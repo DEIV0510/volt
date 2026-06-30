@@ -140,16 +140,34 @@
     build();
   }
 
-  /* ---- Pantalla de carga ---- */
+  /* ---- Pantalla de carga (contador + barra) ---- */
   const loader = document.getElementById('loader');
-  window.addEventListener('load', () => {
-    setTimeout(() => {
+  if (loader) {
+    const fill = document.getElementById('loaderFill');
+    const pctEl = document.getElementById('loaderPct');
+    const DURATION = 2100;
+    let startTs = null, done = false;
+
+    function hideLoader() {
+      if (done) return;
+      done = true;
       loader.classList.add('is-hidden');
       document.body.style.overflow = '';
-    }, 2000);
-  });
-  // failsafe por si 'load' tarda
-  setTimeout(() => loader && loader.classList.add('is-hidden'), 4500);
+    }
+
+    function tick(ts) {
+      if (startTs === null) startTs = ts;
+      const t = Math.min(1, (ts - startTs) / DURATION);
+      const eased = 1 - Math.pow(1 - t, 2);          // ease-out
+      const pct = Math.round(eased * 100);
+      if (pctEl) pctEl.textContent = pct + '%';
+      if (fill) fill.style.width = pct + '%';
+      if (t < 1) requestAnimationFrame(tick);
+      else setTimeout(hideLoader, 180);
+    }
+    requestAnimationFrame(tick);
+    setTimeout(hideLoader, 5000); // failsafe
+  }
 
   /* ---- Header scroll ---- */
   const header = document.getElementById('header');
