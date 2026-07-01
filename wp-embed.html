@@ -39,7 +39,7 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:hidden}
 body{
   font-family:var(--ff-body);
   background:var(--bg);
@@ -344,7 +344,7 @@ section{position:relative}
 /* ===== IPHONE (oscuro) ===== */
 .iphone{background:
   radial-gradient(circle at 82% 0%,rgba(255,196,0,.14),transparent 45%),
-  linear-gradient(180deg,#15161d,#0e0e15);color:var(--on-dark)}
+  linear-gradient(180deg,#15161d,#0e0e15);color:var(--on-dark);overflow:hidden}
 .iphone h2,.iphone h3{color:#fff}
 .iphone .kicker{color:var(--volt);background:rgba(255,212,0,.12);border-color:rgba(255,212,0,.3)}
 .iphone__inner{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
