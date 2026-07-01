@@ -73,6 +73,9 @@ section{position:relative}
 .btn--ghost:hover{border-color:var(--volt-2);color:#0d0d12;background:var(--volt-soft)}
 .btn--soft{--bg:var(--bg-soft);--fg:var(--ink);border-color:var(--line);font-size:.9rem;padding:.72em 1.25em}
 .btn--soft:hover{border-color:var(--volt-2);color:#0d0d12;background:var(--volt-soft)}
+.btn--ig{--bg:linear-gradient(135deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);--fg:#fff;font-weight:700;box-shadow:0 12px 30px rgba(214,41,118,.30)}
+.btn--ig:hover{filter:brightness(1.06);box-shadow:0 16px 40px rgba(214,41,118,.42)}
+.section__head-cta{margin-top:24px}
 
 /* Botones dentro de secciones oscuras */
 .iphone .btn--ghost,.cta-band .btn--ghost,.contact__card .btn--ghost{border-color:rgba(255,255,255,.25);--fg:#fff}
