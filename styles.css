@@ -539,4 +539,9 @@ section{position:relative}
   *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .reveal{opacity:1;transform:none}
 }
-:focus-visible{outline:2px solid var(--volt-2);outline-offset:3px;border-radius:4px}
+:focus-visible{outline:2px solid var(--volt-2);outline-offset:3px}
+
+/* ===== Esquinas rectas / sin redondeo (look angular) — se mantiene redondo solo el botón flotante de WhatsApp ===== */
+:not(.wa-float):not(.wa-float__pulse),
+:not(.wa-float):not(.wa-float__pulse)::before,
+:not(.wa-float):not(.wa-float__pulse)::after{border-radius:0 !important}
