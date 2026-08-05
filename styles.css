@@ -552,6 +552,9 @@ section{position:relative}
 :not(.wa-float):not(.wa-float__pulse)::before,
 :not(.wa-float):not(.wa-float__pulse)::after{border-radius:0 !important}
 
+/* Compat WordPress: evita que el tema (que define .gallery{display:grid}) rompa la sección Comunidad */
+#galeria{display:block !important}
+
 /* ===== Catálogo 3×2 paginado + tarjetas uniformes (conectado a Google Sheets) =====
    Cada "página" es un slide de ancho completo con grid de 3 columnas × 2 filas
    (2 columnas en móvil). Las tarjetas tienen altura fija para verse uniformes. */
