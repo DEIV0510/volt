@@ -575,6 +575,7 @@ section{position:relative}
 .model__stock{position:absolute;top:12px;right:12px;z-index:3;font-family:var(--ff-head);font-weight:700;font-size:.72rem;line-height:1;padding:4px 8px;white-space:nowrap}
 .model__stock--in{background:#e6f6ea;color:#1a7a34}
 .model__stock--out{background:#fdeaea;color:#c0392b}
+.page-ellipsis{display:grid;place-items:center;min-width:24px;height:44px;color:var(--muted);font-weight:700}
 @media (max-width:620px){
   .model{height:362px}
   .catpage{grid-template-columns:repeat(2,1fr);gap:12px}
