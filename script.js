@@ -13,11 +13,14 @@
   (function initCatalog(){
     if (document.getElementById('cg2')) return;                 // el bootstrapper de WordPress ya lo armó
     if (!document.querySelector('#catalogo .container')) return;
+    var lastCSV = "";
+    function refresh(){ fetchCSV(CSV_URL).then(function(t){ if(t!==lastCSV){ lastCSV=t; var f=csvToProducts(t); if(f && f.length) buildCat(f); } }).catch(function(){}); }
     buildCat(P_FALLBACK);
-    fetchCSV(CSV_URL).then(function(t){ var f = csvToProducts(t); if (f && f.length) buildCat(f); }).catch(function(){});
+    refresh();
+    setInterval(refresh, 180000);   // refresca cada 3 min aunque la pestaña quede abierta
   })();
 
-  function fetchCSV(url){return Promise.race([fetch(url,{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.text();}),new Promise(function(_,rej){setTimeout(function(){rej(0);},7000);})]);}
+  function fetchCSV(url){var u=url+(url.indexOf("?")>=0?"&":"?")+"_cb="+Date.now();return Promise.race([fetch(u,{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.text();}),new Promise(function(_,rej){setTimeout(function(){rej(0);},7000);})]);}
   function parseCSV(text){var rows=[],row=[],field="",inQ=false,i,c;text=String(text).replace(/\r\n/g,"\n").replace(/\r/g,"\n");for(i=0;i<text.length;i++){c=text[i];if(inQ){if(c==='"'){if(text[i+1]==='"'){field+='"';i++;}else{inQ=false;}}else{field+=c;}}else{if(c==='"'){inQ=true;}else if(c===","){row.push(field);field="";}else if(c==="\n"){row.push(field);rows.push(row);row=[];field="";}else{field+=c;}}}if(field.length||row.length){row.push(field);rows.push(row);}return rows;}
   function norm(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim();}
   function catCode(name){var s=norm(name);if(s.indexOf("celular")>=0)return"cel";if(s.indexOf("cargador")>=0)return"car";if(s.indexOf("audif")>=0||s.indexOf("audio")>=0)return"aud";if(s.indexOf("smartwatch")>=0||s.indexOf("reloj")>=0||s.indexOf("parlante")>=0)return"sw";if(s.indexOf("vidrio")>=0)return"vid";if(s.indexOf("forro")>=0)return"for";if(s.indexOf("accesorio")>=0)return"acc";return"";}
