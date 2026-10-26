@@ -5,7 +5,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/DEIV0510/volt@main/styles.css">
 <style>
 /* Ajustes que el tema de WordPress necesita con !important (mismos que tenía el puente anterior). */
 html{overflow-x:hidden !important}
@@ -36,12 +35,19 @@ html{overflow-x:hidden !important}
 <script>
 (function(){
  var CDN="https://cdn.jsdelivr.net/gh/DEIV0510/volt@main";
+ // jsDelivr permite que el navegador guarde los archivos 7 días: con esta marca (cambia cada hora)
+ // ningún visitante usa una versión de más de una hora.
+ var V="?v="+Math.floor(Date.now()/3600000);
  var app=document.getElementById("volt-app");
- fetch(CDN+"/index.html").then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.text();}).then(function(html){
+ var css=document.createElement("link");css.rel="stylesheet";css.href=CDN+"/styles.css"+V;
+ var cssReady=new Promise(function(ok){css.onload=css.onerror=ok;setTimeout(ok,3000);});
+ document.head.appendChild(css);
+ Promise.all([fetch(CDN+"/index.html"+V,{cache:"no-cache"}).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.text();}),cssReady]).then(function(res){
+  var html=res[0];
   var s=html.indexOf(">",html.indexOf("<body"))+1,e=html.indexOf("</body>");
   var body=html.slice(s,e).replace(/<script[^>]*src="script\.js"[^>]*><\/script>/,"").split('="img/').join('="'+CDN+'/img/');
   app.innerHTML=body;
-  var sc=document.createElement("script");sc.src=CDN+"/script.js";document.body.appendChild(sc);
+  var sc=document.createElement("script");sc.src=CDN+"/script.js"+V;document.body.appendChild(sc);
  }).catch(function(){
   app.innerHTML="<p style='padding:60px 20px;text-align:center;font-family:sans-serif'>No se pudo cargar la página. Recarga en unos segundos.</p>";
  });

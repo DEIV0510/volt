@@ -80,7 +80,7 @@ Para que funcione «¿Olvidaste tu contraseña?» en [Authentication → URL Con
    - jsDelivr sirve `index.html`, `styles.css` y `script.js` a WordPress (su caché tarda hasta 12 h; se fuerza con `https://purge.jsdelivr.net/gh/DEIV0510/volt@main/script.js`, y lo mismo con `styles.css` e `index.html`);
    - `.github/workflows/pages.yml` publica el panel en GitHub Pages.
 2. **GitHub Pages (una vez):** Settings → Pages → Source: **GitHub Actions**.
-3. **WordPress (una vez):** reemplaza el contenido del bloque HTML de la página de inicio (ID 974) por `wordpress/puente-wordpress.html`. Es el mismo puente de antes, pero sin la hoja de Google. Mientras no se cambie, la página igual muestra el catálogo del panel, porque `script.js` vuelve a dibujarlo si el puente viejo lo reemplaza.
+3. **WordPress (una vez):** reemplaza el contenido del bloque HTML de la página de inicio (ID 974) por `wordpress/puente-wordpress.html`. Es el mismo puente de antes, pero sin la hoja de Google, y con una marca horaria en los archivos: jsDelivr deja que los navegadores los guarden hasta 7 días, y así nadie ve una versión de más de una hora. Mientras no se cambie, la página igual muestra el catálogo del panel, porque `script.js` vuelve a dibujarlo si el puente viejo lo reemplaza.
 4. **Base de datos:** las migraciones están en `supabase/migrations/` y ya se aplicaron al proyecto. Si cambias `admin/js/schema.js`, ejecuta `node scripts/build-sql.mjs` y aplica la migración `…_content_schemas.sql` que se regenera.
 
 ## Variables y configuración
