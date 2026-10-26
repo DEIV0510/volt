@@ -547,10 +547,12 @@ section{position:relative}
 }
 :focus-visible{outline:2px solid var(--volt-2);outline-offset:3px}
 
-/* ===== Esquinas rectas / sin redondeo (look angular) — se mantiene redondo solo el botón flotante de WhatsApp ===== */
-:not(.wa-float):not(.wa-float__pulse),
-:not(.wa-float):not(.wa-float__pulse)::before,
-:not(.wa-float):not(.wa-float__pulse)::after{border-radius:0 !important}
+/* ===== Esquinas rectas / sin redondeo (look angular) — se mantiene redondo solo el botón flotante de WhatsApp =====
+   Es el estilo por defecto; desde el panel (Diseño → Esquinas) se puede elegir "suaves" o "redondeadas". */
+html:not(.volt-r-soft):not(.volt-r-round) :not(.wa-float):not(.wa-float__pulse),
+html:not(.volt-r-soft):not(.volt-r-round) :not(.wa-float):not(.wa-float__pulse)::before,
+html:not(.volt-r-soft):not(.volt-r-round) :not(.wa-float):not(.wa-float__pulse)::after{border-radius:0 !important}
+html.volt-r-soft{--radius:10px;--radius-lg:14px}
 
 /* Compat WordPress: evita que el tema (que define .gallery{display:grid}) rompa la sección Comunidad */
 #galeria{display:block !important}
@@ -580,4 +582,56 @@ section{position:relative}
   .model{height:362px}
   .catpage{grid-template-columns:repeat(2,1fr);gap:12px}
   .model__stock{font-size:.66rem;padding:3px 6px;top:10px;right:10px}
+}
+
+/* ===== Opciones de diseño del panel (Diseño → Colores y tipografía) ===== */
+html.volt-scale-sm{font-size:93.75%}
+html.volt-scale-lg{font-size:106.25%}
+html.volt-cards-shadow .card,html.volt-cards-shadow .model,html.volt-cards-shadow .srv,html.volt-cards-shadow .ben{border-color:transparent;box-shadow:var(--shadow-sm)}
+html.volt-cards-flat .card,html.volt-cards-flat .model,html.volt-cards-flat .srv,html.volt-cards-flat .ben{border-color:transparent;box-shadow:none}
+html.volt-sp-compact .section{padding:68px 0}
+html.volt-sp-wide .section{padding:120px 0}
+@media (max-width:620px){
+  html.volt-sp-compact .section{padding:34px 0}
+  html.volt-sp-wide .section{padding:64px 0}
+}
+/* Secciones ocultas desde el panel (Diseño → Orden y visibilidad) */
+.is-section-hidden{display:none !important}
+
+/* ===== Catálogo: destacado, promoción, foto y ficha del producto ===== */
+.model--featured{border-color:rgba(255,196,0,.55)}
+.model__feat{position:absolute;top:12px;left:46px;z-index:3;font-family:var(--ff-head);font-weight:700;font-size:.66rem;
+  letter-spacing:.06em;text-transform:uppercase;line-height:1;padding:5px 7px;color:var(--volt-ink);
+  background:linear-gradient(135deg,var(--volt),var(--volt-2))}
+.model__old{color:var(--muted);font-weight:600;font-size:.82em;margin-right:4px}
+.model__media.has-img{height:104px;min-height:0;background:#fff;border-bottom:1px solid var(--line-2)}
+.model__media.has-img img{object-fit:contain;padding:8px}
+.model__media.is-zoom{cursor:zoom-in}
+.model__media.is-zoom:focus-visible{outline-offset:-3px}
+.footer__legal a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+
+.pmodal{position:fixed;inset:0;z-index:9100;background:rgba(8,8,12,.86);backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:.25s}
+.pmodal.open{opacity:1;visibility:visible}
+.pmodal__box{position:relative;width:min(860px,100%);max-height:calc(100vh - 40px);overflow:auto;background:#fff;
+  display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);box-shadow:var(--shadow)}
+.pmodal__box:not(:has(.pmodal__media)){grid-template-columns:1fr;max-width:480px}
+.pmodal__media{position:relative;background:var(--bg-soft-2);display:grid;place-items:center;min-height:320px}
+.pmodal__media img{width:100%;height:100%;max-height:520px;object-fit:contain}
+.pmodal__nav{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border:0;cursor:pointer;
+  background:rgba(18,18,25,.75);color:#fff;font-size:1.5rem;line-height:1}
+.pmodal__nav--prev{left:10px}
+.pmodal__nav--next{right:10px}
+.pmodal__body{padding:34px 28px 28px;display:flex;flex-direction:column;gap:8px}
+.pmodal__body h3{font-size:1.35rem}
+.pmodal__body .model__detail{display:block;-webkit-line-clamp:unset;font-size:.92rem;overflow:visible}
+.pmodal__body .ticks{margin:6px 0 4px;gap:8px}
+.pmodal__body .ticks li{color:var(--ink-soft);font-size:.92rem}
+.pmodal__body .model__price{margin:8px 0 12px;font-size:1.3rem}
+.pmodal__close{position:absolute;top:6px;right:10px;z-index:2;background:none;border:0;font-size:2.1rem;line-height:1;cursor:pointer;color:var(--ink)}
+@media (max-width:620px){
+  .pmodal{padding:12px}
+  .pmodal__box{grid-template-columns:1fr}
+  .pmodal__media{min-height:220px}
+  .model__feat{left:42px;font-size:.58rem;top:10px}
 }

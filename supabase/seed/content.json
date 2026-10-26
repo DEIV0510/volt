@@ -1,0 +1,550 @@
+{
+  "general": {
+    "name": "VOLT STORE CO",
+    "tagline": "Tienda de tecnología y servicio técnico",
+    "whatsapp": "573171076290",
+    "whatsappDisplay": "317 107 6290",
+    "whatsappMessage": "Hola, vengo de la página web de VOLT STORE CO y quiero más información.",
+    "floatingWhatsapp": true,
+    "phone": "",
+    "email": "",
+    "address": "Convención, Norte de Santander, Colombia",
+    "hours": "",
+    "mapUrl": "",
+    "socials": [
+      {
+        "network": "instagram",
+        "label": "Instagram",
+        "url": "https://www.instagram.com/voltstoreco"
+      },
+      {
+        "network": "tiktok",
+        "label": "TikTok",
+        "url": "https://www.tiktok.com/@voltstoreco21"
+      }
+    ]
+  },
+  "header": {
+    "logo": "img/logo.webp",
+    "logoAlt": "VOLT STORE CO",
+    "logoWhite": "img/logo-white.webp",
+    "favicon": "favicon.svg",
+    "nav": [
+      {
+        "label": "Inicio",
+        "href": "#inicio"
+      },
+      {
+        "label": "Productos",
+        "href": "#productos"
+      },
+      {
+        "label": "Catálogo",
+        "href": "#catalogo"
+      },
+      {
+        "label": "iPhone a crédito",
+        "href": "#iphone"
+      },
+      {
+        "label": "Servicio técnico",
+        "href": "#servicio"
+      },
+      {
+        "label": "Contacto",
+        "href": "#contacto"
+      }
+    ],
+    "mobileNav": [
+      {
+        "label": "Inicio",
+        "href": "#inicio"
+      },
+      {
+        "label": "Productos",
+        "href": "#productos"
+      },
+      {
+        "label": "Catálogo",
+        "href": "#catalogo"
+      },
+      {
+        "label": "iPhone a crédito",
+        "href": "#iphone"
+      },
+      {
+        "label": "Servicio técnico",
+        "href": "#servicio"
+      },
+      {
+        "label": "Beneficios",
+        "href": "#beneficios"
+      },
+      {
+        "label": "Comunidad",
+        "href": "#galeria"
+      },
+      {
+        "label": "Contacto",
+        "href": "#contacto"
+      }
+    ],
+    "showWhatsapp": true,
+    "ctaLabel": "WhatsApp",
+    "mobileCtaLabel": "Escríbenos por WhatsApp",
+    "showLoader": true,
+    "loaderText": "Cargando experiencia VOLT"
+  },
+  "hero": {
+    "eyebrow": "Convención, Norte de Santander",
+    "title": "Tecnología, celulares y servicio técnico en Convención",
+    "highlight": "Convención",
+    "subtitle": "En VOLT STORE CO encuentras celulares, iPhone, accesorios, portátiles, televisores y reparación de equipos con atención confiable y rápida.",
+    "badge": "iPhone a crédito y de contado",
+    "primary": {
+      "label": "Escribir por WhatsApp",
+      "kind": "whatsapp",
+      "message": "",
+      "href": ""
+    },
+    "secondary": {
+      "label": "Ver productos",
+      "kind": "link",
+      "message": "",
+      "href": "#productos"
+    },
+    "stats": [
+      {
+        "value": "+5",
+        "label": "Categorías de productos"
+      },
+      {
+        "value": "Tienda",
+        "label": "Física en Convención"
+      },
+      {
+        "value": "Servicio",
+        "label": "Técnico confiable"
+      }
+    ],
+    "image": "img/cases.webp",
+    "imageAlt": "iPhones con accesorios MagSafe disponibles en VOLT STORE CO",
+    "chipTop": "Energía VOLT",
+    "chipBottom": "📍 Atención personalizada"
+  },
+  "marquee": {
+    "items": [
+      "Celulares",
+      "iPhone",
+      "Portátiles",
+      "Televisores",
+      "Accesorios",
+      "Servicio Técnico"
+    ]
+  },
+  "productos": {
+    "kicker": "Productos",
+    "title": "Productos tecnológicos para tu día a día",
+    "text": "Encuentra dispositivos y accesorios seleccionados para que estés siempre conectado.",
+    "cards": [
+      {
+        "title": "Celulares",
+        "text": "Equipos móviles para todos los estilos, necesidades y presupuestos.",
+        "image": "img/store.webp",
+        "imageAlt": "Celulares disponibles en VOLT STORE CO",
+        "tag": "",
+        "button": {
+          "label": "Ver disponibilidad",
+          "kind": "whatsapp",
+          "message": "Hola, quiero consultar disponibilidad de celulares en VOLT STORE CO.",
+          "href": ""
+        }
+      },
+      {
+        "title": "iPhone",
+        "text": "Modelos seleccionados de iPhone disponibles a crédito y de contado.",
+        "image": "img/products.webp",
+        "imageAlt": "iPhone disponible a crédito y de contado",
+        "tag": "A crédito",
+        "button": {
+          "label": "Ver disponibilidad",
+          "kind": "whatsapp",
+          "message": "Hola, quiero consultar iPhone disponibles en VOLT STORE CO.",
+          "href": ""
+        }
+      },
+      {
+        "title": "Portátiles",
+        "text": "Equipos ideales para estudio, trabajo y productividad.",
+        "image": "img/laptop.webp",
+        "imageAlt": "Portátiles para estudio y trabajo",
+        "tag": "",
+        "button": {
+          "label": "Ver disponibilidad",
+          "kind": "whatsapp",
+          "message": "Hola, quiero consultar disponibilidad de portátiles en VOLT STORE CO.",
+          "href": ""
+        }
+      },
+      {
+        "title": "Televisores",
+        "text": "Tecnología para entretenimiento en casa con excelente calidad de imagen.",
+        "image": "img/tv.webp",
+        "imageAlt": "Televisores para entretenimiento en casa",
+        "tag": "",
+        "button": {
+          "label": "Ver disponibilidad",
+          "kind": "whatsapp",
+          "message": "Hola, quiero consultar disponibilidad de televisores en VOLT STORE CO.",
+          "href": ""
+        }
+      },
+      {
+        "title": "Accesorios tecnológicos",
+        "text": "Cargadores, audífonos, cables, protectores, soportes y más.",
+        "image": "img/cases.webp",
+        "imageAlt": "Accesorios tecnológicos: cargadores, audífonos y protectores",
+        "tag": "",
+        "button": {
+          "label": "Ver disponibilidad",
+          "kind": "whatsapp",
+          "message": "Hola, quiero consultar accesorios tecnológicos en VOLT STORE CO.",
+          "href": ""
+        }
+      }
+    ],
+    "showCtaCard": true,
+    "ctaTitle": "¿No ves lo que buscas?",
+    "ctaText": "Escríbenos y te ayudamos a encontrar el equipo o accesorio que necesitas.",
+    "ctaButton": {
+      "label": "Preguntar por WhatsApp",
+      "kind": "whatsapp",
+      "message": "Hola, busco un producto específico. ¿Me pueden ayudar?",
+      "href": ""
+    }
+  },
+  "catalogo": {
+    "kicker": "Catálogo",
+    "title": "Catálogo de productos",
+    "text": "Explora nuestro inventario por categorías. Consulta disponibilidad y precio por WhatsApp.",
+    "allLabel": "Todos",
+    "buttonLabel": "Consultar",
+    "productMessage": "Hola, quiero consultar disponibilidad y precio de: {producto} ({categoria}) en VOLT STORE CO.",
+    "askPriceLabel": "Consultar precio",
+    "showStock": true,
+    "inStockLabel": "disp.",
+    "outOfStockLabel": "Agotado",
+    "featuredLabel": "Destacado",
+    "noteText": "¿Buscas algo puntual?",
+    "noteLinkLabel": "Escríbenos por WhatsApp",
+    "noteMessage": "Hola, quiero consultar un producto del catálogo de VOLT STORE CO."
+  },
+  "iphone": {
+    "kicker": "iPhone",
+    "title": "Estrena iPhone hoy",
+    "text": "En VOLT STORE CO puedes comprar tu iPhone a crédito o de contado, con atención personalizada y asesoría para elegir el modelo ideal para ti.",
+    "ticks": [
+      "Opciones de pago a crédito",
+      "Compra de contado",
+      "Asesoría personalizada",
+      "Modelos según disponibilidad",
+      "Atención directa por WhatsApp"
+    ],
+    "image": "img/products.webp",
+    "imageAlt": "iPhone disponible a crédito y de contado en VOLT STORE CO",
+    "primary": {
+      "label": "Consultar iPhone disponibles",
+      "kind": "whatsapp",
+      "message": "Hola, quiero consultar los iPhone disponibles en VOLT STORE CO.",
+      "href": ""
+    },
+    "secondary": {
+      "label": "Cotizar por WhatsApp",
+      "kind": "whatsapp",
+      "message": "Hola, quiero cotizar un iPhone (crédito o contado) en VOLT STORE CO.",
+      "href": ""
+    }
+  },
+  "servicio": {
+    "kicker": "Servicio técnico",
+    "title": "Servicio técnico confiable",
+    "text": "Revisamos tu equipo, identificamos la falla y te damos una solución clara, rápida y confiable.",
+    "items": [
+      {
+        "icon": "🔍",
+        "title": "Diagnóstico de celulares",
+        "text": "Identificamos la falla de tu equipo con precisión.",
+        "soon": false,
+        "soonLabel": ""
+      },
+      {
+        "icon": "📱",
+        "title": "Cambio de pantalla",
+        "text": "Reemplazo de pantalla con buen acabado.",
+        "soon": false,
+        "soonLabel": ""
+      },
+      {
+        "icon": "🔋",
+        "title": "Cambio de batería",
+        "text": "Recupera la autonomía de tu dispositivo.",
+        "soon": false,
+        "soonLabel": ""
+      },
+      {
+        "icon": "🔌",
+        "title": "Reparación de puerto de carga",
+        "text": "Soluciones para que vuelva a cargar bien.",
+        "soon": false,
+        "soonLabel": ""
+      },
+      {
+        "icon": "💻",
+        "title": "Reparación de software",
+        "text": "Optimización y solución de fallas de sistema.",
+        "soon": false,
+        "soonLabel": ""
+      },
+      {
+        "icon": "🛠️",
+        "title": "Mantenimiento preventivo",
+        "text": "Limpieza y revisión para alargar la vida útil.",
+        "soon": false,
+        "soonLabel": ""
+      },
+      {
+        "icon": "apple",
+        "title": "Reparaciones de iPhone",
+        "text": "Atención dedicada para tu equipo Apple.",
+        "soon": false,
+        "soonLabel": ""
+      },
+      {
+        "icon": "⭐",
+        "title": "Especializados en iPhone",
+        "text": "Servicio especializado en iPhone.",
+        "soon": true,
+        "soonLabel": "Próximamente"
+      }
+    ],
+    "button": {
+      "label": "Agendar revisión por WhatsApp",
+      "kind": "whatsapp",
+      "message": "Hola, quiero agendar una revisión de mi equipo en VOLT STORE CO.",
+      "href": ""
+    }
+  },
+  "beneficios": {
+    "kicker": "Confianza",
+    "title": "¿Por qué elegir VOLT STORE CO?",
+    "text": "Tecnología que conecta contigo, con atención cercana y soluciones reales.",
+    "items": [
+      {
+        "icon": "🤝",
+        "title": "Atención personalizada",
+        "text": "Te asesoramos según lo que realmente necesitas."
+      },
+      {
+        "icon": "✨",
+        "title": "Productos de calidad",
+        "text": "Tecnología seleccionada para tu día a día."
+      },
+      {
+        "icon": "📲",
+        "title": "iPhone a crédito y de contado",
+        "text": "Opciones de pago que se ajustan a ti."
+      },
+      {
+        "icon": "🛠️",
+        "title": "Servicio técnico confiable",
+        "text": "Diagnóstico claro y reparaciones honestas."
+      },
+      {
+        "icon": "📍",
+        "title": "En Convención, N. de Santander",
+        "text": "Tienda física con atención cercana."
+      },
+      {
+        "icon": "💬",
+        "title": "Contacto rápido por WhatsApp",
+        "text": "Respuesta ágil para resolver tus dudas."
+      }
+    ]
+  },
+  "galeria": {
+    "kicker": "Comunidad",
+    "title": "Sigue nuestra comunidad",
+    "text": "Vive el día a día de VOLT STORE CO en Instagram: novedades, equipos que llegan y nuestro trabajo. Únete y no te pierdas nada.",
+    "showButton": true,
+    "buttonLabel": "Seguir @voltstoreco",
+    "buttonUrl": "https://www.instagram.com/voltstoreco",
+    "images": [
+      {
+        "image": "img/cases.webp",
+        "alt": "iPhones con accesorios MagSafe",
+        "size": "tall"
+      },
+      {
+        "image": "img/products.webp",
+        "alt": "iPhone 14 y equipos disponibles",
+        "size": "normal"
+      },
+      {
+        "image": "img/store.webp",
+        "alt": "Vitrina con celulares y accesorios",
+        "size": "normal"
+      },
+      {
+        "image": "img/team.webp",
+        "alt": "Equipo de VOLT STORE CO atendiendo",
+        "size": "normal"
+      },
+      {
+        "image": "img/taller.webp",
+        "alt": "Servicio técnico de VOLT STORE CO",
+        "size": "wide"
+      }
+    ]
+  },
+  "cta": {
+    "title": "¿Buscas celular, iPhone o reparación para tu equipo?",
+    "text": "Escríbenos y recibe atención personalizada. Te ayudamos a encontrar el producto o servicio que necesitas.",
+    "button": {
+      "label": "Escribir ahora por WhatsApp",
+      "kind": "whatsapp",
+      "message": "",
+      "href": ""
+    }
+  },
+  "contacto": {
+    "kicker": "Contacto",
+    "title": "Hablemos por WhatsApp",
+    "text": "Atención personalizada para compra de equipos, accesorios y servicio técnico.",
+    "items": [
+      {
+        "icon": "🏪",
+        "title": "VOLT STORE CO",
+        "text": "Tienda de tecnología y servicio técnico"
+      },
+      {
+        "icon": "📍",
+        "title": "Ubicación",
+        "text": "Convención, Norte de Santander, Colombia"
+      },
+      {
+        "icon": "📱",
+        "title": "WhatsApp",
+        "text": "317 107 6290"
+      }
+    ],
+    "showSocials": true,
+    "cardTitle": "Escríbenos ahora",
+    "cardText": "Te respondemos lo más rápido posible para resolver tus dudas o cotizar tu equipo.",
+    "cardButton": {
+      "label": "Contactar por WhatsApp",
+      "kind": "whatsapp",
+      "message": "",
+      "href": ""
+    },
+    "showNumber": true
+  },
+  "footer": {
+    "text": "Tecnología, accesorios y servicio técnico para tu día a día.",
+    "linksTitle": "Enlaces rápidos",
+    "links": [
+      {
+        "label": "Inicio",
+        "href": "#inicio"
+      },
+      {
+        "label": "Productos",
+        "href": "#productos"
+      },
+      {
+        "label": "Servicio técnico",
+        "href": "#servicio"
+      },
+      {
+        "label": "Contacto",
+        "href": "#contacto"
+      }
+    ],
+    "contactTitle": "Contacto",
+    "showWhatsapp": true,
+    "showAddress": true,
+    "showEmail": true,
+    "showHours": true,
+    "copyright": "VOLT STORE CO. Todos los derechos reservados.",
+    "slogan": "Tecnología que conecta contigo ⚡",
+    "legal": []
+  },
+  "layout": {
+    "sections": [
+      {
+        "id": "hero",
+        "visible": true
+      },
+      {
+        "id": "marquee",
+        "visible": true
+      },
+      {
+        "id": "productos",
+        "visible": true
+      },
+      {
+        "id": "catalogo",
+        "visible": true
+      },
+      {
+        "id": "iphone",
+        "visible": true
+      },
+      {
+        "id": "servicio",
+        "visible": true
+      },
+      {
+        "id": "beneficios",
+        "visible": true
+      },
+      {
+        "id": "galeria",
+        "visible": true
+      },
+      {
+        "id": "cta",
+        "visible": true
+      },
+      {
+        "id": "contacto",
+        "visible": true
+      }
+    ]
+  },
+  "theme": {
+    "primary": "#FFD400",
+    "primary2": "#FFC400",
+    "primaryInk": "#1A1500",
+    "dark": "#121219",
+    "bg": "#FFFFFF",
+    "bgSoft": "#F3F4F7",
+    "ink": "#15161C",
+    "muted": "#6A6B76",
+    "wa": "#25D366",
+    "fontHead": "Sora",
+    "fontBody": "Inter",
+    "scale": "md",
+    "radius": "square",
+    "cardStyle": "border",
+    "spacing": "normal"
+  },
+  "seo": {
+    "title": "",
+    "description": "Venta de celulares, iPhone, accesorios, portátiles, televisores y servicio técnico de celulares en Convención, Norte de Santander. Compra iPhone a crédito o de contado.",
+    "ogTitle": "VOLT STORE CO | Tecnología y servicio técnico en Convención",
+    "ogDescription": "Celulares, iPhone, accesorios, portátiles, televisores y servicio técnico en Convención, Norte de Santander. iPhone a crédito y de contado.",
+    "ogImage": "img/og.jpg",
+    "index": true
+  }
+}

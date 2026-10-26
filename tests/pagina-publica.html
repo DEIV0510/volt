@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Prueba de la página pública con contenido modificado</title>
+</head>
+<body>
+  <!-- Carga la página real en modo vista previa y le envía contenido de prueba
+       (diseño, secciones ocultas, producto con foto/promoción/destacado e intentos de inyectar HTML).
+       Uso: node serve.js → http://localhost:5230/tests/pagina-publica.html; luego revisar window.result. -->
+  <iframe id="f" src="../index.html?preview=1" style="width:1200px;height:800px;border:1px solid #ccc"></iframe>
+  <script>
+    const XSS = '<img src=x onerror="window.top.__xss=1"><script>window.top.__xss=1<\/script>';
+    fetch('../data/site.json').then(r => r.json()).then(site => {
+      const c = site.content;
+      c.hero.title = 'Título con ' + XSS + ' Convención';
+      c.hero.secondary = { label: 'Enlace malo', kind: 'link', href: 'javascript:window.top.__xss=1', message: '' };
+      c.theme = { ...c.theme, primary: '#00C2FF', primary2: '#0099FF', primaryInk: '#001A26', radius: 'round', cardStyle: 'shadow', fontHead: 'Poppins', scale: 'lg' };
+      c.layout.sections = c.layout.sections.map(s => s.id === 'beneficios' ? { ...s, visible: false } : s);
+      c.layout.sections.unshift(c.layout.sections.splice(c.layout.sections.findIndex(s => s.id === 'catalogo'), 1)[0]);
+      c.seo = { ...c.seo, title: 'Título SEO de prueba', index: false };
+      c.general.socials.push({ network: 'facebook', label: 'Facebook', url: 'https://facebook.com/voltstoreco' });
+      const p = site.products.find(x => x.c === 'aud');
+      Object.assign(p, { f: true, promo: 79000, img: 'img/products.webp', gallery: ['img/cases.webp', 'img/store.webp'], features: ['Cancelación de ruido', 'Estuche ' + XSS], n: 'Producto ' + XSS });
+      window.__payload = site;
+      const f = document.getElementById('f');
+      const send = () => f.contentWindow.postMessage({ type: 'volt:preview', site }, location.origin);
+      window.addEventListener('message', e => { if (e.data && e.data.type === 'volt:preview-ready') send(); });
+      f.addEventListener('load', send);
+    });
+  </script>
+</body>
+</html>

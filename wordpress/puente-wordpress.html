@@ -1,0 +1,49 @@
+<!-- ====== VOLT STORE CO · puente de WordPress (página de inicio, ID 974) ======
+     Pega este bloque completo en un bloque "HTML personalizado" de la página.
+     Carga la landing desde GitHub (jsDelivr) y script.js aplica el contenido y el
+     catálogo administrados en el panel (/admin). Ya NO usa la hoja de Google. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/DEIV0510/volt@main/styles.css">
+<style>
+/* Ajustes que el tema de WordPress necesita con !important (mismos que tenía el puente anterior). */
+html{overflow-x:hidden !important}
+#galeria{display:block !important}
+.iphone{overflow:hidden !important}
+.btn--ig{background:linear-gradient(135deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);color:#fff;font-weight:700}
+.section__head-cta{margin-top:24px}
+.model__media{aspect-ratio:auto !important;min-height:88px}
+.model__media.has-img{height:104px;min-height:0 !important}
+.model__icon{font-size:2rem;width:66px;height:66px}
+.model__detail{font-size:.77rem;color:var(--muted);line-height:1.35;margin:0 0 8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.model__price{display:block;font-family:var(--ff-head);font-weight:800;color:#111;font-size:1.02rem;margin:auto 0 12px}
+.model{height:344px}
+.model__price--ask{color:#9a7400 !important;font-size:.92rem !important;font-weight:700 !important}
+.model__brand{margin-bottom:2px}
+.model__body{padding-top:14px;padding-bottom:16px;flex:1;display:flex;flex-direction:column}
+.model__body h3{font-size:.93rem;line-height:1.22;-webkit-line-clamp:3;-webkit-box-orient:vertical;display:-webkit-box;overflow:hidden}
+#cv2{overflow-x:auto !important;padding:0 !important;scroll-padding:0 !important;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+#cg2{display:flex !important;gap:0 !important;overflow:visible !important;align-items:stretch}
+.catpage{flex:0 0 auto;box-sizing:border-box;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-content:start;scroll-snap-align:start}
+.catpage .model{width:auto !important;min-width:0 !important;max-width:none !important;flex:none !important;scroll-snap-align:none !important}
+@media(max-width:620px){
+.model{height:362px}
+.catpage{grid-template-columns:repeat(2,1fr);gap:12px}
+}
+</style>
+<div id="volt-app"></div>
+<script>
+(function(){
+ var CDN="https://cdn.jsdelivr.net/gh/DEIV0510/volt@main";
+ var app=document.getElementById("volt-app");
+ fetch(CDN+"/index.html").then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.text();}).then(function(html){
+  var s=html.indexOf(">",html.indexOf("<body"))+1,e=html.indexOf("</body>");
+  var body=html.slice(s,e).replace(/<script[^>]*src="script\.js"[^>]*><\/script>/,"").split('="img/').join('="'+CDN+'/img/');
+  app.innerHTML=body;
+  var sc=document.createElement("script");sc.src=CDN+"/script.js";document.body.appendChild(sc);
+ }).catch(function(){
+  app.innerHTML="<p style='padding:60px 20px;text-align:center;font-family:sans-serif'>No se pudo cargar la página. Recarga en unos segundos.</p>";
+ });
+})();
+</script>

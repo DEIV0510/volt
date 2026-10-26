@@ -7,6 +7,7 @@
   <meta name="description" content="Venta de celulares, iPhone, accesorios, portátiles, televisores y servicio técnico de celulares en Convención, Norte de Santander. Compra iPhone a crédito o de contado." />
   <meta name="theme-color" content="#FFFFFF" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="canonical" href="https://voltstoreco.com/" />
   <meta name="author" content="VOLT STORE CO" />
 
   <!-- Open Graph -->
@@ -22,7 +23,7 @@
   <link rel="stylesheet" href="styles.css" />
 
   <!-- SEO: datos estructurados -->
-  <script type="application/ld+json">
+  <script type="application/ld+json" id="volt-jsonld">
   {
     "@context": "https://schema.org",
     "@type": "ElectronicsStore",
@@ -114,7 +115,7 @@
 
   <main>
     <!-- ============ HERO ============ -->
-    <section class="hero" id="inicio">
+    <section class="hero" id="inicio" data-section="hero">
       <div class="hero__bg" aria-hidden="true">
         <div class="grid-glow"></div>
         <div class="orb orb--1"></div>
@@ -147,7 +148,7 @@
     </section>
 
     <!-- ============ MARQUEE / TIRA ============ -->
-    <div class="marquee" aria-hidden="true">
+    <div class="marquee" id="franja" data-section="marquee" aria-hidden="true">
       <div class="marquee__track">
         <span>Celulares</span><i>⚡</i><span>iPhone</span><i>⚡</i><span>Portátiles</span><i>⚡</i><span>Televisores</span><i>⚡</i><span>Accesorios</span><i>⚡</i><span>Servicio Técnico</span><i>⚡</i>
         <span>Celulares</span><i>⚡</i><span>iPhone</span><i>⚡</i><span>Portátiles</span><i>⚡</i><span>Televisores</span><i>⚡</i><span>Accesorios</span><i>⚡</i><span>Servicio Técnico</span><i>⚡</i>
@@ -155,7 +156,7 @@
     </div>
 
     <!-- ============ PRODUCTOS ============ -->
-    <section class="section" id="productos">
+    <section class="section" id="productos" data-section="productos">
       <div class="container">
         <header class="section__head reveal">
           <span class="kicker">Productos</span>
@@ -222,10 +223,9 @@
     </section>
 
     <!-- ============ CATÁLOGO POR MARCAS ============ -->
-    <section class="section section--soft catalog" id="catalogo">
+    <section class="section section--soft catalog" id="catalogo" data-section="catalogo">
       <div class="container">
-        <!-- Catálogo generado por script.js a partir del CSV publicado de la hoja
-             "Inventario VOLT STORE CO" (Google Sheets). Se llena solo al cargar. -->
+        <!-- Catálogo generado por script.js con los productos publicados desde el panel (/admin). -->
         <header class="section__head reveal in">
           <span class="kicker">Catálogo</span>
           <h2>Catálogo de productos</h2>
@@ -235,7 +235,7 @@
     </section>
 
     <!-- ============ IPHONE A CRÉDITO ============ -->
-    <section class="section iphone" id="iphone">
+    <section class="section iphone" id="iphone" data-section="iphone">
       <div class="container iphone__inner">
         <div class="iphone__media reveal">
           <div class="iphone__frame">
@@ -263,7 +263,7 @@
     </section>
 
     <!-- ============ SERVICIO TÉCNICO ============ -->
-    <section class="section section--soft service" id="servicio">
+    <section class="section section--soft service" id="servicio" data-section="servicio">
       <div class="container">
         <header class="section__head reveal">
           <span class="kicker">Servicio técnico</span>
@@ -289,7 +289,7 @@
     </section>
 
     <!-- ============ BENEFICIOS ============ -->
-    <section class="section benefits" id="beneficios">
+    <section class="section benefits" id="beneficios" data-section="beneficios">
       <div class="container">
         <header class="section__head reveal">
           <span class="kicker">Confianza</span>
@@ -308,7 +308,7 @@
     </section>
 
     <!-- ============ GALERÍA ============ -->
-    <section class="section section--soft gallery" id="galeria">
+    <section class="section section--soft gallery" id="galeria" data-section="galeria">
       <div class="container">
         <header class="section__head reveal">
           <span class="kicker">Comunidad</span>
@@ -330,7 +330,7 @@
     </section>
 
     <!-- ============ CTA ============ -->
-    <section class="cta-band">
+    <section class="cta-band" id="cta" data-section="cta">
       <div class="cta-band__bg" aria-hidden="true"><div class="bolt-line"></div></div>
       <div class="container cta-band__inner reveal">
         <h2>¿Buscas celular, iPhone o reparación para tu equipo?</h2>
@@ -340,7 +340,7 @@
     </section>
 
     <!-- ============ CONTACTO ============ -->
-    <section class="section contact" id="contacto">
+    <section class="section contact" id="contacto" data-section="contacto">
       <div class="container contact__inner">
         <div class="contact__info reveal">
           <span class="kicker">Contacto</span>

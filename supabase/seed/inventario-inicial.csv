@@ -1,0 +1,235 @@
+Categoria,Nombre,Detalle,Precio,Mostrar,Stock
+Celulares,iPhone 17,Apple,,Si,
+Celulares,iPhone 16 Pro Max,Apple,,Si,
+Celulares,iPhone 16,Apple,,Si,
+Celulares,iPhone 15,Apple,,Si,
+Celulares,iPhone 14,Apple,,Si,
+Celulares,iPhone 13,Apple,,Si,
+Celulares,iPhone 11,Apple,,Si,
+Celulares,Galaxy S25 Ultra,Samsung,,Si,
+Celulares,Galaxy S24,Samsung,,Si,
+Celulares,Galaxy A55,Samsung,,Si,
+Celulares,Galaxy A25,Samsung,,Si,
+Celulares,Galaxy A15,Samsung,,Si,
+Celulares,Galaxy A06,Samsung,,Si,
+Celulares,Redmi Note 13,Xiaomi,,Si,
+Celulares,Redmi 15C,Xiaomi,,Si,
+Celulares,Redmi 13C,Xiaomi,,Si,
+Celulares,Redmi A3,Xiaomi,,Si,
+Celulares,Poco X6,Xiaomi,,Si,
+Celulares,Moto Edge 50,Motorola,,Si,
+Celulares,Moto G54,Motorola,,Si,
+Celulares,Moto G24,Motorola,,Si,
+Celulares,Moto G04,Motorola,,Si,
+Cargadores,Cabeza Samsung 45W,Negro,$30.000,Si,9
+Cargadores,Cargador Completo Samsung 25W,12 Blanco / 5 Negro,$30.000,Si,17
+Cargadores,Cargador Completo Samsung 45W,5 Negro / 4 Blanco,$40.000,Si,9
+Cargadores,Cargador Completo Harvic V8 5A,Genérico,$30.000,Si,9
+Cargadores,Cargador Completo Xiaomi 67W,Genérico,$50.000,Si,3
+Cargadores,Cargador Completo Harvic V8 3A,Genérico,$20.000,Si,14
+Cargadores,Cargador Completo Harvic TC 3A,Tipo C,$20.000,Si,6
+Cargadores,Cabeza iPhone 1.1 20W,Blanco,$40.000,Si,26
+Cargadores,Cabeza iPhone Original 20W,Blanco,$130.000,Si,7
+Cargadores,Cable Harvic TC 3A,Tipo C,$15.000,Si,8
+Cargadores,Cable Harvic V8 3A,V8,$15.000,Si,13
+Cargadores,Cable iPhone 1.1 TC a TC,Tipo C a Tipo C,$30.000,Si,20
+Cargadores,Cable iPhone 1.1 TC a Lightning,Tipo C a Lightning,$30.000,Si,13
+Cargadores,Cargador Genérico Smartwatch,Negro,$20.000,Si,9
+Cargadores,Cargador Inalámbrico iPhone,Blanco,$20.000,Si,2
+Audífonos,Airpods Pro 2ª Gen,Calidad 1.1,$90.000,Si,9
+Audífonos,Airpods 4ª Gen,Calidad 1.1,$120.000,Si,5
+Audífonos,Airpods Pro 3ª Gen,Calidad 1.1,$150.000,Si,3
+Audífonos,Airpods Max,Calidad 1.1 (Imantadas),$140.000,Si,6
+Audífonos,Galaxy Buds FE,Calidad 1.1,$120.000,Si,2
+Audífonos,Galaxy Buds3 Pro,Calidad 1.1,$120.000,Si,3
+Audífonos,Audífonos Tipo Arete,Inalámbrico,$70.000,Si,2
+Audífonos,Samsung M23 TC,Cable Tipo C,$20.000,Si,5
+Audífonos,Galaxy S5 3.5,Cable Plug 3.5mm,$10.000,Si,6
+Audífonos,Kr-9900,Diadema / Otro,$40.000,Si,1
+Smartwatch,S10 Max,Smartwatch,$90.000,Si,1
+Smartwatch,10 Ultra 3,Smartwatch,$120.000,Si,4
+Smartwatch,JKMX 10 Pro Max,Smartwatch,$100.000,Si,4
+Smartwatch,HK 10 Ultra,Smartwatch,$250.000,Si,1
+Smartwatch,V68,Smartwatch,$200.000,Si,1
+Smartwatch,HR5 Ultra3,Smartwatch,$80.000,Si,1
+Smartwatch,Bogmbgx3,Parlante,$150.000,Si,1
+Vidrios Templados,Vidrio iPhone 7 / 8,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$15.000,Si,15
+Vidrios Templados,Vidrio iPhone 7 Plus / 8 Plus,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,10
+Vidrios Templados,Vidrio iPhone X / XS / 11 Pro,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000–$20.000,Si,33
+Vidrios Templados,Vidrio iPhone XR / 11,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000–$20.000,Si,45
+Vidrios Templados,Vidrio iPhone XS Max / 11 Pro Max,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$20.000,Si,25
+Vidrios Templados,Vidrio iPhone 12 / 12 Pro,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000–$20.000,Si,52
+Vidrios Templados,Vidrio iPhone 12 Pro Max,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$20.000,Si,32
+Vidrios Templados,Vidrio iPhone 13 / 14,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000–$20.000,Si,24
+Vidrios Templados,Vidrio iPhone 13 Pro,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000–$20.000,Si,21
+Vidrios Templados,Vidrio iPhone 13 Pro Max,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$20.000,Si,17
+Vidrios Templados,Vidrio iPhone 14 Plus,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,8
+Vidrios Templados,Vidrio iPhone 14 Pro,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000–$20.000,Si,21
+Vidrios Templados,Vidrio iPhone 14 Pro Max,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$20.000,Si,24
+Vidrios Templados,Vidrio iPhone 15,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$20.000,Si,37
+Vidrios Templados,Vidrio iPhone 15 Pro,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000–$20.000,Si,18
+Vidrios Templados,Vidrio iPhone 15 Pro Max,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$20.000,Si,23
+Vidrios Templados,Vidrio iPhone 15 Plus,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$20.000,Si,34
+Vidrios Templados,Vidrio iPhone 16e,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$20.000,Si,32
+Vidrios Templados,Vidrio iPhone 16,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$20.000,Si,28
+Vidrios Templados,Vidrio iPhone 16 Plus,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$20.000,Si,25
+Vidrios Templados,Vidrio iPhone 16 Pro,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$20.000,Si,40
+Vidrios Templados,Vidrio iPhone 16 Pro Max,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$20.000,Si,21
+Vidrios Templados,Vidrio iPhone 17,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000–$20.000,Si,28
+Vidrios Templados,Vidrio iPhone 17 Pro,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000–$20.000,Si,23
+Vidrios Templados,Vidrio iPhone 17 Pro Max,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000–$20.000,Si,34
+Vidrios Templados,Vidrio Samsung A03 / A03 Core / A04 / A12 / Vivo Y22s / Y33s / ZTE A34,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$20.000,Si,34
+Vidrios Templados,Vidrio Samsung A05 / A05s / A06 / Redmi 13C,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000–$20.000,Si,29
+Vidrios Templados,Vidrio Samsung A11 / Moto G41 / G71,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,14
+Vidrios Templados,Vidrio Samsung A13 / A70 / Redmi 9A / Redmi 9C / ZTE A34,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,15
+Vidrios Templados,Vidrio Samsung A14 / F14 / M14 / M44,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,16
+Vidrios Templados,Vidrio Samsung A15 / A24 / A25,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$15.000,Si,12
+Vidrios Templados,Vidrio Samsung A16 / A26 / A17,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,13
+Vidrios Templados,Vidrio Samsung A20 / A30 / A30s / A50 / A51 / A52 / A53 / S20FE / A52s,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,20
+Vidrios Templados,Vidrio Samsung A22 (4G) / A32 (4G) / Vivo Y33s,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$20.000,Si,19
+Vidrios Templados,Vidrio Samsung A22 (5G),21D $10k · Blindado $15k · Anti-Espía $20k,$15.000–$20.000,Si,25
+Vidrios Templados,Vidrio Samsung A31,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$20.000,Si,18
+Vidrios Templados,Vidrio Samsung A35 / A36 / A54 / S24FE,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$15.000,Si,24
+Vidrios Templados,Vidrio Samsung A55,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$15.000,Si,12
+Vidrios Templados,Vidrio Samsung S25 Ultra,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,8
+Vidrios Templados,Vidrio Redmi Note 8,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,9
+Vidrios Templados,Vidrio Redmi Note 9S / Note 9S Pro / Poco X3 / Moto G04 / G04s / G24 Power / Samsung A21s,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$15.000,Si,20
+Vidrios Templados,Vidrio Redmi 10C / 12C / A3 / A3X,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$15.000,Si,13
+Vidrios Templados,Vidrio Redmi Note 12 / Samsung A71 / Realme C67 / Poco X5 / Honor X8a / Oppo A73,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$15.000,Si,25
+Vidrios Templados,Vidrio Poco X7 Pro,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,10
+Vidrios Templados,Vidrio Redmi 10,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,13
+Vidrios Templados,Vidrio Redmi Note 12s / Note 11 / Note 11s / Samsung A51 / A52 / A53 / A52s / S20FE,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$20.000,Si,33
+Vidrios Templados,Vidrio Redmi Note 12 (Variante 2),21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$20.000,Si,22
+Vidrios Templados,Vidrio Redmi Note 13 / Note 13 Pro / X6 Pro / Poco F5 / Reno 11,21D $10k · Blindado $15k · Anti-Espía $20k,$10.000–$20.000,Si,22
+Vidrios Templados,Vidrio Redmi 14C,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000–$20.000,Si,10
+Vidrios Templados,Vidrio Redmi Note 14,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000–$20.000,Si,9
+Vidrios Templados,Vidrio Redmi 15 / Note 15R / Poco M7,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,14
+Vidrios Templados,Vidrio Redmi A5,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,13
+Vidrios Templados,Vidrio Redmi 15C,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,15
+Vidrios Templados,Vidrio Tecno Spark 20 / Redmi 9,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,3
+Vidrios Templados,Vidrio Tecno Go 2024,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000–$20.000,Si,24
+Vidrios Templados,Vidrio Tecno Go 2023,21D $10k · Blindado $15k · Anti-Espía $20k,$20.000,Si,9
+Vidrios Templados,Vidrio Tecno Spark 20 Pro / Redmi 12 / Redmi 13,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,8
+Vidrios Templados,Vidrio Tecno Go 1,21D $10k · Blindado $15k · Anti-Espía $20k,$20.000,Si,6
+Vidrios Templados,Vidrio Moto G04,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,8
+Vidrios Templados,Vidrio Moto G31 / E13,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,9
+Vidrios Templados,Vidrio Moto G22,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,7
+Vidrios Templados,Vidrio Moto G24,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,12
+Vidrios Templados,Vidrio Moto G30 / Moto E30,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,17
+Vidrios Templados,Vidrio Moto G34,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,5
+Vidrios Templados,Vidrio Moto G32,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,9
+Vidrios Templados,Vidrio Moto G41,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,9
+Vidrios Templados,Vidrio Moto G71,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,5
+Vidrios Templados,Vidrio Moto G84,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,10
+Vidrios Templados,Vidrio Honor X6,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000–$20.000,Si,21
+Vidrios Templados,Vidrio Honor X6b,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,4
+Vidrios Templados,Vidrio Honor X8a / Oppo A40 / A60 / A79 / Vivo Y19s,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,19
+Vidrios Templados,Vidrio Huawei Y9 Prime / Vivo Y50 / Redmi Note 9,21D $10k · Blindado $15k · Anti-Espía $20k,$15.000,Si,4
+Forros,Forro iPhone 11,Estuche protector — varios tipos,$20.000–$40.000,Si,25
+Forros,Forro iPhone 11 Pro,Estuche protector — varios tipos,$20.000–$40.000,Si,15
+Forros,Forro iPhone 11 Pro Max,Estuche protector — varios tipos,$20.000–$40.000,Si,12
+Forros,Forro iPhone 12 / 12 Pro,Estuche protector — varios tipos,$20.000–$40.000,Si,18
+Forros,Forro iPhone 12 Pro Max,Estuche protector — varios tipos,$20.000–$40.000,Si,18
+Forros,Forro iPhone 13 / 14,Estuche protector — varios tipos,$20.000–$40.000,Si,25
+Forros,Forro iPhone 13 Pro,Estuche protector — varios tipos,$20.000–$40.000,Si,16
+Forros,Forro iPhone 13 Pro Max,Estuche protector — varios tipos,$20.000–$40.000,Si,13
+Forros,Forro iPhone 14 Pro,Estuche protector — varios tipos,$20.000–$40.000,Si,18
+Forros,Forro iPhone 14 Pro Max,Estuche protector — varios tipos,$20.000–$40.000,Si,14
+Forros,Forro iPhone 15,Estuche protector — varios tipos,$20.000–$40.000,Si,18
+Forros,Forro iPhone 15 Pro,Estuche protector — varios tipos,$20.000–$40.000,Si,25
+Forros,Forro iPhone 15 Pro Max,Estuche protector — varios tipos,$20.000–$40.000,Si,16
+Forros,Forro iPhone 16 Plus,Estuche protector — varios tipos,$20.000,Si,4
+Forros,Forro iPhone 16e,Estuche protector — varios tipos,$20.000–$30.000,Si,16
+Forros,Forro iPhone 16,Estuche protector — varios tipos,$20.000–$40.000,Si,17
+Forros,Forro iPhone 16 Pro,Estuche protector — varios tipos,$20.000–$40.000,Si,19
+Forros,Forro iPhone 16 Pro Max,Estuche protector — varios tipos,$20.000–$40.000,Si,11
+Forros,Forro iPhone 17 Air,Estuche protector — varios tipos,$30.000,Si,10
+Forros,Forro iPhone 17,Estuche protector — varios tipos,$20.000–$40.000,Si,18
+Forros,Forro iPhone 17 Pro,Estuche protector — varios tipos,$20.000–$40.000,Si,26
+Forros,Forro iPhone 17 Pro Max,Estuche protector — varios tipos,$20.000–$40.000,Si,12
+Forros,Forro Samsung A02 / A02s / A03 / A03s,Estuche protector — varios tipos,$20.000,Si,12
+Forros,Forro Samsung A04,Estuche protector — varios tipos,$20.000,Si,11
+Forros,Forro Samsung A05,Estuche protector — varios tipos,$20.000,Si,3
+Forros,Forro Samsung A05s,Estuche protector — varios tipos,$20.000,Si,11
+Forros,Forro Samsung A06,Estuche protector — varios tipos,$20.000–$40.000,Si,12
+Forros,Forro Samsung A07 / A10s,Estuche protector — varios tipos,$20.000,Si,10
+Forros,Forro Samsung A11,Estuche protector — varios tipos,$20.000,Si,7
+Forros,Forro Samsung A13 / A04s,Estuche protector — varios tipos,$20.000,Si,6
+Forros,Forro Samsung A14 (5G),Estuche protector — varios tipos,$20.000,Si,7
+Forros,Forro Samsung A15,Estuche protector — varios tipos,$20.000–$40.000,Si,13
+Forros,Forro Samsung A16 / A17,Estuche protector — varios tipos,$20.000,Si,10
+Forros,Forro Samsung A20 / A30 / S20FE,Estuche protector — varios tipos,$20.000,Si,11
+Forros,Forro Samsung A21s,Estuche protector — varios tipos,$20.000,Si,6
+Forros,Forro Samsung A22 (4G) / A22 (5G),Estuche protector — varios tipos,$20.000,Si,12
+Forros,Forro Samsung A23 (4G) / A24,Estuche protector — varios tipos,$20.000,Si,12
+Forros,Forro Samsung S24FE,Estuche protector — varios tipos,$20.000,Si,9
+Forros,Forro Samsung S24 Ultra,Estuche protector — varios tipos,$20.000–$30.000,Si,15
+Forros,Forro Samsung A25,Estuche protector — varios tipos,$20.000,Si,6
+Forros,Forro Samsung S25 Ultra,Estuche protector — varios tipos,$20.000–$30.000,Si,20
+Forros,Forro Samsung A26,Estuche protector — varios tipos,$20.000,Si,5
+Forros,Forro Samsung A12 / A30s,Estuche protector — varios tipos,$20.000,Si,12
+Forros,Forro Samsung A31 / A32 (4G),Estuche protector — varios tipos,$20.000,Si,12
+Forros,Forro Samsung A35,Estuche protector — varios tipos,$20.000,Si,8
+Forros,Forro Samsung A35 (5G) / A36,Estuche protector — varios tipos,$20.000,Si,11
+Forros,Forro Samsung A51 / A52,Estuche protector — varios tipos,$20.000,Si,15
+Forros,Forro Samsung A55 (5G),Estuche protector — varios tipos,$20.000,Si,11
+Forros,Forro Samsung A56 / A57,Estuche protector — varios tipos,$20.000,Si,11
+Forros,Forro Redmi A1 / A2 / A3 / A5,Estuche protector — varios tipos,$20.000,Si,18
+Forros,Forro Redmi Note 7 / Note 7 Pro / Note 8,Estuche protector — varios tipos,$20.000,Si,7
+Forros,Forro Redmi 9 / 9A / 9C / Note 9,Estuche protector — varios tipos,$20.000,Si,24
+Forros,Forro Redmi Note 9s / Note 9pro / Redmi 10,Estuche protector — varios tipos,$20.000,Si,13
+Forros,Forro Redmi Note 10 / Poco M3pro,Estuche protector — varios tipos,$20.000,Si,3
+Forros,Forro Redmi Note 10 / 10C / Note 10 Pro,Estuche protector — varios tipos,$20.000,Si,21
+Forros,Forro Redmi 11t / Redmi 11pro,Estuche protector — varios tipos,$20.000,Si,3
+Forros,Forro Redmi Note 11 (4G) / Note 11s,Estuche protector — varios tipos,$20.000,Si,17
+Forros,Forro Redmi 12 / Note 12 / 12C / 13,Estuche protector — varios tipos,$20.000,Si,27
+Forros,Forro Redmi 13C,Estuche protector — varios tipos,$20.000,Si,12
+Forros,Forro Redmi Note 13 (4G),Estuche protector — varios tipos,$20.000,Si,15
+Forros,Forro Redmi Note 13 Pro (4G),Estuche protector — varios tipos,$20.000,Si,11
+Forros,Forro Redmi Note 14 Pro (5G),Estuche protector — varios tipos,$20.000,Si,7
+Forros,Forro Redmi Note 14 Pro Plus,Estuche protector — varios tipos,$20.000,Si,6
+Forros,Forro Redmi Note 14,Estuche protector — varios tipos,$20.000,Si,7
+Forros,Forro Redmi Note 14 (4G),Estuche protector — varios tipos,$20.000,Si,10
+Forros,Forro Redmi 14C,Estuche protector — varios tipos,$20.000,Si,5
+Forros,Forro Redmi Note 14 Pro (4G) / Plus (5G),Estuche protector — varios tipos,$20.000,Si,10
+Forros,Forro Redmi 15 / Note 15 (4G) / Pro Plus,Estuche protector — varios tipos,$20.000,Si,14
+Forros,Forro Redmi 15C,Estuche protector — varios tipos,$20.000,Si,5
+Forros,Forro Poco X3 Pro / Poco M3,Estuche protector — varios tipos,$20.000,Si,4
+Forros,Forro Tecno Spark Go 1 / Go 2025 / Go 2,Estuche protector — varios tipos,$20.000,Si,21
+Forros,Forro Tecno Spark Go 2024,Estuche protector — varios tipos,$20.000,Si,6
+Forros,Forro Tecno Spark 20 Pro / 20 Pro Plus,Estuche protector — varios tipos,$20.000,Si,5
+Forros,Forro Tecno Camon 30 Pro,Estuche protector — varios tipos,$20.000,Si,4
+Forros,Forro Moto G04 / G04s / E14,Estuche protector — varios tipos,$20.000,Si,10
+Forros,Forro Moto G8 Power / G8 Power Lite / G9 Plus,Estuche protector — varios tipos,$20.000,Si,15
+Forros,Forro Moto G10 / G20 / G30,Estuche protector — varios tipos,$20.000,Si,18
+Forros,Forro Moto G13 / G23 / G53 / G14 / G15 / E15,Estuche protector — varios tipos,$20.000,Si,25
+Forros,Forro Moto G24 / E30 / E40 / G31 / E32 / G35,Estuche protector — varios tipos,$20.000,Si,34
+Forros,Forro Moto G52 / G82 / G55 (5G),Estuche protector — varios tipos,$20.000,Si,10
+Forros,Forro Honor X6a,Estuche protector — varios tipos,$20.000,Si,3
+Forros,Forro Honor X7b / X78a,Estuche protector — varios tipos,$20.000,Si,16
+Forros,Forro Honor 200 / Honor X9c,Estuche protector — varios tipos,$20.000,Si,7
+Forros,Forro Oppo A79 / A58 / A78 / A16,Estuche protector — varios tipos,$20.000,Si,13
+Forros,Forro Realme C11 / Vivo Y22s / Huawei Y9 Prime,Estuche protector — varios tipos,$20.000,Si,16
+Accesorios,Pulso Liso (Smartwatch),,$10.000,Si,22
+Accesorios,Pulso Corrugado (Smartwatch),,$10.000,Si,5
+Accesorios,Ventosa Doble Pega,,$10.000,Si,5
+Accesorios,Ventosa Bolsillo,,$10.000,Si,10
+Accesorios,Protector de Cargador iPhone 20W,,$20.000,Si,8
+Accesorios,Protector Airpods Pro 3ª Gen,,$20.000,Si,3
+Accesorios,Protector Airpods Pro 2ª Gen,,$20.000,Si,8
+Accesorios,Protector Airpods 4ª Gen,,$20.000,Si,14
+Accesorios,Guantes Anti Sudor,,$5.000,Si,27
+Accesorios,Cámara Mini A9,,$30.000,Si,3
+Accesorios,Proyector Astronauta,,$100.000,Si,3
+Accesorios,Cámara de Seguridad WiFi,,$130.000,Si,1
+Accesorios,Video Making AY-49U,,$90.000,Si,1
+Accesorios,Video Making AY-49,,$40.000,Si,1
+Accesorios,Pistola de Hydrogel,,$80.000,Si,3
+Accesorios,Multiherramienta,,$60.000,Si,1
+Accesorios,Luz LED 5m,,$80.000,Si,1
+Accesorios,Stitch que Respira,,$55.000,Si,6
+Accesorios,Power Bank JKMX,,$120.000,Si,2
+Accesorios,Panel de Luz Sofistek,,$90.000,Si,4
+Accesorios,Combo Teclado + Mouse,,$50.000,Si,2
+Accesorios,Máquina Patillera,,$40.000,Si,3
+Accesorios,Mouse Inalámbrico,,$40.000,Si,1
