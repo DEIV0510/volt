@@ -1,0 +1,69 @@
+# Publica el sitio en Hostinger (public_html) por FTP cada vez que cambia main.
+# (El despliegue Git de hPanel no está disponible en modo "administrar cliente".)
+# Credenciales: GitHub → Settings → Secrets and variables → Actions:
+#   FTP_SERVER   = 147.93.42.15
+#   FTP_USERNAME = usuario FTP (cuenta dedicada con carpeta public_html)
+#   FTP_PASSWORD = su contraseña
+# Opcional (pestaña Variables): FTP_DIR, carpeta destino si la cuenta FTP no apunta directo a public_html (ej. public_html/).
+# Solo sube lo que cambió y nunca borra archivos del servidor.
+name: Publicar en Hostinger
+
+on:
+  push:
+    branches: [main]
+  workflow_run:                       # tras la copia horaria (sus commits no disparan "push")
+    workflows: ["Copia del contenido publicado"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publicar-hostinger
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      HAS_FTP: ${{ secrets.FTP_SERVER != '' && secrets.FTP_USERNAME != '' && secrets.FTP_PASSWORD != '' }}
+    steps:
+      - name: Faltan credenciales
+        if: env.HAS_FTP != 'true'
+        run: echo "::notice::Configura FTP_SERVER, FTP_USERNAME y FTP_PASSWORD en los secretos del repositorio para publicar en Hostinger."
+
+      - uses: actions/checkout@v4
+        if: env.HAS_FTP == 'true'
+        with:
+          ref: main
+
+      - name: Subir a public_html
+        if: env.HAS_FTP == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          local-dir: ./
+          server-dir: ${{ vars.FTP_DIR || './' }}
+          state-name: .volt-deploy-state.json
+          # Solo se publica el sitio: nada del repositorio interno.
+          exclude: |
+            **/.git*
+            **/.git*/**
+            .github/**
+            .claude/**
+            supabase/**
+            tests/**
+            scripts/**
+            _imgwork/**
+            **/node_modules/**
+            serve.js
+            package.json
+            package-lock.json
+            admin/package.json
+            README.md
+            ADMIN.md

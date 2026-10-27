@@ -1,6 +1,6 @@
 # =====================================================================
 # VOLT STORE CO — servidor de Hostinger (LiteSpeed/Apache), sitio estático
-# El código llega por Git desde GitHub (DEIV0510/volt, rama main).
+# Lo publica GitHub Actions por FTP (.github/workflows/publicar-hostinger.yml) desde DEIV0510/volt, rama main.
 # Si cambias las cabeceras de seguridad, refléjalas también en serve.js (desarrollo).
 # =====================================================================
 

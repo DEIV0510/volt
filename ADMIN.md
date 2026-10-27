@@ -76,32 +76,40 @@ Para que funcione «¿Olvidaste tu contraseña?» en [Authentication → URL Con
 
 ## Despliegue (Hostinger + GitHub)
 
-La página y el panel son archivos estáticos. Hostinger los descarga de GitHub (`DEIV0510/volt`, rama `main`) a `public_html` cada vez que hay un push, gracias al webhook de despliegue automático.
+La página y el panel son archivos estáticos en `public_html` de Hostinger. Cada push a `main` dispara la acción **«Publicar en Hostinger»** (`.github/workflows/publicar-hostinger.yml`), que sube por FTP (cifrado) solo los archivos que cambiaron. Nunca borra nada del servidor ni sube las carpetas internas (`supabase/`, `tests/`, `scripts/`…). El despliegue Git de hPanel no se usa porque Hostinger lo desactiva cuando la cuenta se administra como cliente.
 
 1. **Cambios de contenido** (textos, productos, imágenes, diseño): se hacen en el panel. No hace falta desplegar nada.
-2. **Cambios de código:** commit y push a `main`. Hostinger los publica en segundos. Si no se ven, en hPanel usa *Rendimiento → CDN → Purgar caché*.
-3. **SEO para redes:** cada hora la acción `copia-contenido` copia al `<head>` de `index.html` el título, la descripción y la imagen publicados (`scripts/apply-seo.mjs`). Para aplicarlo al momento: GitHub → Actions → «Copia del contenido publicado» → *Run workflow*.
+2. **Cambios de código:** commit y push a `main`. En uno o dos minutos están en línea. Si no se ven, en hPanel usa *Rendimiento → CDN → Purgar caché*.
+3. **SEO para redes:** cada hora la acción «Copia del contenido publicado» copia al `<head>` de `index.html` el título, la descripción y la imagen publicados (`scripts/apply-seo.mjs`) y luego se publica. Para aplicarlo al momento: GitHub → Actions → «Copia del contenido publicado» → *Run workflow*.
 4. **Direcciones antiguas de WordPress** (`/contact/`, `/about/`, `/shop-2/`…) redirigen con 301 a la sección equivalente (`.htaccess`).
 5. **Base de datos:** las migraciones están en `supabase/migrations/` y ya se aplicaron al proyecto. Si cambias `admin/js/schema.js`, ejecuta `node scripts/build-sql.mjs` y aplica la migración `…_content_schemas.sql` que se regenera.
 
-### Configuración inicial en hPanel (una sola vez)
+### Configuración inicial (una sola vez)
 
-1. **Respaldo de WordPress:** *Sitios web → voltstoreco.com → Archivos → Copias de seguridad* → generar o descargar una copia (archivos y base de datos).
-2. **Vaciar `public_html`:** en el *Administrador de archivos*, crea la carpeta `wordpress-respaldo` **fuera** de `public_html` (en la carpeta raíz de la cuenta) y mueve allí todo el contenido de `public_html`, incluido `.htaccess`. Git solo despliega en una carpeta vacía. A partir de aquí la página queda sin contenido hasta el paso 3.
-3. **Git:** *Avanzado → GIT* → repositorio `https://github.com/DEIV0510/volt.git`, rama `main`, directorio vacío (= `public_html`) → *Crear* y luego *Desplegar*.
-4. **Despliegue automático:** en esa misma pantalla, *Despliegue automático* → copia la URL del webhook → GitHub → `DEIV0510/volt` → *Settings → Webhooks → Add webhook*: pega la URL, tipo `application/json`, evento *Just the push event*.
-5. **HTTPS:** *Seguridad → SSL* → verificar que el certificado esté activo y *Forzar HTTPS* encendido.
-6. **CDN:** *Rendimiento → CDN → Purgar toda la caché*.
-7. **Supabase:** cambiar Site URL y Redirect URLs a `https://voltstoreco.com/admin/` (ver «Primer administrador»).
+1. **Respaldo de WordPress:** hPanel → voltstoreco.com → *Archivos → Copias de seguridad* → generar o descargar una copia (archivos y base de datos).
+2. **Cuenta FTP para GitHub:** *Archivos → Cuentas FTP* → crear una cuenta (por ejemplo `github`) con una contraseña larga y la carpeta `public_html`. Así, si algún día se filtra, solo da acceso a los archivos de la web.
+3. **Secretos en GitHub:** `DEIV0510/volt` → *Settings → Secrets and variables → Actions → New repository secret*:
+   - `FTP_SERVER`: `147.93.42.15`
+   - `FTP_USERNAME`: el usuario completo que muestra hPanel (por ejemplo `u665025194.github`)
+   - `FTP_PASSWORD`: la contraseña de esa cuenta
+
+   Si la cuenta FTP no apunta directo a `public_html`, crea también la *variable* `FTP_DIR` con `public_html/`.
+4. **Sacar WordPress de `public_html`:** en el *Administrador de archivos* crea la carpeta `wordpress-respaldo` **fuera** de `public_html` y mueve allí todo su contenido (incluido `.htaccess`). Desde este momento la página queda en blanco hasta el paso 5.
+5. **Primera publicación:** GitHub → *Actions → «Publicar en Hostinger» → Run workflow*. Tarda uno o dos minutos.
+6. **HTTPS y caché:** *Seguridad → SSL* (certificado activo y *Forzar HTTPS* encendido) y *Rendimiento → CDN → Purgar toda la caché*.
+7. **Supabase:** cambia Site URL y Redirect URLs a `https://voltstoreco.com/admin/` (ver «Primer administrador»).
 8. **Comprobar:** https://voltstoreco.com y https://voltstoreco.com/admin/. Cuando todo esté bien, la base de datos de WordPress (*Bases de datos*) y la carpeta `wordpress-respaldo` se pueden borrar más adelante.
+
+**Si el FTP cifrado falla** (error de TLS en la acción), cambia `protocol: ftps` por `protocol: ftp` en `publicar-hostinger.yml`.
 
 ## Variables y configuración
 
-Es un sitio estático, así que **no hay secretos ni variables de entorno en el frontend**:
+Es un sitio estático, así que **no hay secretos en el frontend**. Los únicos secretos son los de publicación, y viven en GitHub:
 
 | Dónde | Qué | ¿Secreto? |
 |---|---|---|
 | `admin/js/config.js`, `script.js`, `copia-contenido.yml` | URL de Supabase y clave `sb_publishable_…` | No (pública por diseño; RLS protege los datos) |
+| Secretos de GitHub Actions | `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD` (publicación en Hostinger) | **Sí**: solo en *Settings → Secrets*, nunca en el código |
 | Panel de Supabase | Clave `service_role`, contraseña de la base de datos | **Sí**: nunca en el código |
 
 ## Archivos
