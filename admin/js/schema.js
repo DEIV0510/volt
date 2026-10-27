@@ -9,7 +9,7 @@
 
 // Enlaces permitidos: anclas internas, http(s), mailto y tel. Nada de javascript:, data:, etc.
 export const LINK_PATTERN = '^(#[A-Za-z0-9_-]*|https?://[^\\s"\'<>]+|mailto:[^\\s"\'<>]+|tel:[+0-9 ()-]+)$';
-// Imágenes: archivos del repositorio (img/…) o URLs https (biblioteca de medios en Supabase).
+// Imágenes: archivos del sitio (img/…, uploads/…) o URLs https.
 export const IMAGE_PATTERN = '^((?:[A-Za-z0-9_-]+/)*[A-Za-z0-9._-]+\\.(?:webp|png|jpe?g|gif|svg|ico)|https://[^\\s"\'<>]+)$';
 export const COLOR_PATTERN = '^#[0-9a-fA-F]{6}$';
 export const PHONE_PATTERN = '^[0-9]{8,15}$';

@@ -56,8 +56,7 @@ export async function uploadFiles(files, folder, onProgress) {
   for (const file of files) {
     try {
       const o = await optimize(file);
-      const path = `${folder}/${slug(file.name)}-${Math.random().toString(36).slice(2, 8)}.${o.ext}`;
-      out.push(await api.uploadMedia(o.blob, { path, filename: `${slug(file.name)}.${o.ext}`, alt: '', folder, mime: o.mime, width: o.width, height: o.height }));
+      out.push(await api.uploadMedia(o.blob, { filename: `${slug(file.name)}.${o.ext}`, alt: '', folder }));
     } catch (e) { errors.push(e.message); }
     onProgress && onProgress(++n / files.length);
   }

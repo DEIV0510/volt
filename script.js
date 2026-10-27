@@ -1,14 +1,11 @@
 /* ===== VOLT STORE CO — contenido administrable + interacciones =====
    El contenido (textos, imágenes, colores, secciones) y el catálogo se
-   administran en el panel (/admin) y se guardan en Supabase. Esta página
-   lee SOLO lo publicado. Si Supabase no responde, usa la última copia
-   (data/site.json, generada a diario) y, si tampoco, el HTML original. */
+   administran en el panel (/admin) y los guarda el servidor del sitio (/api).
+   Esta página lee SOLO lo publicado. Si no responde, usa la última versión
+   guardada en este navegador o data/site.json y, si tampoco, el HTML original. */
 (function () {
   'use strict';
 
-  var SUPABASE_URL = 'https://rxdokvoljoxtficvbjhc.supabase.co';
-  // Clave pública ("publishable"): solo permite leer lo publicado; las políticas de la base de datos impiden escribir.
-  var SUPABASE_KEY = 'sb_publishable_Sv34Sje2NPVUZEpAWDpzuw_L5X2w7_H';
   var CACHE_KEY = 'volt-site-v1';
   var REFRESH_MS = 180000;   // revisa cambios cada 3 min aunque la pestaña quede abierta
 
@@ -515,10 +512,8 @@
 
   function timeout(p, ms) { return Promise.race([p, new Promise(function (_, rej) { setTimeout(function () { rej(new Error('timeout')); }, ms); })]); }
   function fetchLive() {
-    return timeout(fetch(SUPABASE_URL + '/rest/v1/rpc/get_public_site', {
-      method: 'POST', cache: 'no-store',
-      headers: { apikey: SUPABASE_KEY, 'Content-Type': 'application/json' }, body: '{}'
-    }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }), 6000);
+    return timeout(fetch(BASE + 'api/?a=public', { cache: 'no-cache' })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }), 6000);
   }
   function fetchSnapshot() {
     return timeout(fetch(BASE + 'data/site.json', { cache: 'no-store' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }), 6000);

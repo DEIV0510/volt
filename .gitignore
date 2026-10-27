@@ -9,3 +9,6 @@ Thumbs.db
 
 # Configuración local de herramientas
 .claude/
+
+# Imágenes subidas desde el panel (viven en el servidor, no en el repositorio)
+uploads/

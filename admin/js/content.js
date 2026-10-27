@@ -129,7 +129,7 @@ export async function contentView(ctx, key) {
       if (!quiet) toast('Borrador guardado. Todavía no es visible en la página: usa “Publicar”.');
       return true;
     } catch (e) {
-      if (e.code === '40001') {
+      if (e.code === 'conflict') {
         modal({
           title: 'Alguien más editó esta sección',
           body: h('p', { text: e.message + ' Si recargas, perderás los cambios que no guardaste.' }),

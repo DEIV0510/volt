@@ -1,11 +1,11 @@
 # =====================================================================
-# VOLT STORE CO — servidor de Hostinger (LiteSpeed/Apache), sitio estático
+# VOLT STORE CO — Hostinger (LiteSpeed/Apache): página estática + panel con API en PHP (/api)
 # Lo publica GitHub Actions por FTP (.github/workflows/publicar-hostinger.yml) desde DEIV0510/volt, rama main.
-# Si cambias las cabeceras de seguridad, refléjalas también en serve.js (desarrollo).
+# Si cambias las cabeceras de seguridad, refléjalas también en scripts/dev-router.php (desarrollo).
 # =====================================================================
 
 Options -Indexes
-DirectoryIndex index.html
+DirectoryIndex index.php index.html
 ErrorDocument 404 /404.html
 
 <IfModule mod_rewrite.c>
@@ -15,9 +15,11 @@ ErrorDocument 404 /404.html
   RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
   RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 
-  # Nada interno del repositorio es público: .git, código de base de datos, pruebas, scripts.
+  # Nada interno del repositorio es público: .git, pruebas, scripts. (api/ tiene su propio .htaccess)
   RewriteRule (^|/)\.(?!well-known/) - [R=404,L]
-  RewriteRule ^(supabase|tests|scripts|wordpress|_imgwork|node_modules)(/|$) - [R=404,L]
+  RewriteRule ^(tests|scripts|wordpress|_imgwork|node_modules)(/|$) - [R=404,L]
+  # Las imágenes subidas nunca se ejecutan ni se sirven como página.
+  RewriteRule ^uploads/.*\.(php[0-9]?|phtml|phar|html?|svg|js)$ - [R=404,NC,L]
   RewriteRule ^(serve\.js|package(-lock)?\.json|README\.md|ADMIN\.md|admin/package\.json)$ - [R=404,L]
 
   # Direcciones antiguas de WordPress → sección equivalente de la página (evita enlaces rotos y conserva SEO)
@@ -35,8 +37,8 @@ ErrorDocument 404 /404.html
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
   Header always set Strict-Transport-Security "max-age=31536000"
-  # Página pública: solo scripts propios; datos solo desde Supabase; imágenes https.
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://rxdokvoljoxtficvbjhc.supabase.co; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'"
+  # Página pública: solo scripts y datos del propio sitio; imágenes https.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'"
 
   # Código y datos: el navegador siempre revisa si hay versión nueva (cambian sin cambiar de nombre).
   <FilesMatch "\.(html|js|css|json|xml|txt)$">

@@ -1,9 +1,8 @@
 /* Resumen, publicación, historial, respaldos, usuarios y cuenta. */
-import { api, sb, friendly } from './api.js';
+import { api, friendly } from './api.js';
 import { h, icon, clear, toast, modal, confirmDialog, fmtDate, fmtRel, loadingBox, notice, busy, download, deepEqual } from './ui.js';
 import { CONTENT, CONTENT_KEYS } from './schema.js';
 import { openPreviewTab, invalidatePreview } from './preview.js';
-import { SUPABASE_DASHBOARD } from './config.js';
 
 const label = k => (CONTENT[k] && CONTENT[k].label) || k;
 const ACTIONS = { insert: 'creó', update: 'editó', delete: 'eliminó', publish: 'publicó', restore: 'restauró', import: 'importó', login: 'inició sesión' };
@@ -261,7 +260,7 @@ export async function backupsView(ctx) {
     h('div', { class: 'pagehead' }, h('div', null, h('h1', { text: 'Respaldos' }), h('p', { text: 'Descarga una copia de todo lo administrable y restáurala si algo sale mal.' }))),
     h('div', { class: 'card' }, h('div', { class: 'card__head' }, h('h2', { text: 'Descargar respaldo' })),
       h('p', { text: 'Incluye: textos y configuración de todas las secciones (borrador y publicado), diseño, SEO, categorías, productos (precios, stock, imágenes asignadas) y la lista de imágenes con sus textos alternativos.' }),
-      h('p', { class: 'small muted', text: 'No incluye los archivos de imagen: las subidas están en Supabase Storage y las originales en el repositorio de GitHub. Además, GitHub guarda cada día una copia de lo publicado (data/site.json).' }),
+      h('p', { class: 'small muted', text: 'No incluye los archivos de imagen (están en la carpeta uploads del hosting; las originales en img/). Además, el servidor guarda una copia automática cada vez que publicas o restauras (se conservan las últimas 30).' }),
       exp),
     h('div', { class: 'card' }, h('div', { class: 'card__head' }, h('h2', { text: 'Restaurar respaldo' }), isOwner ? null : h('span', { class: 'badge badge--warn', text: 'Solo propietario' })),
       notice('warn', 'Antes de restaurar, descarga un respaldo actual por si necesitas volver atrás.'),
@@ -271,6 +270,11 @@ export async function backupsView(ctx) {
 }
 
 /* ===================== Usuarios ===================== */
+function newPasswordInput(id) {
+  return h('input', { class: 'input', type: 'password', id, autocomplete: 'new-password', maxlength: 200 });
+}
+const strongPw = v => v.length >= 10 && /[a-zA-Z]/.test(v) && /[0-9]/.test(v);
+
 export async function usersView(ctx) {
   ctx.setTitle('Usuarios');
   if (ctx.profile.role !== 'owner') { ctx.mount(notice('warn', 'Solo el propietario puede administrar usuarios.')); return; }
@@ -280,66 +284,88 @@ export async function usersView(ctx) {
     try {
       const rows = await api.admins();
       clear(tbody).append(...rows.map(u => {
+        const me = u.user_id === ctx.profile.user_id;
         const role = h('select', { class: 'select input--sm', 'aria-label': 'Rol de ' + u.email }, [['owner', 'Propietario'], ['editor', 'Editor']].map(([v, l]) => h('option', { value: v, text: l, selected: u.role === v })));
         role.addEventListener('change', async () => {
-          try { await api.grantAdmin(u.email, role.value); toast('Rol actualizado.'); } catch (e) { toast(e.message, 'err'); role.value = u.role; }
+          try { await api.setRole(u.user_id, role.value); toast('Rol actualizado.'); } catch (e) { toast(e.message, 'err'); role.value = u.role; }
         });
-        return h('tr', null, h('td', null, h('strong', { text: u.email }), u.user_id === ctx.profile.user_id ? h('span', { class: 'badge badge--info', text: ' Tú' }) : null),
-          h('td', null, role), h('td', { class: 'hide-sm', text: fmtDate(u.created_at) }),
-          h('td', null, h('button', {
-            class: 'btn btn--sm btn--danger', onclick: async () => {
-              if (!await confirmDialog({ title: 'Quitar acceso', message: `${u.email} ya no podrá entrar al panel. Su cuenta sigue existiendo en Supabase.`, confirmLabel: 'Quitar acceso', danger: true })) return;
-              try { await api.revokeAdmin(u.user_id); toast('Acceso retirado.'); load(); } catch (e) { toast(e.message, 'err'); }
-            }
-          }, icon('trash'), 'Quitar')));
+        return h('tr', null,
+          h('td', null, h('strong', { text: u.email }), me ? [' ', h('span', { class: 'badge badge--info', text: 'Tú' })] : null,
+            h('div', { class: 'cell-sub', text: u.last_login_at ? 'Último ingreso ' + fmtRel(u.last_login_at) : 'Aún no ha entrado' })),
+          h('td', null, role),
+          h('td', null, h('div', { class: 'row' },
+            h('button', { class: 'btn btn--sm', title: 'Asignar una contraseña nueva', onclick: () => resetPassword(u) }, icon('key'), h('span', { class: 'hide-sm', text: 'Contraseña' })),
+            me ? null : h('button', {
+              class: 'btn btn--sm btn--danger', 'aria-label': 'Quitar acceso a ' + u.email, onclick: async () => {
+                if (!await confirmDialog({ title: 'Quitar acceso', message: `${u.email} ya no podrá entrar al panel.`, confirmLabel: 'Quitar acceso', danger: true })) return;
+                try { await api.removeAdmin(u.user_id); toast('Acceso retirado.'); load(); } catch (e) { toast(e.message, 'err'); }
+              }
+            }, icon('trash')))));
       }));
-    } catch (e) { clear(tbody).append(h('tr', null, h('td', { colspan: 4 }, notice('err', e.message)))); }
+    } catch (e) { clear(tbody).append(h('tr', null, h('td', { colspan: 3 }, notice('err', e.message)))); }
   };
-  const email = h('input', { class: 'input', type: 'email', placeholder: 'correo@ejemplo.com', autocomplete: 'off' });
-  const role = h('select', { class: 'select' }, h('option', { value: 'editor', text: 'Editor (contenido, catálogo, imágenes, publicar)' }), h('option', { value: 'owner', text: 'Propietario (además usuarios y restaurar respaldos)' }));
-  const add = h('button', { class: 'btn btn--primary' }, icon('plus'), 'Dar acceso');
+  function resetPassword(u) {
+    const p = newPasswordInput('np-' + u.user_id);
+    modal({
+      title: 'Nueva contraseña para ' + u.email,
+      body: h('div', null, h('div', { class: 'field' }, h('label', { class: 'field__label', for: p.id, text: 'Contraseña (mín. 10 caracteres, con letras y números)' }), p),
+        h('p', { class: 'small muted', text: 'Se cerrarán sus sesiones abiertas. Entrégale la contraseña por un medio privado y pídele que la cambie en «Mi cuenta».' })),
+      actions: [{ label: 'Cancelar' }, {
+        label: 'Guardar contraseña', kind: 'btn--primary', onClick: async () => {
+          if (!strongPw(p.value)) { toast('Usa al menos 10 caracteres combinando letras y números.', 'err'); return false; }
+          await api.setPassword(u.user_id, p.value); toast('Contraseña actualizada.');
+        }
+      }]
+    });
+  }
+  const email = h('input', { class: 'input', type: 'email', id: 'nu-email', placeholder: 'correo@ejemplo.com', autocomplete: 'off', maxlength: 160 });
+  const pass = newPasswordInput('nu-pass');
+  const role = h('select', { class: 'select', id: 'nu-role' }, h('option', { value: 'editor', text: 'Editor (contenido, catálogo, imágenes, publicar)' }), h('option', { value: 'owner', text: 'Propietario (además usuarios y restaurar respaldos)' }));
+  const add = h('button', { class: 'btn btn--primary' }, icon('plus'), 'Crear usuario');
   add.addEventListener('click', () => busy(add, async () => {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) return toast('Escribe un correo válido.', 'err');
-    try { await api.grantAdmin(email.value.trim(), role.value); toast('Acceso concedido.'); email.value = ''; load(); } catch (e) { toast(e.message, 'err'); }
+    if (!strongPw(pass.value)) return toast('La contraseña inicial debe tener al menos 10 caracteres con letras y números.', 'err');
+    try { await api.createAdmin(email.value.trim(), pass.value, role.value); toast('Usuario creado.'); email.value = ''; pass.value = ''; load(); } catch (e) { toast(e.message, 'err'); }
   }));
   clear(root).append(
     h('div', { class: 'pagehead' }, h('div', null, h('h1', { text: 'Usuarios administradores' }), h('p', { text: 'Quién puede entrar al panel y con qué permisos.' }))),
-    h('div', { class: 'card' }, h('div', { class: 'card__head' }, h('h2', { text: 'Dar acceso a una persona' })),
-      notice('info', h('span', null, 'Primero crea su cuenta en ', h('a', { href: SUPABASE_DASHBOARD + '/auth/users', target: '_blank', rel: 'noopener', text: 'Supabase → Authentication → Users' }),
-        ' (“Add user” → “Create new user”, marca “Auto Confirm User”). Luego escribe aquí su correo.')),
-      h('div', { class: 'grid2' }, h('div', { class: 'field' }, h('label', { class: 'field__label', text: 'Correo' }), email),
-        h('div', { class: 'field' }, h('label', { class: 'field__label', text: 'Rol' }), role)), add),
+    h('div', { class: 'card' }, h('div', { class: 'card__head' }, h('h2', { text: 'Crear un usuario' })),
+      h('div', { class: 'grid3' },
+        h('div', { class: 'field' }, h('label', { class: 'field__label', for: 'nu-email', text: 'Correo' }), email),
+        h('div', { class: 'field' }, h('label', { class: 'field__label', for: 'nu-pass', text: 'Contraseña inicial' }), pass),
+        h('div', { class: 'field' }, h('label', { class: 'field__label', for: 'nu-role', text: 'Rol' }), role)),
+      h('p', { class: 'small muted', text: 'Entrégale la contraseña inicial por un medio privado; podrá cambiarla en «Mi cuenta».' }), add),
     h('div', { class: 'card' }, h('div', { class: 'tablewrap' }, h('table', null,
-      h('thead', null, h('tr', null, h('th', { text: 'Correo' }), h('th', { text: 'Rol' }), h('th', { class: 'hide-sm', text: 'Desde' }), h('th', null, ''))), tbody))));
+      h('thead', null, h('tr', null, h('th', { text: 'Usuario' }), h('th', { text: 'Rol' }), h('th', null, ''))), tbody))));
   load();
 }
 
 /* ===================== Mi cuenta ===================== */
 export async function accountView(ctx) {
   ctx.setTitle('Mi cuenta');
-  const p1 = h('input', { class: 'input', type: 'password', autocomplete: 'new-password', minlength: 10 });
-  const p2 = h('input', { class: 'input', type: 'password', autocomplete: 'new-password' });
+  const cur = h('input', { class: 'input', type: 'password', id: 'ac-cur', autocomplete: 'current-password', maxlength: 200 });
+  const p1 = newPasswordInput('ac-1'), p2 = newPasswordInput('ac-2');
   const save = h('button', { class: 'btn btn--primary' }, icon('key'), 'Cambiar contraseña');
   save.addEventListener('click', () => busy(save, async () => {
-    if (p1.value.length < 10) return toast('Usa al menos 10 caracteres.', 'err');
-    if (!/[a-zA-Z]/.test(p1.value) || !/[0-9]/.test(p1.value)) return toast('Combina letras y números.', 'err');
+    if (!cur.value) return toast('Escribe tu contraseña actual.', 'err');
+    if (!strongPw(p1.value)) return toast('Usa al menos 10 caracteres combinando letras y números.', 'err');
     if (p1.value !== p2.value) return toast('Las contraseñas no coinciden.', 'err');
-    const { error } = await sb.auth.updateUser({ password: p1.value });
-    if (error) return toast(friendly(error), 'err');
-    p1.value = p2.value = ''; toast('Contraseña actualizada.');
+    try { await api.changePassword(cur.value, p1.value); cur.value = p1.value = p2.value = ''; toast('Contraseña actualizada. Se cerraron tus otras sesiones.'); }
+    catch (e) { toast(friendly(e), 'err'); }
   }));
   const out = h('button', { class: 'btn btn--danger' }, icon('logout'), 'Cerrar sesión en todos los dispositivos');
   out.addEventListener('click', async () => {
     if (!await confirmDialog({ title: 'Cerrar todas las sesiones', message: 'Se cerrará tu sesión aquí y en cualquier otro dispositivo.', confirmLabel: 'Cerrar todas', danger: true })) return;
-    await sb.auth.signOut({ scope: 'global' });
+    try { await api.logoutAll(); } catch { /* ya estaba cerrada */ }
+    ctx.signOut('Se cerraron todas tus sesiones.');
   });
+  const field = (id, label, input) => h('div', { class: 'field' }, h('label', { class: 'field__label', for: id, text: label }), input);
   ctx.mount(h('div', null,
     h('div', { class: 'pagehead' }, h('div', null, h('h1', { text: 'Mi cuenta' }))),
     h('div', { class: 'card' }, h('p', null, 'Correo: ', h('strong', { text: ctx.profile.email })),
       h('p', null, 'Rol: ', h('strong', { text: ctx.profile.role === 'owner' ? 'Propietario' : 'Editor' })),
-      h('p', { class: 'small muted', text: 'Por seguridad, la sesión se cierra sola tras 30 minutos sin actividad y al cerrar la pestaña.' })),
+      h('p', { class: 'small muted', text: 'Por seguridad, la sesión se cierra sola tras 30 minutos sin actividad.' })),
     h('div', { class: 'card' }, h('div', { class: 'card__head' }, h('h2', { text: 'Cambiar contraseña' })),
-      h('div', { class: 'grid2' }, h('div', { class: 'field' }, h('label', { class: 'field__label', text: 'Nueva contraseña (mín. 10 caracteres, letras y números)' }), p1),
-        h('div', { class: 'field' }, h('label', { class: 'field__label', text: 'Repite la contraseña' }), p2)), save),
+      h('div', { class: 'grid3' }, field('ac-cur', 'Contraseña actual', cur), field('ac-1', 'Nueva (mín. 10, letras y números)', p1), field('ac-2', 'Repite la nueva', p2)), save),
     h('div', { class: 'card' }, h('div', { class: 'card__head' }, h('h2', { text: 'Sesiones' })), out)));
 }

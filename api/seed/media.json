@@ -1,0 +1,86 @@
+[
+ {
+  "url": "img/cases.webp",
+  "alt": "iPhones con accesorios MagSafe",
+  "folder": "portada",
+  "mime": "image/webp"
+ },
+ {
+  "url": "img/products.webp",
+  "alt": "iPhone disponible a crédito y de contado",
+  "folder": "productos",
+  "mime": "image/webp"
+ },
+ {
+  "url": "img/store.webp",
+  "alt": "Vitrina con celulares y accesorios",
+  "folder": "productos",
+  "mime": "image/webp"
+ },
+ {
+  "url": "img/laptop.webp",
+  "alt": "Portátiles para estudio y trabajo",
+  "folder": "productos",
+  "mime": "image/webp"
+ },
+ {
+  "url": "img/tv.webp",
+  "alt": "Televisores para entretenimiento en casa",
+  "folder": "productos",
+  "mime": "image/webp"
+ },
+ {
+  "url": "img/team.webp",
+  "alt": "Equipo de VOLT STORE CO atendiendo",
+  "folder": "galeria",
+  "mime": "image/webp"
+ },
+ {
+  "url": "img/taller.webp",
+  "alt": "Servicio técnico de VOLT STORE CO",
+  "folder": "galeria",
+  "mime": "image/webp"
+ },
+ {
+  "url": "img/logo.webp",
+  "alt": "VOLT STORE CO",
+  "folder": "marca",
+  "mime": "image/webp"
+ },
+ {
+  "url": "img/logo.png",
+  "alt": "VOLT STORE CO",
+  "folder": "marca",
+  "mime": "image/png"
+ },
+ {
+  "url": "img/logo-white.webp",
+  "alt": "VOLT STORE CO",
+  "folder": "marca",
+  "mime": "image/webp"
+ },
+ {
+  "url": "img/logo-white.png",
+  "alt": "VOLT STORE CO",
+  "folder": "marca",
+  "mime": "image/png"
+ },
+ {
+  "url": "img/og.jpg",
+  "alt": "VOLT STORE CO",
+  "folder": "marca",
+  "mime": "image/jpeg"
+ },
+ {
+  "url": "img/og.webp",
+  "alt": "VOLT STORE CO",
+  "folder": "marca",
+  "mime": "image/webp"
+ },
+ {
+  "url": "favicon.svg",
+  "alt": "Ícono VOLT",
+  "folder": "marca",
+  "mime": "image/svg+xml"
+ }
+]

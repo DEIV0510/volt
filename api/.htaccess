@@ -1,0 +1,9 @@
+# Solo index.php es accesible. lib/, seed/ y cualquier dato quedan bloqueados.
+Options -Indexes
+DirectoryIndex index.php
+<FilesMatch ".*">
+  Require all denied
+</FilesMatch>
+<Files "index.php">
+  Require all granted
+</Files>

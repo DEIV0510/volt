@@ -1,19 +1,16 @@
-# Publica el sitio en Hostinger (public_html) por FTP cada vez que cambia main.
+# Publica el sitio y el panel (con su API en PHP) en Hostinger (public_html) por FTP cada vez que cambia main.
 # (El despliegue Git de hPanel no está disponible en modo "administrar cliente".)
 # Credenciales: GitHub → Settings → Secrets and variables → Actions:
 #   FTP_SERVER   = 147.93.42.15
 #   FTP_USERNAME = usuario FTP (cuenta dedicada con carpeta public_html)
 #   FTP_PASSWORD = su contraseña
 # Opcional (pestaña Variables): FTP_DIR, carpeta destino si la cuenta FTP no apunta directo a public_html (ej. public_html/).
-# Solo sube lo que cambió y nunca borra archivos del servidor.
+# Solo sube lo que cambió. Nunca toca los datos del panel (volt-data, fuera de public_html) ni las imágenes subidas (uploads/).
 name: Publicar en Hostinger
 
 on:
   push:
     branches: [main]
-  workflow_run:                       # tras la copia horaria (sus commits no disparan "push")
-    workflows: ["Copia del contenido publicado"]
-    types: [completed]
   workflow_dispatch:
 
 permissions:
@@ -56,12 +53,11 @@ jobs:
             **/.git*/**
             .github/**
             .claude/**
-            supabase/**
             tests/**
+            data/**
             scripts/**
             _imgwork/**
             **/node_modules/**
-            serve.js
             package.json
             package-lock.json
             admin/package.json
