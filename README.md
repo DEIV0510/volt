@@ -9,7 +9,7 @@ Todo el contenido (textos, imágenes, WhatsApp, redes, catálogo de productos, c
 
 ## Tecnología
 HTML, CSS y JavaScript **vanilla** (sin frameworks). Tipografías Sora + Inter. Imágenes optimizadas a WebP.
-Datos en Supabase (Postgres + Auth + Storage). En vivo dentro de WordPress (voltstoreco.com) mediante `wordpress/puente-wordpress.html`.
+Datos en Supabase (Postgres + Auth + Storage). Sitio estático en Hostinger (voltstoreco.com), desplegado desde GitHub; panel en voltstoreco.com/admin.
 
 ## Estructura
 ```
@@ -18,7 +18,8 @@ styles.css      → estilos y diseño responsive
 script.js       → contenido publicado, catálogo, loader, menú móvil, animaciones, galería
 admin/          → panel de administración
 supabase/       → migraciones, datos iniciales y pruebas de permisos
-data/site.json  → copia diaria de lo publicado (plan B)
+data/site.json  → copia horaria de lo publicado (plan B)
+.htaccess       → seguridad, caché y redirecciones en Hostinger
 favicon.svg     → ícono (rayo)
 img/            → imágenes optimizadas (.webp)
 serve.js        → servidor estático para desarrollo

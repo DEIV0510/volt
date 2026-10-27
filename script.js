@@ -12,7 +12,7 @@
   var CACHE_KEY = 'volt-site-v1';
   var REFRESH_MS = 180000;   // revisa cambios cada 3 min aunque la pestaña quede abierta
 
-  // Carpeta desde donde se cargó este script (CDN en WordPress, relativa en local / GitHub Pages).
+  // Carpeta desde donde se cargó este script (la raíz del sitio; o el CDN si otra página la incrusta).
   var BASE = (function () {
     var s = document.currentScript && document.currentScript.src;
     return s ? s.replace(/[^/]*(\?.*)?$/, '') : '';
@@ -124,7 +124,7 @@
   }
   function applySeo(s) {
     if (!s) return;
-    if (s.title) document.title = s.title;       // vacío = se conserva el título de WordPress / del HTML
+    if (s.title) document.title = s.title;       // vacío = se conserva el título del HTML
     meta('name', 'description', s.description);
     meta('property', 'og:title', s.ogTitle || s.title);
     meta('property', 'og:description', s.ogDescription || s.description);
@@ -181,7 +181,7 @@
     var lt = $('.loader__text');
     if (lt && h.loaderText) setHTML(lt, '<i class="blink"></i> ' + esc(h.loaderText));
     if (h.showLoader === false && loader) hideLoader();
-    if (h.favicon && h.favicon !== 'favicon.svg') {   // en WordPress se respeta su ícono salvo que se cambie aquí
+    if (h.favicon && h.favicon !== 'favicon.svg') {   // favicon.svg ya viene en el HTML
       var fav = document.head.querySelector('link[rel="icon"]');
       if (!fav) { fav = document.createElement('link'); fav.rel = 'icon'; document.head.appendChild(fav); }
       fav.href = src(h.favicon);
@@ -434,8 +434,8 @@
     CAT.realign = realign;
     if (window.ResizeObserver) { var lw = 0; new ResizeObserver(function () { var w = vw(); if (w !== lw) { lw = w; realign(); } }).observe(vp); }
     render();
-    // Compatibilidad: el puente antiguo de WordPress redibujaba el catálogo desde la hoja de Google.
-    // Si algo ajeno reemplaza el catálogo, se vuelve a dibujar con los datos del panel.
+    // Compatibilidad mientras voltstoreco.com siga en WordPress: su puente antiguo redibujaba el
+    // catálogo desde la hoja de Google. Si algo ajeno reemplaza el catálogo, se vuelve a dibujar con el panel.
     if (!cont._voltGuard && window.MutationObserver) {
       cont._voltGuard = new MutationObserver(function () {
         if (!cont.querySelector('[data-volt-cat]') && CAT.cfg) buildCat(CAT.cfg, CAT.cats, CAT.P);

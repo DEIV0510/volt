@@ -201,7 +201,7 @@ export async function contentView(ctx, key) {
     const s = current();
     clear(serp).append(
       h('div', { class: 'serp__url', text: 'voltstoreco.com' }),
-      h('div', { class: 'serp__title', text: s.title || 'VoltStoreCO – (título configurado en WordPress)' }),
+      h('div', { class: 'serp__title', text: s.title || 'VOLT STORE CO | Tecnología y servicio técnico en Convención' }),
       h('div', { class: 'serp__desc', text: s.description || 'Sin descripción: Google elegirá un fragmento de la página.' }));
   }
 
@@ -221,7 +221,7 @@ export async function contentView(ctx, key) {
   }
   if (key === 'seo') {
     extraBox.append(h('div', { class: 'card' }, h('div', { class: 'card__head' }, h('h2', { text: 'Así se vería en Google' })), serp,
-      h('p', { class: 'small muted', text: 'La página en vivo está dentro de WordPress: si dejas el título vacío se conserva el de WordPress. Las redes sociales (WhatsApp, Facebook) leen los datos que configura WordPress; estos campos los aplica la página al cargar y los usa Google.' })));
+      h('p', { class: 'small muted', text: 'Al publicar, la página aplica estos datos de inmediato. Para WhatsApp y Facebook, que no ejecutan código, se copian al HTML en la siguiente copia automática (cada hora). Si dejas el título vacío se usa el actual.' })));
   }
   if (key === 'catalogo') extraBox.append(notice('info', 'Aquí cambias los textos de la sección. Los productos, precios y categorías se editan en Catálogo → Productos.'));
   if (key === 'general') extraBox.append(notice('info', 'Estos datos se usan en toda la página: botones de WhatsApp, pie de página, contacto y redes sociales.'));

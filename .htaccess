@@ -1,0 +1,60 @@
+# =====================================================================
+# VOLT STORE CO — servidor de Hostinger (LiteSpeed/Apache), sitio estático
+# El código llega por Git desde GitHub (DEIV0510/volt, rama main).
+# Si cambias las cabeceras de seguridad, refléjalas también en serve.js (desarrollo).
+# =====================================================================
+
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # www → dominio principal
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
+  # Nada interno del repositorio es público: .git, código de base de datos, pruebas, scripts.
+  RewriteRule (^|/)\.(?!well-known/) - [R=404,L]
+  RewriteRule ^(supabase|tests|scripts|wordpress|_imgwork|node_modules)(/|$) - [R=404,L]
+  RewriteRule ^(serve\.js|package(-lock)?\.json|README\.md|ADMIN\.md|admin/package\.json)$ - [R=404,L]
+
+  # Direcciones antiguas de WordPress → sección equivalente de la página (evita enlaces rotos y conserva SEO)
+  RewriteRule ^servicio-tecnico(-2)?/?$ /#servicio [R=301,NE,L]
+  RewriteRule ^(contact|contacto)/?$ /#contacto [R=301,NE,L]
+  RewriteRule ^(about|sobre-nosotros)/?$ / [R=301,L]
+  RewriteRule ^(shop|tienda|cart|carrito|checkout|my-account)(-2)?/?$ /#catalogo [R=301,NE,L]
+  RewriteRule ^wp-sitemap.*\.xml$ /sitemap.xml [R=301,L]
+  RewriteRule ^(wp-admin|wp-login\.php|xmlrpc\.php|wp-json|wp-content|wp-includes|feed)(/|$) - [R=404,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+  Header always set Strict-Transport-Security "max-age=31536000"
+  # Página pública: solo scripts propios; datos solo desde Supabase; imágenes https.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://rxdokvoljoxtficvbjhc.supabase.co; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'"
+
+  # Código y datos: el navegador siempre revisa si hay versión nueva (cambian sin cambiar de nombre).
+  <FilesMatch "\.(html|js|css|json|xml|txt)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  # Imágenes: 30 días.
+  <FilesMatch "\.(webp|png|jpe?g|gif|svg|ico)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_mime.c>
+  AddType application/javascript .js .mjs
+  AddType image/webp .webp
+  AddType image/svg+xml .svg
+  AddCharset utf-8 .html .css .js .json .xml .txt
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml text/xml text/plain
+</IfModule>

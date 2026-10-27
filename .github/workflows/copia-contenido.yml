@@ -1,16 +1,23 @@
-# Copia diaria de lo publicado en data/site.json:
-#  - respaldo versionado en GitHub del contenido y el catálogo publicados;
-#  - plan B de la página si Supabase no responde (script.js la usa automáticamente);
-#  - mantiene activo el proyecto gratuito de Supabase (se pausa tras días sin uso).
-name: Copia diaria del contenido
+# Cada hora guarda lo publicado en el panel dentro del repositorio:
+#  - data/site.json: respaldo versionado del contenido y el catálogo publicados, y plan B
+#    de la página si Supabase no responde (script.js lo usa automáticamente);
+#  - index.html: título, descripción, imagen para compartir e indexación del panel
+#    (lo que leen Google, WhatsApp y Facebook sin ejecutar JavaScript).
+# Si hay cambios, hace commit en main y Hostinger lo publica (despliegue automático por Git).
+# También mantiene activo el proyecto gratuito de Supabase.
+name: Copia del contenido publicado
 
 on:
   schedule:
-    - cron: '17 9 * * *'   # 4:17 a. m. hora de Colombia
-  workflow_dispatch:
+    - cron: '17 * * * *'   # cada hora, minuto 17
+  workflow_dispatch:       # o al momento: Actions → "Copia del contenido publicado" → Run workflow
 
 permissions:
   contents: write
+
+concurrency:
+  group: copia-contenido
+  cancel-in-progress: false
 
 jobs:
   snapshot:
@@ -32,9 +39,12 @@ jobs:
           json.dump(d, open('data/site.json', 'w'), ensure_ascii=False, separators=(',', ':'))
           PY
 
+      - name: Aplicar el SEO publicado a index.html
+        run: node scripts/apply-seo.mjs
+
       - name: Guardar si cambió
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/site.json
-          git diff --cached --quiet || (git commit -m "Copia diaria del contenido publicado" && git push)
+          git add data/site.json index.html
+          git diff --cached --quiet || (git commit -m "Copia del contenido publicado" && git push)

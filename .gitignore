@@ -6,3 +6,6 @@ _imgwork/
 .DS_Store
 Thumbs.db
 *.log
+
+# Configuración local de herramientas
+.claude/

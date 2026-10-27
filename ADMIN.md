@@ -2,8 +2,8 @@
 
 Panel privado para editar toda la página (textos, imágenes, botones, WhatsApp, redes, catálogo, colores, orden de secciones y SEO) sin tocar el código.
 
-- **Panel:** https://deiv0510.github.io/volt/admin/ (en local: `node serve.js` → http://localhost:5230/admin/)
-- **Página pública:** https://voltstoreco.com (WordPress) — también funciona sola con `index.html`
+- **Página pública:** https://voltstoreco.com — sitio estático (sin WordPress) en Hostinger, publicado desde GitHub
+- **Panel:** https://voltstoreco.com/admin/ (en local: `node serve.js` → http://localhost:5230/admin/)
 - **Base de datos, inicio de sesión e imágenes:** Supabase, proyecto `volt-store` (`rxdokvoljoxtficvbjhc`, plan gratuito)
 
 ## Cómo funciona
@@ -38,7 +38,7 @@ Nadie puede registrarse desde el panel. Para crear la cuenta del propietario:
 
 **Muy recomendado:** en [Authentication → Sign In / Providers](https://supabase.com/dashboard/project/rxdokvoljoxtficvbjhc/auth/providers) desactiva **Allow new users to sign up**. Aunque alguien lograra registrarse, no tendría permisos (no está en `admin_users`), pero así ni siquiera puede crear la cuenta.
 
-Para que funcione «¿Olvidaste tu contraseña?» en [Authentication → URL Configuration](https://supabase.com/dashboard/project/rxdokvoljoxtficvbjhc/auth/url-configuration) pon como **Site URL** `https://deiv0510.github.io/volt/admin/` y agrégala en **Redirect URLs**. El correo integrado de Supabase solo envía unos pocos mensajes por hora; para uso intensivo configura un SMTP propio (Authentication → Emails → SMTP Settings).
+Para que funcione «¿Olvidaste tu contraseña?» en [Authentication → URL Configuration](https://supabase.com/dashboard/project/rxdokvoljoxtficvbjhc/auth/url-configuration) pon como **Site URL** `https://voltstoreco.com/admin/` y agrégala en **Redirect URLs**. El correo integrado de Supabase solo envía unos pocos mensajes por hora; para uso intensivo configura un SMTP propio (Authentication → Emails → SMTP Settings).
 
 ## Roles y seguridad
 
@@ -53,7 +53,7 @@ Para que funcione «¿Olvidaste tu contraseña?» en [Authentication → URL Con
 - Cada guardado se valida en la base de datos con JSON Schema (generado desde `admin/js/schema.js`): largos máximos, colores `#RRGGBB`, enlaces solo `#sección`, `https://`, `mailto:` o `tel:` (se rechaza `javascript:` y similares) y ningún campo desconocido.
 - La página pública escapa todo el texto (no admite HTML ni scripts desde el panel). El diseño solo acepta opciones de una lista cerrada (sin CSS libre).
 - Sesión: solo en esa pestaña (`sessionStorage`), se cierra tras 30 minutos sin actividad y al cerrar la pestaña. Tras 5 intentos fallidos se bloquea el formulario 60 s, y Supabase además limita los intentos por IP.
-- El panel tiene una política CSP estricta (solo scripts propios; conexiones solo a Supabase) y `noindex`.
+- Cabeceras de seguridad en Hostinger (`.htaccess` y `admin/.htaccess`): CSP estricta (solo scripts propios; datos solo desde Supabase), `nosniff`, HSTS, protección contra incrustar el panel en otra página, y `noindex` y sin caché en el panel. Las carpetas internas (`.git`, `supabase/`, `tests/`, `scripts/`) responden 404.
 - La clave que aparece en el código (`sb_publishable_…`) es **pública por diseño**. La clave secreta (`service_role`) **no se usa en ningún archivo** y no debe ponerse nunca en el frontend.
 - **Ediciones simultáneas:** si dos personas editan lo mismo, la segunda recibe un aviso en lugar de pisar los cambios de la primera.
 - **Registro:** cada cambio en contenido, productos, categorías, imágenes y usuarios queda en **Historial** (quién, cuándo, antes y después), mediante disparadores de la base de datos. No se puede editar ni borrar desde la API.
@@ -70,18 +70,30 @@ Para que funcione «¿Olvidaste tu contraseña?» en [Authentication → URL Con
 
 - **Panel → Respaldos → Descargar** genera un JSON con todo el contenido (borrador y publicado), diseño, SEO, categorías, productos y la lista de imágenes.
 - **Restaurar** (solo propietario): es todo o nada. El contenido entra como borrador, las imágenes nunca se borran y hay que escribir RESTAURAR para confirmar.
-- **Automático:** cada día GitHub Actions guarda lo publicado en `data/site.json` (`.github/workflows/copia-diaria.yml`). Esa copia también es el plan B de la página si Supabase no responde.
+- **Automático:** cada hora GitHub Actions guarda lo publicado en `data/site.json` (`.github/workflows/copia-contenido.yml`) y Hostinger lo publica. Esa copia también es el plan B de la página si Supabase no responde.
 - **No incluidos en el JSON:** los archivos de imagen (están en Supabase Storage y en `img/` de GitHub). Para un respaldo completo de la base de datos usa Supabase → Database → Backups (el plan gratuito no guarda copias automáticas).
 - **Historial de versiones:** cada publicación guarda una versión por sección, que se puede restaurar como borrador.
 
-## Despliegue
+## Despliegue (Hostinger + GitHub)
 
-1. **Código:** al subir a `main` en `DEIV0510/volt`:
-   - jsDelivr sirve `index.html`, `styles.css` y `script.js` a WordPress (su caché tarda hasta 12 h; se fuerza con `https://purge.jsdelivr.net/gh/DEIV0510/volt@main/script.js`, y lo mismo con `styles.css` e `index.html`);
-   - `.github/workflows/pages.yml` publica el panel en GitHub Pages.
-2. **GitHub Pages (una vez):** Settings → Pages → Source: **GitHub Actions**.
-3. **WordPress (una vez):** reemplaza el contenido del bloque HTML de la página de inicio (ID 974) por `wordpress/puente-wordpress.html`. Es el mismo puente de antes, pero sin la hoja de Google, y con una marca horaria en los archivos: jsDelivr deja que los navegadores los guarden hasta 7 días, y así nadie ve una versión de más de una hora. Mientras no se cambie, la página igual muestra el catálogo del panel, porque `script.js` vuelve a dibujarlo si el puente viejo lo reemplaza.
-4. **Base de datos:** las migraciones están en `supabase/migrations/` y ya se aplicaron al proyecto. Si cambias `admin/js/schema.js`, ejecuta `node scripts/build-sql.mjs` y aplica la migración `…_content_schemas.sql` que se regenera.
+La página y el panel son archivos estáticos. Hostinger los descarga de GitHub (`DEIV0510/volt`, rama `main`) a `public_html` cada vez que hay un push, gracias al webhook de despliegue automático.
+
+1. **Cambios de contenido** (textos, productos, imágenes, diseño): se hacen en el panel. No hace falta desplegar nada.
+2. **Cambios de código:** commit y push a `main`. Hostinger los publica en segundos. Si no se ven, en hPanel usa *Rendimiento → CDN → Purgar caché*.
+3. **SEO para redes:** cada hora la acción `copia-contenido` copia al `<head>` de `index.html` el título, la descripción y la imagen publicados (`scripts/apply-seo.mjs`). Para aplicarlo al momento: GitHub → Actions → «Copia del contenido publicado» → *Run workflow*.
+4. **Direcciones antiguas de WordPress** (`/contact/`, `/about/`, `/shop-2/`…) redirigen con 301 a la sección equivalente (`.htaccess`).
+5. **Base de datos:** las migraciones están en `supabase/migrations/` y ya se aplicaron al proyecto. Si cambias `admin/js/schema.js`, ejecuta `node scripts/build-sql.mjs` y aplica la migración `…_content_schemas.sql` que se regenera.
+
+### Configuración inicial en hPanel (una sola vez)
+
+1. **Respaldo de WordPress:** *Sitios web → voltstoreco.com → Archivos → Copias de seguridad* → generar o descargar una copia (archivos y base de datos).
+2. **Vaciar `public_html`:** en el *Administrador de archivos*, crea la carpeta `wordpress-respaldo` **fuera** de `public_html` (en la carpeta raíz de la cuenta) y mueve allí todo el contenido de `public_html`, incluido `.htaccess`. Git solo despliega en una carpeta vacía. A partir de aquí la página queda sin contenido hasta el paso 3.
+3. **Git:** *Avanzado → GIT* → repositorio `https://github.com/DEIV0510/volt.git`, rama `main`, directorio vacío (= `public_html`) → *Crear* y luego *Desplegar*.
+4. **Despliegue automático:** en esa misma pantalla, *Despliegue automático* → copia la URL del webhook → GitHub → `DEIV0510/volt` → *Settings → Webhooks → Add webhook*: pega la URL, tipo `application/json`, evento *Just the push event*.
+5. **HTTPS:** *Seguridad → SSL* → verificar que el certificado esté activo y *Forzar HTTPS* encendido.
+6. **CDN:** *Rendimiento → CDN → Purgar toda la caché*.
+7. **Supabase:** cambiar Site URL y Redirect URLs a `https://voltstoreco.com/admin/` (ver «Primer administrador»).
+8. **Comprobar:** https://voltstoreco.com y https://voltstoreco.com/admin/. Cuando todo esté bien, la base de datos de WordPress (*Bases de datos*) y la carpeta `wordpress-respaldo` se pueden borrar más adelante.
 
 ## Variables y configuración
 
@@ -89,7 +101,7 @@ Es un sitio estático, así que **no hay secretos ni variables de entorno en el 
 
 | Dónde | Qué | ¿Secreto? |
 |---|---|---|
-| `admin/js/config.js`, `script.js`, `copia-diaria.yml` | URL de Supabase y clave `sb_publishable_…` | No (pública por diseño; RLS protege los datos) |
+| `admin/js/config.js`, `script.js`, `copia-contenido.yml` | URL de Supabase y clave `sb_publishable_…` | No (pública por diseño; RLS protege los datos) |
 | Panel de Supabase | Clave `service_role`, contraseña de la base de datos | **Sí**: nunca en el código |
 
 ## Archivos
@@ -105,13 +117,15 @@ Es un sitio estático, así que **no hay secretos ni variables de entorno en el 
 | `supabase/tests/permisos.sql` | Pruebas de permisos por rol (se ejecutan y se deshacen solas) |
 | `tests/panel-simulado.html` | El panel real con un servidor simulado en memoria, para probar la interfaz sin tocar los datos reales (acceso: `admin@volt.test` / `prueba-local`, solo en local) |
 | `tests/pagina-publica.html` | La página pública con contenido de prueba: tema, secciones ocultas, producto con galería e intentos de inyectar HTML |
-| `wordpress/puente-wordpress.html` | Bloque para la página de WordPress |
-| `data/site.json` | Copia diaria de lo publicado (plan B) |
+| `.htaccess`, `admin/.htaccess` | Cabeceras de seguridad, caché, redirecciones de WordPress y bloqueo de carpetas internas (Hostinger) |
+| `404.html`, `robots.txt`, `sitemap.xml` | Página de error y archivos para buscadores |
+| `scripts/apply-seo.mjs` | Copia el SEO publicado al `<head>` de `index.html` |
+| `data/site.json` | Copia horaria de lo publicado (plan B) |
 
 ## Límites conocidos
 
-- **SEO en WordPress:** el `<head>` real lo genera WordPress. El panel aplica título, descripción, Open Graph e indexación con JavaScript (Google sí los lee). Las vistas previas de WhatsApp y Facebook siguen usando lo que configura WordPress. Si el «Título SEO» queda vacío, se conserva el de WordPress.
-- **Plan gratuito de Supabase:** se pausa tras ~7 días sin uso. La copia diaria lo mantiene activo y, si aun así se pausa, la página muestra la última copia (`data/site.json`). Se reactiva desde el panel de Supabase.
+- **SEO para redes:** WhatsApp y Facebook leen el HTML, que se actualiza con la copia horaria (no al instante). Además, guardan en caché la vista previa del enlace por un tiempo.
+- **Plan gratuito de Supabase:** se pausa tras ~7 días sin uso. La copia horaria lo mantiene activo y, si aun así se pausa, la página muestra la última copia (`data/site.json`). Se reactiva desde el panel de Supabase.
 - **Correo de recuperación:** usa el SMTP integrado de Supabase, que tiene límites. Ver «Primer administrador».
 - La página no tiene formularios propios (todo el contacto es por WhatsApp), así que no hay módulo de formularios. Los mensajes de WhatsApp de cada botón sí se editan.
 - No hay variantes de producto (tallas o colores) porque el catálogo actual no las usa. Las opciones se describen en «Descripción» o «Características».

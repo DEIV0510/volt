@@ -7,7 +7,7 @@ export const SUPABASE_KEY = 'sb_publishable_Sv34Sje2NPVUZEpAWDpzuw_L5X2w7_H';
 export const SUPABASE_DASHBOARD = 'https://supabase.com/dashboard/project/rxdokvoljoxtficvbjhc';
 
 export const SITE_URL = 'https://voltstoreco.com/';
-// Raíz del repositorio servida junto al panel (local o GitHub Pages): imágenes img/… y vista previa.
+// Raíz del sitio servida junto al panel (voltstoreco.com o local): imágenes img/… y vista previa.
 export const REPO_BASE = new URL('../', location.href).href;
 export const PREVIEW_URL = new URL('../index.html?preview=1', location.href).href;
 export const STORAGE_PUBLIC = SUPABASE_URL + '/storage/v1/object/public/media/';
