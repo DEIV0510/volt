@@ -50,7 +50,7 @@ La clave se borra al usarla. Nadie puede registrarse desde internet: solo quien 
 - **Archivos privados:** `api/lib`, `api/seed`, `.git`, `tests/` y `scripts/` responden 404, y los datos están fuera de `public_html`.
 - **Ediciones simultáneas:** si dos personas editan lo mismo, la segunda recibe un aviso en vez de pisar los cambios de la primera.
 - **Historial:** cada cambio en contenido, productos, categorías, imágenes y usuarios queda registrado (quién, cuándo, antes y después), sin contraseñas.
-- **Secretos:** no hay ninguno en el código. Las contraseñas de los administradores están en la base de datos (cifradas). La única credencial externa es la del FTP de publicación, guardada en los *Secrets* de GitHub.
+- **Secretos:** no hay ninguno, ni en el código ni en GitHub. Las contraseñas de los administradores están en la base de datos (cifradas). La publicación no usa FTP ni claves: el sitio descarga su propio código público de GitHub.
 
 ## Imágenes
 
@@ -69,27 +69,24 @@ La clave se borra al usarla. Nadie puede registrarse desde internet: solo quien 
 
 ## Publicar cambios de código
 
-Cada push a `main` en `DEIV0510/volt` dispara **«Publicar en Hostinger»** (`.github/workflows/publicar-hostinger.yml`). La acción sube por FTP cifrado solo los archivos que cambiaron. Nunca toca `volt-data/` ni `uploads/`, y no sube `tests/`, `scripts/` ni `data/`. (El despliegue Git de hPanel no está disponible porque la cuenta se administra como cliente.)
+Cada push a `main` en `DEIV0510/volt` dispara **«Publicar en Hostinger»** (`.github/workflows/publicar-hostinger.yml`), que no usa FTP ni contraseñas:
+
+1. La acción le pide al sitio `POST https://voltstoreco.com/api/?a=deploy`.
+2. El sitio (`api/lib/deploy.php`) consulta en GitHub cuál es el último commit de `main`, descarga **ese** commit (el repositorio es público) y comprueba que el paquete corresponde a esa versión.
+3. Prepara todos los archivos que cambiaron y los reemplaza seguidos; borra los que se quitaron del repositorio. Nunca toca `volt-data/` ni `uploads/`, y no instala `tests/`, `scripts/`, `data/` ni la documentación.
+4. La acción termina en verde solo cuando el sitio confirma el commit del push. El **Resumen** del panel muestra la versión instalada y el **Historial** registra cada actualización.
+
+Quien llame a esa dirección solo puede hacer que se instale el último `main` del repositorio: no puede subir código propio ni elegir una versión vieja, y como mucho se consulta GitHub una vez cada 20 segundos. Por eso **cualquiera con permiso de escritura en el repositorio puede publicar código en el sitio**: protege la cuenta de GitHub con verificación en dos pasos.
 
 Si un cambio no se ve, purga la caché en hPanel → *Rendimiento → CDN*. Los cambios de contenido no requieren nada de esto: se hacen en el panel.
 
-### Configuración inicial (una sola vez)
+**Publicación manual** (si GitHub no estuviera disponible): hPanel → *Archivos → Administrador de archivos* → subir los archivos a `public_html`.
 
-1. **Respaldo de WordPress:** hPanel → voltstoreco.com → *Archivos → Copias de seguridad* → generar o descargar una copia.
-2. **Cuenta FTP para GitHub:** *Archivos → Cuentas FTP* → crear una cuenta (por ejemplo `github`) con una contraseña larga y la carpeta `public_html`.
-3. **Secretos en GitHub:** `DEIV0510/volt` → *Settings → Secrets and variables → Actions → New repository secret*:
-   - `FTP_SERVER` = `147.93.42.15`
-   - `FTP_USERNAME` = el usuario completo que muestra hPanel (por ejemplo `u665025194.github`)
-   - `FTP_PASSWORD` = su contraseña
+### Migración desde WordPress (hecha el 27 de octubre de 2026)
 
-   Si esa cuenta no apunta directo a `public_html`, crea también la *variable* `FTP_DIR` con `public_html/`.
-4. **Sacar WordPress de `public_html`:** en el *Administrador de archivos* crea `wordpress-respaldo` **fuera** de `public_html` y mueve allí todo su contenido (incluido `.htaccess`). Desde aquí la página queda en blanco hasta el paso 5.
-5. **Primera publicación:** GitHub → *Actions → «Publicar en Hostinger» → Run workflow* (uno o dos minutos).
-6. **HTTPS y caché:** *Seguridad → SSL* (certificado activo y *Forzar HTTPS* encendido) y *Rendimiento → CDN → Purgar toda la caché*.
-7. **Crear el propietario:** abre https://voltstoreco.com/admin/ y sigue «Primera vez» (arriba). El primer acceso crea `volt-data/` con la base de datos y la clave.
-8. **Comprobar** la página, el panel y las direcciones antiguas (`/contact/`, `/shop-2/`…). Cuando todo esté bien, la base de datos de WordPress y la carpeta `wordpress-respaldo` se pueden borrar más adelante.
-
-Si el FTP cifrado falla (error de TLS en la acción), cambia `protocol: ftps` por `protocol: ftp` en el flujo.
+- Respaldo en hPanel → *Archivos → Copias de seguridad* (27 de octubre de 2026, 14:14).
+- WordPress quedó en la carpeta `wordpress-respaldo`, **fuera** de `public_html`, y su base de datos sigue en hPanel. Cuando todo lleve un tiempo funcionando bien, el propietario puede borrar ambas desde hPanel.
+- HTTPS activo (Let's Encrypt, se renueva solo) y `http`/`www` redirigen a `https://voltstoreco.com`.
 
 ## Desarrollo y pruebas
 
@@ -97,9 +94,12 @@ Si el FTP cifrado falla (error de TLS en la acción), cambia `protocol: ftps` po
 php -S localhost:5230 scripts/dev-router.php
 # página: http://localhost:5230 · panel: http://localhost:5230/admin/
 node tests/api-test.mjs http://localhost:5230 ../volt-data-dev
+node tests/deploy-test.mjs http://localhost:5230 ../volt-data-dev ../volt-deploy-dev   # necesita internet
 ```
 
-- `scripts/dev-router.php` imita el `.htaccess` (cabeceras, rutas y bloqueos) y guarda los datos en `../volt-data-dev`.
+- `scripts/dev-router.php` imita el `.htaccess` (cabeceras, rutas y bloqueos), guarda los datos en `../volt-data-dev` y prueba la actualización desde GitHub en `../volt-deploy-dev` (nunca sobre la copia de trabajo).
+- La actualización necesita las extensiones `curl` y `zip` de PHP (Hostinger las tiene). En Windows: `php -d extension=curl -d extension=zip -d curl.cainfo="C:\Program Files\Git\mingw64\etc\ssl\certs\ca-bundle.crt" -S …`.
+- `tests/deploy-test.mjs` (11 pruebas): instala el último `main`, no copia archivos de desarrollo, respeta el límite de frecuencia, solo reescribe lo que cambió, borra lo que se quitó y nunca toca `uploads/`.
 - `tests/api-test.mjs` recorre 82 pruebas de la API en una instalación local nueva (borra antes `../volt-data-dev`):
   - instalación, sesión, CSRF y origen;
   - validaciones, conflictos, publicación y SEO;
@@ -120,7 +120,7 @@ node tests/api-test.mjs http://localhost:5230 ../volt-data-dev
 | `api/seed/` | Contenido y catálogo iniciales (los de la página al migrar) |
 | `.htaccess`, `admin/.htaccess`, `api/.htaccess` | Seguridad, caché, redirecciones de WordPress y bloqueos |
 | `404.html`, `robots.txt`, `sitemap.xml` | Página de error y archivos para buscadores |
-| `.github/workflows/publicar-hostinger.yml` | Publicación por FTP |
+| `.github/workflows/publicar-hostinger.yml`, `api/lib/deploy.php` | Publicación automática: el sitio se actualiza solo desde GitHub |
 | `scripts/`, `tests/` | Desarrollo y pruebas (no se publican) |
 | `data/site.json` | Copia de lo publicado que usa la página mientras siga en WordPress (no se sube a Hostinger) |
 

@@ -5,6 +5,8 @@
 declare(strict_types=1);
 $root = dirname(__DIR__);
 if (!getenv('VOLT_DATA_DIR')) putenv('VOLT_DATA_DIR=' . dirname($root) . '/volt-data-dev');
+// La actualización desde GitHub se prueba en otra carpeta: nunca sobre esta copia de trabajo.
+if (!getenv('VOLT_DEPLOY_DIR')) putenv('VOLT_DEPLOY_DIR=' . dirname($root) . '/volt-deploy-dev');
 $path = rawurldecode((string)parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 $admin = str_starts_with($path, '/admin/');
 header('X-Content-Type-Options: nosniff');

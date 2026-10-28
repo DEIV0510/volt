@@ -1,11 +1,8 @@
-# Publica el sitio y el panel (con su API en PHP) en Hostinger (public_html) por FTP cada vez que cambia main.
-# (El despliegue Git de hPanel no está disponible en modo "administrar cliente".)
-# Credenciales: GitHub → Settings → Secrets and variables → Actions:
-#   FTP_SERVER   = 147.93.42.15
-#   FTP_USERNAME = usuario FTP (cuenta dedicada con carpeta public_html)
-#   FTP_PASSWORD = su contraseña
-# Opcional (pestaña Variables): FTP_DIR, carpeta destino si la cuenta FTP no apunta directo a public_html (ej. public_html/).
-# Solo sube lo que cambió. Nunca toca los datos del panel (volt-data, fuera de public_html) ni las imágenes subidas (uploads/).
+# Publica el sitio y el panel en Hostinger cada vez que cambia main, sin contraseñas ni secretos.
+# El propio sitio descarga de GitHub (repositorio público) el último commit de main y lo instala:
+# esta acción solo se lo pide (POST /api/?a=deploy) y comprueba que quedó instalado el commit nuevo.
+# Nunca se tocan los datos del panel (volt-data, fuera de public_html) ni las imágenes subidas (uploads/).
+# Detalles en api/lib/deploy.php.
 name: Publicar en Hostinger
 
 on:
@@ -23,43 +20,27 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      HAS_FTP: ${{ secrets.FTP_SERVER != '' && secrets.FTP_USERNAME != '' && secrets.FTP_PASSWORD != '' }}
+    timeout-minutes: 10
     steps:
-      - name: Faltan credenciales
-        if: env.HAS_FTP != 'true'
-        run: echo "::notice::Configura FTP_SERVER, FTP_USERNAME y FTP_PASSWORD en los secretos del repositorio para publicar en Hostinger."
-
-      - uses: actions/checkout@v4
-        if: env.HAS_FTP == 'true'
-        with:
-          ref: main
-
-      - name: Subir a public_html
-        if: env.HAS_FTP == 'true'
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          port: 21
-          local-dir: ./
-          server-dir: ${{ vars.FTP_DIR || './' }}
-          state-name: .volt-deploy-state.json
-          # Solo se publica el sitio: nada del repositorio interno.
-          exclude: |
-            **/.git*
-            **/.git*/**
-            .github/**
-            .claude/**
-            tests/**
-            data/**
-            scripts/**
-            _imgwork/**
-            **/node_modules/**
-            package.json
-            package-lock.json
-            admin/package.json
-            README.md
-            ADMIN.md
+      - name: Pedir al sitio que se actualice desde GitHub
+        env:
+          SITE: https://voltstoreco.com
+        run: |
+          for i in 1 2 3 4 5 6 7 8; do
+            r=$(curl -sS -m 150 -X POST "$SITE/api/?a=deploy" || true)
+            echo "Intento $i: $r"
+            sha=$(printf '%s' "$r" | grep -o '"sha":"[0-9a-f]\{40\}"' | cut -d'"' -f4 || true)
+            if [ "$sha" = "$GITHUB_SHA" ]; then
+              echo "::notice::Sitio actualizado al commit ${GITHUB_SHA:0:7}"
+              exit 0
+            fi
+            # Si main ya avanzó con otro push, la siguiente ejecución instalará esa versión.
+            head=$(git ls-remote "https://github.com/$GITHUB_REPOSITORY" refs/heads/main | cut -f1)
+            if [ -n "$head" ] && [ "$head" != "$GITHUB_SHA" ]; then
+              echo "::notice::main ya avanzó a ${head:0:7}; lo instalará la siguiente ejecución."
+              exit 0
+            fi
+            sleep 25
+          done
+          echo "::error::El sitio no confirmó la versión ${GITHUB_SHA:0:7}. Revisa https://voltstoreco.com/api/?a=status"
+          exit 1

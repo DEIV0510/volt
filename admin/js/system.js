@@ -9,6 +9,7 @@ const ACTIONS = { insert: 'creó', update: 'editó', delete: 'eliminó', publish
 const ENTITIES = { site_content: 'contenido', site_published: 'contenido', products: 'producto', categories: 'categoría', media: 'imagen', admin_users: 'usuario', backup: 'respaldo', session: '', seed: 'carga inicial' };
 function describe(r) {
   if (r.action === 'login') return 'Inició sesión';
+  if (r.action === 'deploy') return r.label || 'Se actualizó el código desde GitHub';
   if (r.action === 'publish') return 'Publicó: ' + String(r.entity_id || '').split(',').map(label).join(', ');
   if (r.entity === 'site_content') return `${(ACTIONS[r.action] || r.action).replace(/^./, c => c.toUpperCase())} el borrador de “${label(r.entity_id)}”`;
   return `${(ACTIONS[r.action] || r.action).replace(/^./, c => c.toUpperCase())} ${ENTITIES[r.entity] || r.entity}${r.label ? ' “' + r.label + '”' : ''}`;
@@ -28,6 +29,10 @@ export async function dashboardView(ctx) {
     h('div', { class: 'pagehead' }, h('div', null, h('h1', { text: `Hola${ctx.profile.email ? ', ' + ctx.profile.email.split('@')[0] : ''}` }),
       h('p', { text: 'Desde aquí administras toda la página de VOLT STORE CO.' }))),
     h('div', { class: 'row', style: null }, h('strong', { text: 'Estado de la página: ' }), siteState),
+    h('div', { class: 'row', style: null }, h('strong', { text: 'Versión del código: ' }),
+      h('span', { class: 'muted', text: o.code && o.code.sha
+        ? `${o.code.sha.slice(0, 7)} · se instaló desde GitHub ${fmtRel(o.code.deployed_at)}`
+        : 'se instalará sola desde GitHub con el próximo cambio de código' })),
     h('div', { class: 'stats' },
       stat(o.products_active, `productos visibles de ${o.products_total}`, '#/productos'),
       stat(o.products_out, 'agotados (stock 0)', '#/productos'),

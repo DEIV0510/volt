@@ -81,6 +81,7 @@ function overview(): array {
     'media' => (int)val('SELECT COUNT(*) FROM media'),
     'pending' => $pending,
     'last_publish' => $last,
+    'code' => deploy_info(),
     'recent' => rows('SELECT at, user_email, action, entity, label FROM audit_log ORDER BY id DESC LIMIT 8'),
   ];
 }

@@ -10,6 +10,7 @@ require __DIR__ . '/lib/bootstrap.php';
 require __DIR__ . '/lib/validate.php';
 require __DIR__ . '/lib/site.php';
 require __DIR__ . '/lib/actions.php';
+require __DIR__ . '/lib/deploy.php';
 
 // acción => [método, permiso, función, cuerpo]
 // permiso: null = público · 'any' = administrador con sesión · 'owner' = solo propietario
@@ -21,6 +22,7 @@ const ROUTES = [
   'login'              => ['POST', null,    'act_login',            'json'],
   'recover_start'      => ['POST', null,    'act_recover_start',    null],
   'recover'            => ['POST', null,    'act_recover',          'json'],
+  'deploy'             => ['POST', null,    'act_deploy',           null],   // instala el último main de GitHub (ver lib/deploy.php)
   'logout'             => ['POST', 'any',   'act_logout',           null],
   'me'                 => ['GET',  'any',   'act_me',               null],
   'logout_all'         => ['POST', 'any',   'act_logout_all',       null],
