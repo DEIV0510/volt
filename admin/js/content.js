@@ -221,7 +221,7 @@ export async function contentView(ctx, key) {
   }
   if (key === 'seo') {
     extraBox.append(h('div', { class: 'card' }, h('div', { class: 'card__head' }, h('h2', { text: 'Así se vería en Google' })), serp,
-      h('p', { class: 'small muted', text: 'Al publicar, la página aplica estos datos de inmediato. Para WhatsApp y Facebook, que no ejecutan código, se copian al HTML en la siguiente copia automática (cada hora). Si dejas el título vacío se usa el actual.' })));
+      h('p', { class: 'small muted', text: 'Al publicar se aplican de inmediato, también en el HTML que leen Google, WhatsApp y Facebook. WhatsApp y Facebook guardan su propia copia de la vista previa de un enlace y pueden tardar en mostrar el cambio. Si dejas el título vacío se usa el actual.' })));
   }
   if (key === 'catalogo') extraBox.append(notice('info', 'Aquí cambias los textos de la sección. Los productos, precios y categorías se editan en Catálogo → Productos.'));
   if (key === 'general') extraBox.append(notice('info', 'Estos datos se usan en toda la página: botones de WhatsApp, pie de página, contacto y redes sociales.'));

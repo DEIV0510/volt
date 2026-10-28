@@ -89,7 +89,8 @@ img{max-width:100%;display:block}
 /* Imagen */
 .imgfield{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 .thumb{width:84px;height:84px;border:1px solid var(--line);border-radius:var(--r-sm);background:#f0f1f5 center/cover no-repeat;display:grid;place-items:center;overflow:hidden;flex:none;color:var(--muted);font-size:.72rem;text-align:center}
-.thumb img{width:100%;height:100%;object-fit:contain;background:#fff}
+.thumb{position:relative}
+.thumb img,.pthumb img,.mcard__img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff}
 .imgfield__meta{flex:1;min-width:160px;display:flex;flex-direction:column;gap:8px}
 .imgfield__name{font-size:.8rem;color:var(--muted);word-break:break-all}
 
@@ -193,8 +194,7 @@ tr.is-off td{opacity:.6}
 tr.is-selected td{background:#fffbe8}
 .cell-main{font-weight:600}
 .cell-sub{color:var(--muted);font-size:.8rem;max-width:340px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pthumb{width:42px;height:42px;border:1px solid var(--line);border-radius:6px;display:grid;place-items:center;font-size:1.25rem;background:#f6f7f9;overflow:hidden}
-.pthumb img{width:100%;height:100%;object-fit:contain;background:#fff}
+.pthumb{position:relative;width:42px;height:42px;border:1px solid var(--line);border-radius:6px;display:grid;place-items:center;font-size:1.25rem;background:#f6f7f9;overflow:hidden}
 .stock-input{width:76px}
 .star{background:none;border:0;cursor:pointer;font-size:1.15rem;color:#cfd0d8;line-height:1;padding:2px}
 .star.is-on{color:#e0a800}
@@ -207,7 +207,7 @@ tr.is-selected td{background:#fffbe8}
 .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px}
 .mcard{border:1px solid var(--line);border-radius:var(--r);background:#fff;overflow:hidden;display:flex;flex-direction:column}
 .mcard__img{aspect-ratio:4/3;background:#f0f1f5;display:grid;place-items:center;overflow:hidden;position:relative}
-.mcard__img img{width:100%;height:100%;object-fit:contain}
+.mcard__img img{background:transparent}
 .mcard__tag{position:absolute;top:6px;left:6px}
 .mcard__body{padding:8px 10px;font-size:.78rem;display:flex;flex-direction:column;gap:2px;flex:1}
 .mcard__name{font-weight:600;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

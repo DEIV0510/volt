@@ -217,7 +217,7 @@ export const CONTENT = {
       { k: 'items', t: 'list', label: 'Datos de contacto', max: 6, itemLabel: 'title', fields: [
         { k: 'icon', t: 'icon', label: 'Ícono (emoji)' },
         { k: 'title', t: 'text', label: 'Título', max: 60, required: true },
-        { k: 'text', t: 'text', label: 'Texto', max: 160 }
+        { k: 'text', t: 'text', label: 'Texto', max: 160, help: 'Puedes escribir {whatsapp}, {telefono}, {correo}, {direccion} o {horario} y se completa con «Información del negocio». El teléfono, el correo, el horario y el mapa de esa sección se agregan solos si no están en esta lista.' }
       ] },
       { k: 'showSocials', t: 'bool', label: 'Mostrar enlaces a redes sociales' },
       { k: 'cardTitle', t: 'text', label: 'Título de la tarjeta oscura', max: 60 },

@@ -33,6 +33,8 @@
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
+  // Texto de varias líneas (áreas de texto del panel): escapado y con los saltos de línea respetados.
+  function txt(s) { return esc(s).replace(/\r?\n/g, '<br>'); }
   var LINK_RE = /^(#[A-Za-z0-9_-]*|https?:\/\/[^\s"'<>]+|mailto:[^\s"'<>]+|tel:[+0-9 ()-]+)$/;
   var IMG_RE = /^((?:[A-Za-z0-9_-]+\/)*[A-Za-z0-9._-]+\.(?:webp|png|jpe?g|gif|svg|ico)|https:\/\/[^\s"'<>]+)$/;
   function safeHref(h) { return LINK_RE.test(h || '') ? h : '#'; }
@@ -59,7 +61,7 @@
   }
   function head(c) {
     return (c.kicker ? '<span class="kicker">' + esc(c.kicker) + '</span>' : '') +
-      (c.title ? '<h2>' + esc(c.title) + '</h2>' : '') + (c.text ? '<p>' + esc(c.text) + '</p>' : '');
+      (c.title ? '<h2>' + txt(c.title) + '</h2>' : '') + (c.text ? '<p>' + txt(c.text) + '</p>' : '');
   }
   function icon(i) {
     if (i === 'apple') return '';
@@ -75,21 +77,56 @@
     var n = parseInt(h.slice(1), 16), f = function (x) { return Math.max(0, Math.min(255, Math.round(x * (1 + p)))); };
     return '#' + [n >> 16, (n >> 8) & 255, n & 255].map(function (x) { return ('0' + f(x).toString(16)).slice(-2); }).join('');
   }
+  function lum(h) {   // luminancia relativa (WCAG) de un color #RRGGBB
+    var n = parseInt(h.slice(1), 16);
+    return [n >> 16, (n >> 8) & 255, n & 255].map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); })
+      .reduce(function (a, v, i) { return a + v * [0.2126, 0.7152, 0.0722][i]; }, 0);
+  }
+  function contrast(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+  function mix(a, b, p) {   // mezcla a con b (p = parte de b, 0..1)
+    var x = parseInt(a.slice(1), 16), y = parseInt(b.slice(1), 16);
+    return '#' + [16, 8, 0].map(function (sh) {
+      var v = Math.round(((x >> sh) & 255) * (1 - p) + ((y >> sh) & 255) * p);
+      return ('0' + v.toString(16)).slice(-2);
+    }).join('');
+  }
   function applyTheme(t) {
     if (!t) return;
     var r = document.documentElement, s = r.style;
     var primary = hex(t.primary, '#FFD400'), primary2 = hex(t.primary2, '#FFC400'), dark = hex(t.dark, '#121219'), waC = hex(t.wa, '#25D366');
+    var bg = hex(t.bg, '#FFFFFF'), ink = hex(t.ink, '#15161C');
     s.setProperty('--volt', primary);
     s.setProperty('--volt-2', primary2);
     s.setProperty('--volt-ink', hex(t.primaryInk, '#1A1500'));
     s.setProperty('--volt-soft', rgba(primary2, 0.14));
     s.setProperty('--shadow-volt', '0 14px 34px ' + rgba(primary2, 0.30));
+    // Texto en el color principal (etiquetas, marcas): una versión oscura con buen contraste sobre el fondo.
+    if (primary.toUpperCase() === '#FFD400' && bg.toUpperCase() === '#FFFFFF') { s.removeProperty('--volt-text'); s.removeProperty('--volt-text-d'); }
+    else {
+      var vt = primary, light = lum(bg) > 0.4;
+      for (var k = 0; k < 20 && contrast(vt, bg) < 4.5; k++) vt = mix(vt, light ? '#000000' : '#FFFFFF', 0.12);
+      s.setProperty('--volt-text', vt);
+      s.setProperty('--volt-text-d', mix(vt, light ? '#000000' : '#FFFFFF', 0.1));
+    }
     s.setProperty('--dark', dark);
     s.setProperty('--dark-2', shade(dark, -0.3));
-    s.setProperty('--bg', hex(t.bg, '#FFFFFF'));
+    s.setProperty('--dark-soft', mix(dark, '#FFFFFF', 0.06));
+    s.setProperty('--bg', bg);
     s.setProperty('--bg-soft', hex(t.bgSoft, '#F3F4F7'));
-    s.setProperty('--ink', hex(t.ink, '#15161C'));
+    s.setProperty('--ink', ink);
     s.setProperty('--muted', hex(t.muted, '#6A6B76'));
+    // Fondo oscuro: tarjetas, líneas y texto secundario se adaptan para que nada quede blanco sobre blanco.
+    var darkBg = lum(bg) < 0.2;
+    r.setAttribute('data-volt-bg', darkBg ? 'dark' : 'light');
+    ['--surface', '--bg-soft-2', '--line', '--line-2', '--ink-soft'].forEach(function (v) { s.removeProperty(v); });
+    if (darkBg) {
+      s.setProperty('--surface', mix(bg, '#FFFFFF', 0.07));
+      s.setProperty('--bg-soft-2', mix(bg, '#FFFFFF', 0.12));
+      s.setProperty('--line', 'rgba(255,255,255,.12)');
+      s.setProperty('--line-2', 'rgba(255,255,255,.07)');
+    }
+    if (ink.toUpperCase() !== '#15161C') s.setProperty('--ink-soft', mix(ink, bg, 0.18));
+    var tc = document.head.querySelector('meta[name="theme-color"]'); if (tc) tc.setAttribute('content', bg);
     s.setProperty('--wa', waC);
     s.setProperty('--wa-d', shade(waC, -0.1));
     var fh = FONTS.indexOf(t.fontHead) >= 0 ? t.fontHead : 'Sora', fb = FONTS.indexOf(t.fontBody) >= 0 ? t.fontBody : 'Inter';
@@ -132,25 +169,30 @@
       robots.content = 'noindex,nofollow';
     } else if (robots) robots.remove();
   }
-  function applyJsonLd(g) {
+  function applyJsonLd(g, seo) {
+    var og = seo && seo.ogImage && src(seo.ogImage) ? seo.ogImage : 'img/og.jpg';
     var data = {
       '@context': 'https://schema.org', '@type': 'ElectronicsStore', name: g.name || 'VOLT STORE CO',
-      description: g.tagline || '', image: new URL(src('img/og.jpg'), location.href).href,
+      description: g.tagline || '', image: /^https:/.test(og) ? og : new URL(src(og), location.href).href,
       telephone: '+' + String(g.whatsapp || '').replace(/\D/g, ''),
       address: { '@type': 'PostalAddress', streetAddress: g.address || '', addressRegion: 'Norte de Santander', addressCountry: 'CO' },
       sameAs: (g.socials || []).map(function (x) { return x.url; }).filter(function (u) { return /^https?:/.test(u); })
     };
     if (g.email) data.email = g.email;
-    if (g.hours) data.openingHours = g.hours;
+    if (g.mapUrl && /^https:/.test(g.mapUrl)) data.hasMap = g.mapUrl;
+    // El horario es texto libre ("Lunes a sábado…"); schema.org exige otro formato, así que no se incluye.
     var el = document.getElementById('volt-jsonld');
     if (!el) { el = document.createElement('script'); el.type = 'application/ld+json'; el.id = 'volt-jsonld'; document.head.appendChild(el); }
     el.textContent = JSON.stringify(data).replace(/</g, '\\u003c');
   }
 
   /* ---------- render de cada sección (mismo HTML y clases que el original) ---------- */
+  var NETWORKS = { instagram: 'Instagram', tiktok: 'TikTok', facebook: 'Facebook', youtube: 'YouTube', x: 'X', twitter: 'X',
+                   whatsapp: 'WhatsApp', telegram: 'Telegram', linkedin: 'LinkedIn', pinterest: 'Pinterest', threads: 'Threads' };
   function socialsHTML() {
-    return (G.socials || []).map(function (x) {
-      return '<a ' + linkAttrs(x.url) + ' aria-label="' + esc((x.label || x.network) + ' de ' + (G.name || 'VOLT STORE CO')) + '">' + esc(x.label || x.network) + '</a>';
+    return (G.socials || []).filter(function (x) { return x && x.url; }).map(function (x) {
+      var name = x.label || NETWORKS[x.network] || 'Red social';
+      return '<a ' + linkAttrs(x.url) + ' aria-label="' + esc(name + ' de ' + (G.name || 'VOLT STORE CO')) + '">' + esc(name) + '</a>';
     }).join('');
   }
   function navHTML(items) {
@@ -159,7 +201,10 @@
 
   function renderHeader(h) {
     var logo = $('.header .brand__logo');
-    if (logo && h.logo) { logo.src = src(h.logo); logo.alt = h.logoAlt || G.name || ''; }
+    // Con fondo oscuro (Diseño → Colores) el encabezado usa el logotipo para fondos oscuros.
+    var useWhite = document.documentElement.getAttribute('data-volt-bg') === 'dark' && h.logoWhite;
+    var lsrc = src(useWhite ? h.logoWhite : (h.logo || 'img/logo.webp'));
+    if (logo && lsrc) { if (logo.getAttribute('src') !== lsrc) logo.src = lsrc; logo.alt = h.logoAlt || G.name || ''; }
     setHTML(document.getElementById('nav'), navHTML(h.nav));
     var hw = $('.header__wa');
     if (hw) {
@@ -192,10 +237,11 @@
     if (c.highlight && c.title && c.title.indexOf(c.highlight) >= 0) {
       title = esc(c.title).split(esc(c.highlight)).join('<span class="hl">' + esc(c.highlight) + '</span>');
     }
+    title = title.replace(/\r?\n/g, '<br>');
     setHTML($('.hero__content', s),
       (c.eyebrow ? '<span class="eyebrow"><i class="dot"></i> ' + esc(c.eyebrow) + '</span>' : '') +
-      '<h1>' + title + '</h1>' +
-      (c.subtitle ? '<p class="hero__sub">' + esc(c.subtitle) + '</p>' : '') +
+      (title ? '<h1>' + title + '</h1>' : '') +
+      (c.subtitle ? '<p class="hero__sub">' + txt(c.subtitle) + '</p>' : '') +
       (c.badge ? '<div class="hero__badge">' + ICONS.bolt(16) + ' ' + esc(c.badge) + '</div>' : '') +
       '<div class="hero__cta">' + btn(c.primary, 'btn--volt btn--lg', 'btn--wa btn--lg') + btn(c.secondary, 'btn--ghost btn--lg', 'btn--wa btn--lg') + '</div>' +
       ((c.stats || []).length ? '<ul class="hero__stats">' + c.stats.map(function (x) {
@@ -210,22 +256,32 @@
 
   function renderMarquee(c) {
     var t = $('.marquee__track'); if (!t) return;
-    var one = (c.items || []).map(function (x) { return '<span>' + esc(x) + '</span><i>⚡</i>'; }).join('');
-    setHTML(t, one + one);
+    var items = (c.items || []).filter(function (x) { return x && String(x).trim(); });
+    var m = sec('marquee'); if (m) m.classList.toggle('is-empty', !items.length);
+    var one = items.map(function (x) { return '<span>' + esc(x) + '</span><i>⚡</i>'; }).join('');
+    // Cada mitad repite los textos hasta cubrir pantallas anchas (sin huecos); la velocidad se mantiene.
+    var reps = Math.max(1, Math.ceil(12 / Math.max(1, items.length)));
+    var half = new Array(reps + 1).join(one);
+    setHTML(t, half + half);
+    t.style.animationDuration = Math.round(28 * reps * Math.max(1, items.length) / 6) + 's';
   }
 
   function renderProductos(c) {
     var s = sec('productos'); if (!s) return;
     setHTML($('.section__head', s), head(c));
     var cards = (c.cards || []).map(function (x) {
-      return '<article class="card reveal"><div class="card__img">' +
-        (x.image ? '<img src="' + esc(src(x.image)) + '" alt="' + esc(x.imageAlt) + '" loading="lazy" width="800" height="600" />' : '') +
-        (x.tag ? '<span class="tag">' + esc(x.tag) + '</span>' : '') + '</div><div class="card__body"><h3>' + esc(x.title) + '</h3>' +
-        (x.text ? '<p>' + esc(x.text) + '</p>' : '') + btn(x.button, 'btn--soft') + '</div></article>';
+      var img = x.image && src(x.image);
+      // Sin imagen no se deja un recuadro gris vacío: la etiqueta pasa al cuerpo de la tarjeta.
+      return '<article class="card reveal' + (img ? '' : ' card--noimg') + '">' + (img ? '<div class="card__img">' +
+        '<img src="' + esc(img) + '" alt="' + esc(x.imageAlt) + '" loading="lazy" width="800" height="600" />' +
+        (x.tag ? '<span class="tag">' + esc(x.tag) + '</span>' : '') + '</div>' : '') + '<div class="card__body">' +
+        (!img && x.tag ? '<span class="tag">' + esc(x.tag) + '</span>' : '') + (x.title ? '<h3>' + esc(x.title) + '</h3>' : '') +
+        (x.text ? '<p>' + txt(x.text) + '</p>' : '') + btn(x.button, 'btn--soft') + '</div></article>';
     }).join('');
-    if (c.showCtaCard !== false && c.ctaTitle) {
-      cards += '<article class="card card--cta reveal"><div class="card__body"><span class="card__icon">' + ICONS.bolt(26) + '</span><h3>' +
-        esc(c.ctaTitle) + '</h3>' + (c.ctaText ? '<p>' + esc(c.ctaText) + '</p>' : '') + btn(c.ctaButton, 'btn--volt', 'btn--wa') + '</div></article>';
+    var ctaBtn = btn(c.ctaButton, 'btn--volt', 'btn--wa');
+    if (c.showCtaCard !== false && (c.ctaTitle || c.ctaText || ctaBtn)) {
+      cards += '<article class="card card--cta reveal"><div class="card__body"><span class="card__icon">' + ICONS.bolt(26) + '</span>' +
+        (c.ctaTitle ? '<h3>' + esc(c.ctaTitle) + '</h3>' : '') + (c.ctaText ? '<p>' + txt(c.ctaText) + '</p>' : '') + ctaBtn + '</div></article>';
     }
     setHTML($('.cards', s), cards);
   }
@@ -233,10 +289,11 @@
   function renderIphone(c) {
     var s = sec('iphone'); if (!s) return;
     setHTML($('.iphone__content', s),
-      (c.kicker ? '<span class="kicker">' + esc(c.kicker) + '</span>' : '') + '<h2>' + esc(c.title) + '</h2>' +
-      (c.text ? '<p class="lead">' + esc(c.text) + '</p>' : '') +
+      (c.kicker ? '<span class="kicker">' + esc(c.kicker) + '</span>' : '') + (c.title ? '<h2>' + txt(c.title) + '</h2>' : '') +
+      (c.text ? '<p class="lead">' + txt(c.text) + '</p>' : '') +
       ((c.ticks || []).length ? '<ul class="ticks">' + c.ticks.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : '') +
-      '<div class="iphone__cta">' + btn(c.primary, 'btn--volt btn--lg') + btn(c.secondary, 'btn--ghost btn--lg') + '</div>');
+      ((c.primary && c.primary.label) || (c.secondary && c.secondary.label) ?
+        '<div class="iphone__cta">' + btn(c.primary, 'btn--volt btn--lg') + btn(c.secondary, 'btn--ghost btn--lg') + '</div>' : ''));
     var img = $('.iphone__frame img', s);
     if (img && c.image) { img.src = src(c.image); img.alt = c.imageAlt || ''; }
   }
@@ -247,7 +304,7 @@
     setHTML($('.service__grid', s), (c.items || []).map(function (x) {
       var h3 = x.icon === 'apple' ? '<h3 class="srv__apple">' + ICONS.apple + ' ' + esc(x.title) + '</h3>' : '<h3>' + esc(x.title) + '</h3>';
       return '<div class="srv' + (x.soon ? ' srv--soon' : '') + ' reveal"><span class="srv__ic">' + icon(x.icon) + '</span>' + h3 +
-        (x.text ? '<p>' + esc(x.text) + '</p>' : '') + (x.soon ? '<span class="soon">' + esc(x.soonLabel || 'Próximamente') + '</span>' : '') + '</div>';
+        (x.text ? '<p>' + txt(x.text) + '</p>' : '') + (x.soon ? '<span class="soon">' + esc(x.soonLabel || 'Próximamente') + '</span>' : '') + '</div>';
     }).join(''));
     var cta = $('.service__cta', s);
     if (cta) { cta.style.display = c.button && c.button.label ? '' : 'none'; setHTML(cta, btn(c.button, 'btn--volt btn--lg')); }
@@ -258,14 +315,17 @@
     setHTML($('.section__head', s), head(c));
     setHTML($('.benefits__grid', s), (c.items || []).map(function (x) {
       return '<div class="ben reveal"><span class="ben__ic">' + icon(x.icon) + '</span><h3>' + esc(x.title) + '</h3>' +
-        (x.text ? '<p>' + esc(x.text) + '</p>' : '') + '</div>';
+        (x.text ? '<p>' + txt(x.text) + '</p>' : '') + '</div>';
     }).join(''));
   }
 
   function renderGaleria(c) {
     var s = sec('galeria'); if (!s) return;
+    // Botón con el estilo de Instagram solo si el enlace es de Instagram; para TikTok u otros, el botón principal.
+    var isIg = /^https:\/\/(www\.)?instagram\.com\//i.test(c.buttonUrl || '');
     setHTML($('.section__head', s), head(c) + (c.showButton !== false && c.buttonLabel ?
-      '<a class="btn btn--ig btn--lg section__head-cta" ' + linkAttrs(c.buttonUrl) + ' aria-label="' + esc(c.buttonLabel) + '">' + ICONS.ig + ' ' + esc(c.buttonLabel) + '</a>' : ''));
+      '<a class="btn ' + (isIg ? 'btn--ig' : 'btn--volt') + ' btn--lg section__head-cta" ' + linkAttrs(c.buttonUrl) + ' aria-label="' + esc(c.buttonLabel) + '">' +
+        (isIg ? ICONS.ig + ' ' : '') + esc(c.buttonLabel) + '</a>' : ''));
     setHTML($('.gallery__grid', s), (c.images || []).map(function (x) {
       var size = x.size === 'tall' ? ' g-item--tall' : x.size === 'wide' ? ' g-item--wide' : '';
       return '<figure class="g-item' + size + ' reveal"><img src="' + esc(src(x.image)) + '" alt="' + esc(x.alt) + '" loading="lazy" /></figure>';
@@ -274,22 +334,42 @@
 
   function renderCta(c) {
     var s = sec('cta'); if (!s) return;
-    setHTML($('.cta-band__inner', s), '<h2>' + esc(c.title) + '</h2>' + (c.text ? '<p>' + esc(c.text) + '</p>' : '') + btn(c.button, 'btn--volt btn--xl', 'btn--wa btn--xl'));
+    setHTML($('.cta-band__inner', s), (c.title ? '<h2>' + txt(c.title) + '</h2>' : '') + (c.text ? '<p>' + txt(c.text) + '</p>' : '') + btn(c.button, 'btn--volt btn--xl', 'btn--wa btn--xl'));
   }
 
   function renderContacto(c, h) {
     var s = sec('contacto'); if (!s) return;
+    // Los textos pueden usar {whatsapp}, {telefono}, {correo}, {direccion} y {horario}: se llenan con «Información del negocio».
+    var fill = function (t) {
+      return String(t || '').replace(/\{(whatsapp|telefono|correo|direccion|horario)\}/g, function (_, k) {
+        return { whatsapp: G.whatsappDisplay, telefono: G.phone, correo: G.email, direccion: G.address, horario: G.hours }[k] || '';
+      });
+    };
+    var items = (c.items || []).map(function (x) { return { icon: x.icon, title: x.title, text: fill(x.text) }; });
+    // Teléfono, correo, horario y mapa de «Información del negocio» se agregan si la lista aún no los muestra.
+    var shown = items.map(function (x) { return (x.title + ' ' + x.text).toLowerCase(); }).join(' | ');
+    var has = function (v) { return shown.indexOf(String(v).toLowerCase()) >= 0; };
+    var extra = [
+      G.phone && !has(G.phone) && ['☎️', 'Teléfono', G.phone, 'tel:' + G.phone.replace(/[^0-9+]/g, '')],
+      G.email && !has(G.email) && ['✉️', 'Correo', G.email, 'mailto:' + G.email],
+      G.hours && !has(G.hours) && ['🕒', 'Horario', G.hours, ''],
+      G.mapUrl && !has('mapa') && ['🗺️', 'Cómo llegar', 'Ver en el mapa', G.mapUrl]
+    ].filter(Boolean);
+    var li = function (ic, title, text, href) {
+      var body = '<div><strong>' + esc(title) + '</strong><small>' + (href ? '<a ' + linkAttrs(href) + '>' + esc(text) + '</a>' : txt(text)) + '</small></div>';
+      return '<li><span class="ci">' + icon(ic) + '</span>' + body + '</li>';
+    };
+    var list = items.map(function (x) { return li(x.icon, x.title, x.text); }).join('') + extra.map(function (x) { return li(x[0], x[1], x[2], x[3]); }).join('');
+    var socials = c.showSocials !== false ? socialsHTML() : '';
     setHTML($('.contact__info', s),
-      (c.kicker ? '<span class="kicker">' + esc(c.kicker) + '</span>' : '') + '<h2>' + esc(c.title) + '</h2>' +
-      (c.text ? '<p class="lead">' + esc(c.text) + '</p>' : '') +
-      '<ul class="contact__list">' + (c.items || []).map(function (x) {
-        return '<li><span class="ci">' + icon(x.icon) + '</span><div><strong>' + esc(x.title) + '</strong><small>' + esc(x.text) + '</small></div></li>';
-      }).join('') + '</ul>' +
-      (c.showSocials !== false ? '<div class="contact__socials">' + socialsHTML() + '</div>' : ''));
+      (c.kicker ? '<span class="kicker">' + esc(c.kicker) + '</span>' : '') + (c.title ? '<h2>' + txt(c.title) + '</h2>' : '') +
+      (c.text ? '<p class="lead">' + txt(c.text) + '</p>' : '') +
+      (list ? '<ul class="contact__list">' + list + '</ul>' : '') +
+      (socials ? '<div class="contact__socials">' + socials + '</div>' : ''));
     setHTML($('.contact__card', s),
       '<div class="contact__card-glow" aria-hidden="true"></div>' +
       '<img class="brand__logo" src="' + esc(src(h.logoWhite || 'img/logo-white.webp')) + '" alt="' + esc(G.name) + '" width="200" height="46" />' +
-      '<h3>' + esc(c.cardTitle) + '</h3>' + (c.cardText ? '<p>' + esc(c.cardText) + '</p>' : '') +
+      (c.cardTitle ? '<h3>' + esc(c.cardTitle) + '</h3>' : '') + (c.cardText ? '<p>' + txt(c.cardText) + '</p>' : '') +
       btn(c.cardButton, 'btn--volt btn--block btn--lg', 'btn--wa btn--block btn--lg') +
       (c.showNumber !== false && G.whatsappDisplay ? '<span class="contact__num">' + esc(G.whatsappDisplay) + '</span>' : ''));
   }
@@ -298,19 +378,24 @@
     var foot = $('.footer'); if (!foot) return;
     setHTML($('.footer__brand', foot),
       '<a href="#inicio" class="brand"><img class="brand__logo" src="' + esc(src(h.logoWhite || 'img/logo-white.webp')) + '" alt="' + esc(G.name) + '" width="200" height="46" /></a>' +
-      (f.text ? '<p>' + esc(f.text) + '</p>' : '') + '<div class="footer__socials">' + socialsHTML() + '</div>');
+      (f.text ? '<p>' + txt(f.text) + '</p>' : '') + '<div class="footer__socials">' + socialsHTML() + '</div>');
     var cols = foot.querySelectorAll('.footer__col');
-    if (cols[0]) setHTML(cols[0], '<h4>' + esc(f.linksTitle) + '</h4>' + navHTML(f.links));
-    if (cols[1]) setHTML(cols[1], '<h4>' + esc(f.contactTitle) + '</h4>' +
-      (f.showWhatsapp !== false ? '<a href="' + esc(wa()) + '" target="_blank" rel="noopener">WhatsApp: ' + esc(G.whatsappDisplay) + '</a>' : '') +
+    if (cols[0]) setHTML(cols[0], (f.linksTitle ? '<h4>' + esc(f.linksTitle) + '</h4>' : '') + navHTML(f.links));
+    if (cols[1]) setHTML(cols[1], (f.contactTitle ? '<h4>' + esc(f.contactTitle) + '</h4>' : '') +
+      (f.showWhatsapp !== false ? '<a href="' + esc(wa()) + '" target="_blank" rel="noopener">WhatsApp' + (G.whatsappDisplay ? ': ' + esc(G.whatsappDisplay) : '') + '</a>' : '') +
       (f.showEmail !== false && G.email ? '<a href="mailto:' + esc(G.email) + '">' + esc(G.email) + '</a>' : '') +
       (G.phone ? '<a href="tel:' + esc(G.phone.replace(/[^0-9+]/g, '')) + '">' + esc(G.phone) + '</a>' : '') +
       (f.showAddress !== false && G.address ? (G.mapUrl ? '<a ' + linkAttrs(G.mapUrl) + '>' + esc(G.address) + '</a>' : '<span>' + esc(G.address) + '</span>') : '') +
       (f.showHours !== false && G.hours ? '<span>' + esc(G.hours) + '</span>' : ''));
+    // El año se agrega solo; si el texto ya trae «©» o un año, se respeta tal cual.
+    var cp = String(f.copyright || '').trim();
+    var cpTxt = /©|\b(19|20)\d{2}\b/.test(cp) ? cp : '© ' + new Date().getFullYear() + (cp ? ' ' + cp : '');
     setHTML($('.footer__bottom', foot),
-      '<p>© ' + new Date().getFullYear() + ' ' + esc(f.copyright) + '</p>' +
+      '<p>' + esc(cpTxt) + '</p>' +
       ((f.legal || []).length ? '<p class="footer__legal">' + f.legal.map(function (x) { return '<a ' + linkAttrs(x.href) + '>' + esc(x.label) + '</a>'; }).join(' · ') + '</p>' : '') +
       (f.slogan ? '<p>' + esc(f.slogan) + '</p>' : ''));
+  }
+  function renderFloat() {
     var fl = $('.wa-float');
     if (fl) { fl.href = wa(); fl.style.display = G.floatingWhatsapp === false ? 'none' : ''; }
   }
@@ -327,9 +412,22 @@
       parent.appendChild(el);
       el.classList.toggle('is-section-hidden', x.visible === false);
     });
-    // Oculta del menú los enlaces a secciones ocultas.
+    // Fondos alternados: dos secciones claras seguidas nunca quedan del mismo tono, aunque se reordenen u oculten.
+    // Tras una sección oscura (o la portada) cada una conserva su fondo original, así el orden por defecto no cambia.
+    var prev = null;
+    [].forEach.call(parent.querySelectorAll(':scope > [data-section]'), function (el) {
+      if (el.classList.contains('is-section-hidden')) return;
+      if (el.dataset.soft == null) el.dataset.soft = el.classList.contains('section--soft') ? '1' : '0';
+      var light = el.classList.contains('section') && !el.classList.contains('iphone');
+      if (!light) { prev = null; return; }
+      var soft = prev === null ? el.dataset.soft === '1' : !prev;
+      el.classList.toggle('section--soft', soft);
+      prev = soft;
+    });
+    // Oculta los enlaces (menú, pie y botones) que llevan a secciones ocultas.
     var hidden = list.filter(function (x) { return x.visible === false; }).map(function (x) { return '#' + ANCHOR[x.id]; });
-    document.querySelectorAll('#nav a, #mobileMenu nav a, .footer__col a').forEach(function (a) {
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+      if (a.closest('.is-section-hidden')) return;
       a.style.display = hidden.indexOf(a.getAttribute('href')) >= 0 ? 'none' : '';
     });
   }
@@ -340,16 +438,19 @@
   function catByCode(code) { for (var i = 0; i < CAT.cats.length; i++) if (CAT.cats[i].code === code) return CAT.cats[i]; return {}; }
   function priceHTML(x, cfg) {
     if (x.price == null) return '<span class="model__price model__price--ask">' + esc(cfg.askPriceLabel || 'Consultar precio') + '</span>';
-    var base = money(x.price) + (x.price_max ? '–' + money(x.price_max) : '');
     if (x.promo != null && x.promo < x.price) {
-      return '<span class="model__price"><s class="model__old">' + base + '</s> ' + money(x.promo) + '</span>';
+      // En oferta se compara con el precio normal más bajo (no con el rango), en dos líneas.
+      var off = Math.round((1 - x.promo / x.price) * 100);
+      return '<span class="model__price model__price--promo"><s class="model__old">' + money(x.price) + '</s>' +
+        '<span class="model__now">' + money(x.promo) + (off >= 1 ? ' <span class="model__off">-' + off + '%</span>' : '') + '</span></span>';
     }
-    return '<span class="model__price">' + base + '</span>';
+    var max = x.price_max && x.price_max > x.price ? x.price_max : 0;
+    return '<span class="model__price">' + money(x.price) + (max ? '<span class="model__max"> – ' + money(max) + '</span>' : '') + '</span>';
   }
   function productLink(x, cfg) {
     var cat = catByCode(x.c);
     if (x.url) return linkAttrs(x.url);
-    var msg = x.msg || String(cfg.productMessage || 'Hola, quiero consultar disponibilidad y precio de: {producto} ({categoria}) en VOLT STORE CO.')
+    var msg = String(x.msg || cfg.productMessage || 'Hola, quiero consultar disponibilidad y precio de: {producto} ({categoria}) en VOLT STORE CO.')
       .split('{producto}').join(x.n).split('{categoria}').join(cat.singular || '');
     return 'href="' + esc(wa(msg)) + '" target="_blank" rel="noopener"';
   }
@@ -361,7 +462,9 @@
                      : '<span class="model__stock model__stock--in">' + x.s + ' ' + esc(cfg.inStockLabel || 'disp.') + '</span>';
     }
     var zoom = x.img || (x.gallery && x.gallery.length) || (x.features && x.features.length);
-    var media = x.img ? '<img src="' + esc(src(x.img)) + '" alt="' + esc(x.alt || x.n) + '" loading="lazy" />' : '<span class="model__icon">' + esc(cat.icon || '🛒') + '</span>';
+    // La foto se muestra completa (sin recortes) sobre un fondo difuminado de la misma imagen.
+    var media = x.img ? '<img class="model__bg" src="' + esc(src(x.img)) + '" alt="" aria-hidden="true" loading="lazy" />' +
+      '<img class="model__img" src="' + esc(src(x.img)) + '" alt="' + esc(x.alt || x.n) + '" loading="lazy" />' : '<span class="model__icon">' + esc(cat.icon || '🛒') + '</span>';
     return '<article class="model' + (x.f ? ' model--featured' : '') + '" data-c="' + esc(x.c) + '"><span class="model__num">' + n + '</span>' + stk +
       (x.f ? '<span class="model__feat">' + esc(cfg.featuredLabel || 'Destacado') + '</span>' : '') +
       '<div class="model__media' + (x.img ? ' has-img' : '') + (zoom ? ' is-zoom" role="button" tabindex="0" aria-label="Ver detalles de ' + esc(x.n) + '" data-pid="' + esc(x.id) : '') + '">' + media + '</div>' +
@@ -382,7 +485,8 @@
         return '<button class="chip' + (c[0] === CAT.brand ? ' is-active' : '') + '" data-c="' + esc(c[0]) + '">' + esc(c[1]) + '</button>';
       }).join('') + '</div><div class="catalog__viewport" id="cv2"><div class="catalog__track" id="cg2"></div></div><nav class="catalog__pages" id="cp2" aria-label="Páginas del catálogo"></nav>' +
       (CAT.P.length ? '' : '<p class="catalog__note">El catálogo no está disponible en este momento. <a href="' + esc(wa(cfg.noteMessage)) + '" target="_blank" rel="noopener">Escríbenos por WhatsApp</a> y te ayudamos.</p>') +
-      (cfg.noteText || cfg.noteLinkLabel ? '<p class="catalog__note reveal in">' + esc(cfg.noteText) + ' <a href="' + esc(wa(cfg.noteMessage)) + '" target="_blank" rel="noopener">' + esc(cfg.noteLinkLabel) + '</a>.</p>' : '');
+      (cfg.noteText || cfg.noteLinkLabel ? '<p class="catalog__note reveal in">' + esc(cfg.noteText) +
+        (cfg.noteLinkLabel ? ' <a href="' + esc(wa(cfg.noteMessage)) + '" target="_blank" rel="noopener">' + esc(cfg.noteLinkLabel) + '</a>.' : '') + '</p>' : '');
     var grid = document.getElementById('cg2'), cf = document.getElementById('cf2'), cp = document.getElementById('cp2'), vp = document.getElementById('cv2');
     function listF() { return CAT.P.filter(function (x) { return CAT.brand === 'all' || x.c === CAT.brand; }); }
     function vw() { return Math.round(vp.getBoundingClientRect().width) || 1; }
@@ -391,7 +495,8 @@
     function pagHTML(tp) {
       if (tp <= 1) return '';
       var page = CAT.page, h = '<button class="page-btn page-btn--nav" data-g="prev" aria-label="Anterior"' + (page === 1 ? ' disabled' : '') + '>‹</button>', show = [], n, last = 0;
-      for (n = 1; n <= tp; n++) if (n === 1 || n === tp || (n >= page - 1 && n <= page + 1)) show.push(n);
+      var near = vw() < 440 ? 0 : 1;   // en pantallas angostas solo la página actual, para que quepa en una línea
+      for (n = 1; n <= tp; n++) if (n === 1 || n === tp || Math.abs(n - page) <= near) show.push(n);
       for (var i = 0; i < show.length; i++) {
         n = show[i];
         if (last && n - last > 1) h += '<span class="page-ellipsis">…</span>';
@@ -412,7 +517,7 @@
       grid.innerHTML = h; setW(); updPag(); vp.scrollLeft = (CAT.page - 1) * vw();
     }
     function go(n) { var tp = pageCount(); CAT.page = Math.min(tp, Math.max(1, n)); vp.scrollTo({ left: (CAT.page - 1) * vw(), behavior: 'smooth' }); updPag(); }
-    function realign() { setW(); vp.scrollLeft = (CAT.page - 1) * vw(); }
+    function realign() { setW(); vp.scrollLeft = (CAT.page - 1) * vw(); updPag(); }
     cf.addEventListener('click', function (ev) {
       var b = ev.target.closest('.chip'); if (!b) return;
       cf.querySelectorAll('.chip').forEach(function (c) { c.classList.toggle('is-active', c === b); });
@@ -446,27 +551,47 @@
   /* ---------- detalle de producto (imagen, galería, características) ---------- */
   function openProduct(id) {
     var x = CAT.P.filter(function (p) { return p.id === id; })[0]; if (!x) return;
-    var imgs = [x.img].concat(x.gallery || []).filter(Boolean), i = 0;
+    // Foto principal + galería, sin repetir la misma imagen ni incluir rutas no válidas.
+    var imgs = [], i = 0;
+    [x.img].concat(x.gallery || []).forEach(function (u) { if (u && src(u) && imgs.indexOf(u) < 0) imgs.push(u); });
     var m = document.getElementById('pmodal');
     if (!m) {
       m = document.createElement('div'); m.id = 'pmodal'; m.className = 'pmodal'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-hidden', 'true');
       document.body.appendChild(m);
-      m.addEventListener('click', function (e) { if (e.target === m || e.target.closest('.pmodal__close')) closeProduct(); });
-    }
-    function draw() {
-      var cat = catByCode(x.c);
-      m.innerHTML = '<div class="pmodal__box"><button class="pmodal__close" aria-label="Cerrar">&times;</button>' +
-        (imgs.length ? '<div class="pmodal__media"><img src="' + esc(src(imgs[i])) + '" alt="' + esc(x.alt || x.n) + '" />' +
-          (imgs.length > 1 ? '<button class="pmodal__nav pmodal__nav--prev" data-d="-1" aria-label="Foto anterior">‹</button><button class="pmodal__nav pmodal__nav--next" data-d="1" aria-label="Foto siguiente">›</button>' : '') + '</div>' : '') +
-        '<div class="pmodal__body"><span class="model__brand">' + esc(x.b || cat.singular || '') + '</span><h3>' + esc(x.n) + '</h3>' +
-        (x.d ? '<p class="model__detail">' + esc(x.d) + '</p>' : '') +
-        ((x.features || []).length ? '<ul class="ticks">' + x.features.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul>' : '') +
-        priceHTML(x, CAT.cfg) + '<a class="btn btn--wa btn--block" ' + productLink(x, CAT.cfg) + '>' + esc(x.cta || CAT.cfg.buttonLabel || 'Consultar') + '</a></div></div>';
-      m.querySelectorAll('.pmodal__nav').forEach(function (b) {
-        b.addEventListener('click', function () { i = (i + parseInt(b.dataset.d, 10) + imgs.length) % imgs.length; draw(); });
+      m.addEventListener('click', function (e) {
+        if (e.target === m || e.target.closest('.pmodal__close')) { closeProduct(); return; }
+        if (e.target.closest('a[href^="#"]')) { closeProduct(); return; }   // enlace a una sección: cierra y deja que la página baje
+        var b = e.target.closest('[data-d], [data-i]');
+        if (b && m._show) m._show(b.hasAttribute('data-i') ? parseInt(b.getAttribute('data-i'), 10) : m._i + parseInt(b.getAttribute('data-d'), 10));
       });
     }
-    draw();
+    var cat = catByCode(x.c), cfg = CAT.cfg;
+    var alt = x.alt || x.n;
+    var badges = (x.f ? '<span class="pmodal__tag pmodal__tag--feat">' + esc(cfg.featuredLabel || 'Destacado') + '</span>' : '') +
+      (cfg.showStock !== false && x.s != null ? (x.s <= 0 ? '<span class="pmodal__tag pmodal__tag--out">' + esc(cfg.outOfStockLabel || 'Agotado') + '</span>'
+        : '<span class="pmodal__tag pmodal__tag--in">' + x.s + ' ' + esc(cfg.inStockLabel || 'disp.') + '</span>') : '');
+    if (badges) badges = '<div class="pmodal__tags">' + badges + '</div>';
+    m.innerHTML = '<div class="pmodal__box' + (imgs.length ? '' : ' pmodal__box--noimg') + '"><button class="pmodal__close" aria-label="Cerrar">&times;</button>' +
+      (imgs.length ? '<div class="pmodal__media"><div class="pmodal__stage"><img class="pmodal__bg" alt="" aria-hidden="true" /><img class="pmodal__img" alt="' + esc(alt) + '" />' +
+        (imgs.length > 1 ? '<button class="pmodal__nav pmodal__nav--prev" data-d="-1" aria-label="Foto anterior">‹</button><button class="pmodal__nav pmodal__nav--next" data-d="1" aria-label="Foto siguiente">›</button>' +
+          '<span class="pmodal__count" aria-live="polite"></span>' : '') + '</div>' +
+        (imgs.length > 1 ? '<div class="pmodal__thumbs">' + imgs.map(function (u, k) {
+          return '<button class="pmodal__thumb" data-i="' + k + '" aria-label="Ver foto ' + (k + 1) + '"><img src="' + esc(src(u)) + '" alt="" loading="lazy" /></button>';
+        }).join('') + '</div>' : '') + '</div>' : '') +
+      '<div class="pmodal__body">' + badges + '<span class="model__brand">' + esc(x.b || cat.singular || '') + '</span><h3>' + esc(x.n) + '</h3>' +
+      (x.d ? '<p class="model__detail">' + esc(x.d) + '</p>' : '') +
+      ((x.features || []).length ? '<ul class="ticks">' + x.features.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul>' : '') +
+      priceHTML(x, CAT.cfg) + '<a class="btn ' + (x.url && !/^https:\/\/(wa\.me|api\.whatsapp\.com)\//.test(x.url) ? 'btn--volt' : 'btn--wa') + ' btn--block" ' +
+      productLink(x, CAT.cfg) + '>' + esc(x.cta || CAT.cfg.buttonLabel || 'Consultar') + '</a></div></div>';
+    m._show = function (n) {
+      if (!imgs.length) return;
+      m._i = i = (n + imgs.length) % imgs.length;
+      var u = src(imgs[i]);
+      m.querySelector('.pmodal__img').src = u; m.querySelector('.pmodal__bg').src = u;
+      var cnt = m.querySelector('.pmodal__count'); if (cnt) cnt.textContent = (i + 1) + ' / ' + imgs.length;
+      m.querySelectorAll('.pmodal__thumb').forEach(function (t, k) { t.classList.toggle('is-active', k === i); if (k === i) t.setAttribute('aria-current', 'true'); else t.removeAttribute('aria-current'); });
+    };
+    m._show(0);
     m.classList.add('open'); m.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden';
     var c = m.querySelector('.pmodal__close'); if (c) c.focus();
   }
@@ -485,26 +610,28 @@
     var c = site.content;
     G = c.general || {};
     var h = c.header || {};
-    try {
-      applyTheme(c.theme);
-      if (c.header) renderHeader(h);
-      if (c.hero) renderHero(c.hero);
-      if (c.marquee) renderMarquee(c.marquee);
-      if (c.productos) renderProductos(c.productos);
-      buildCat(c.catalogo || {}, site.categories, site.products);
-      if (c.iphone) renderIphone(c.iphone);
-      if (c.servicio) renderServicio(c.servicio);
-      if (c.beneficios) renderBeneficios(c.beneficios);
-      if (c.galeria) renderGaleria(c.galeria);
-      if (c.cta) renderCta(c.cta);
-      if (c.contacto) renderContacto(c.contacto, h);
-      if (c.footer) renderFooter(c.footer, h);
-      applyLayout(c.layout);
-      applySeo(c.seo);
-      if (c.general) applyJsonLd(G);
-    } catch (e) {
-      if (window.console) console.error('VOLT: no se pudo aplicar el contenido', e);
-    }
+    // Cada parte por separado: si una falla, las demás se siguen mostrando.
+    var steps = [
+      ['tema', function () { applyTheme(c.theme); }],
+      ['encabezado', function () { if (c.header) renderHeader(h); }],
+      ['portada', function () { if (c.hero) renderHero(c.hero); }],
+      ['franja', function () { if (c.marquee) renderMarquee(c.marquee); }],
+      ['productos', function () { if (c.productos) renderProductos(c.productos); }],
+      ['catálogo', function () { buildCat(c.catalogo || {}, site.categories, site.products); }],
+      ['iPhone', function () { if (c.iphone) renderIphone(c.iphone); }],
+      ['servicio', function () { if (c.servicio) renderServicio(c.servicio); }],
+      ['beneficios', function () { if (c.beneficios) renderBeneficios(c.beneficios); }],
+      ['galería', function () { if (c.galeria) renderGaleria(c.galeria); }],
+      ['llamado', function () { if (c.cta) renderCta(c.cta); }],
+      ['contacto', function () { if (c.contacto) renderContacto(c.contacto, h); }],
+      ['pie', function () { if (c.footer) renderFooter(c.footer, h); }],
+      ['WhatsApp flotante', renderFloat],
+      ['orden de secciones', function () { applyLayout(c.layout); }],
+      ['SEO', function () { applySeo(c.seo); if (c.general) applyJsonLd(G, c.seo); }]
+    ];
+    steps.forEach(function (st) {
+      try { st[1](); } catch (e) { if (window.console) console.error('VOLT: no se pudo aplicar «' + st[0] + '»', e); }
+    });
     observeReveals();
     document.documentElement.setAttribute('data-volt-content', site.preview ? 'preview' : 'live');
     return true;
@@ -610,7 +737,7 @@
 
   /* ---------- clics delegados (sirven también para lo que el panel vuelve a dibujar) ---------- */
   document.addEventListener('click', function (e) {
-    var g = e.target.closest('.gallery__grid .g-item img');
+    var gi = e.target.closest('.gallery__grid .g-item'), g = gi && gi.querySelector('img');
     if (g && lb) {
       lbImg.src = g.src; lbImg.alt = g.alt;
       lb.classList.add('open'); lb.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden';
@@ -630,6 +757,8 @@
   });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') { setMenu(false); closeLb(); closeProduct(); }
+    var pm = document.getElementById('pmodal');
+    if (pm && pm.classList.contains('open') && pm._show && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) pm._show(pm._i + (e.key === 'ArrowLeft' ? -1 : 1));
     if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('.model__media.is-zoom')) {
       e.preventDefault(); openProduct(e.target.getAttribute('data-pid'));
     }
