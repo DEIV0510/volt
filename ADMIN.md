@@ -58,6 +58,11 @@ La clave se borra al usarla. Nadie puede registrarse desde internet: solo quien 
 - Se guardan en `uploads/`. Esa carpeta no ejecuta PHP ni scripts (`.htaccess` propio).
 - **No se puede borrar una imagen en uso**: el servidor lo impide e indica dónde se usa. **Reemplazar** cambia la imagen en todo el contenido (en borrador) y en los productos.
 - Las imágenes originales del sitio (`img/`) aparecen como «Original» y no se pueden borrar desde el panel.
+- **Fotos de productos:**
+  - **Formato ideal:** cuadradas (1:1), por ejemplo 1200 × 1200 px, con el producto al centro.
+  - **En el catálogo:** la foto llena todo el recuadro. Si no es cuadrada, se recorta un poco por los bordes, sin franjas vacías.
+  - **En la ficha:** se ve completa y se puede ampliar: con el cursor en computador; tocando, arrastrando o pellizcando en el celular.
+  - **Galería:** en computador, la primera foto de la galería aparece al pasar el cursor por la tarjeta.
 
 ## Respaldos
 

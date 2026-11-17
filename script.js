@@ -435,6 +435,9 @@
   /* ---------- catálogo ---------- */
   var CAT = { P: [], cats: [], cfg: {}, brand: 'all', page: 1 };
   var PS = 6;
+  // Productos por página: 4 × 2 en computador, 3 × 2 en tableta y 2 × 3 en celular (igual que las columnas del CSS).
+  function perPage() { return window.innerWidth > 980 ? 8 : 6; }
+  var HOVER = !!(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches);
   function catByCode(code) { for (var i = 0; i < CAT.cats.length; i++) if (CAT.cats[i].code === code) return CAT.cats[i]; return {}; }
   function priceHTML(x, cfg) {
     if (x.price == null) return '<span class="model__price model__price--ask">' + esc(cfg.askPriceLabel || 'Consultar precio') + '</span>';
@@ -462,12 +465,14 @@
                      : '<span class="model__stock model__stock--in">' + x.s + ' ' + esc(cfg.inStockLabel || 'disp.') + '</span>';
     }
     var zoom = x.img || (x.gallery && x.gallery.length) || (x.features && x.features.length);
-    // La foto se muestra completa (sin recortes) sobre un fondo difuminado de la misma imagen.
-    var media = x.img ? '<img class="model__bg" src="' + esc(src(x.img)) + '" alt="" aria-hidden="true" loading="lazy" />' +
-      '<img class="model__img" src="' + esc(src(x.img)) + '" alt="' + esc(x.alt || x.n) + '" loading="lazy" />' : '<span class="model__icon">' + esc(cat.icon || '🛒') + '</span>';
+    // La foto llena todo el recuadro cuadrado. Con mouse, si hay galería, al pasar el cursor se ve la segunda foto.
+    var alt2 = HOVER && x.img ? (x.gallery || []).filter(function (u) { return u && u !== x.img && src(u); })[0] : '';
+    var media = x.img ? '<img class="model__img" src="' + esc(src(x.img)) + '" alt="' + esc(x.alt || x.n) + '" loading="lazy" />' +
+      (alt2 ? '<img class="model__img model__img--alt" src="' + esc(src(alt2)) + '" alt="" aria-hidden="true" loading="lazy" />' : '')
+      : '<span class="model__icon">' + esc(cat.icon || '🛒') + '</span>';
     return '<article class="model' + (x.f ? ' model--featured' : '') + '" data-c="' + esc(x.c) + '"><span class="model__num">' + n + '</span>' + stk +
-      (x.f ? '<span class="model__feat">' + esc(cfg.featuredLabel || 'Destacado') + '</span>' : '') +
-      '<div class="model__media' + (x.img ? ' has-img' : '') + (zoom ? ' is-zoom" role="button" tabindex="0" aria-label="Ver detalles de ' + esc(x.n) + '" data-pid="' + esc(x.id) : '') + '">' + media + '</div>' +
+      '<div class="model__media' + (x.img ? ' has-img' : '') + (zoom ? ' is-zoom" role="button" tabindex="0" aria-label="Ver detalles de ' + esc(x.n) + '" data-pid="' + esc(x.id) : '') + '">' + media +
+      (x.f ? '<span class="model__feat">' + esc(cfg.featuredLabel || 'Destacado') + '</span>' : '') + '</div>' +
       '<div class="model__body"><span class="model__brand">' + esc(x.b || cat.singular || '') + '</span><h3>' + esc(x.n) + '</h3>' +
       (x.d ? '<p class="model__detail">' + esc(x.d) + '</p>' : '') + priceHTML(x, cfg) +
       '<a class="btn btn--soft" ' + productLink(x, cfg) + '>' + esc(x.cta || cfg.buttonLabel || 'Consultar') + '</a></div></article>';
@@ -507,6 +512,7 @@
     }
     function updPag() { cp.innerHTML = pagHTML(pageCount()); }
     function render() {
+      PS = perPage();
       var L = listF(), tp = pageCount(); if (CAT.page > tp) CAT.page = tp;
       var h = '';
       for (var p = 0; p < tp; p++) {
@@ -517,7 +523,11 @@
       grid.innerHTML = h; setW(); updPag(); vp.scrollLeft = (CAT.page - 1) * vw();
     }
     function go(n) { var tp = pageCount(); CAT.page = Math.min(tp, Math.max(1, n)); vp.scrollTo({ left: (CAT.page - 1) * vw(), behavior: 'smooth' }); updPag(); }
-    function realign() { setW(); vp.scrollLeft = (CAT.page - 1) * vw(); updPag(); }
+    function realign() {
+      // Si cambia la cantidad por página (al girar el celular o cambiar el tamaño), se queda en la página del primer producto visible.
+      if (perPage() !== PS) { CAT.page = Math.floor((CAT.page - 1) * PS / perPage()) + 1; render(); return; }
+      setW(); vp.scrollLeft = (CAT.page - 1) * vw(); updPag();
+    }
     cf.addEventListener('click', function (ev) {
       var b = ev.target.closest('.chip'); if (!b) return;
       cf.querySelectorAll('.chip').forEach(function (c) { c.classList.toggle('is-active', c === b); });
@@ -548,6 +558,77 @@
   var rtmr; window.addEventListener('resize', function () { clearTimeout(rtmr); rtmr = setTimeout(function () { if (CAT.realign) CAT.realign(); }, 150); });
   window.addEventListener('load', function () { if (CAT.realign) CAT.realign(); });
 
+  /* ---------- zoom dentro de la foto de la ficha (sin agrandar la página) ----------
+     Con mouse: al pasar el cursor la foto se amplía y sigue al cursor.
+     En el celular: tocar acerca o aleja, arrastrar mueve la foto ampliada, pellizcar ajusta el zoom
+     y, sin zoom, deslizar a los lados cambia de foto. */
+  function zoomable(stage, img, swipe) {
+    var ZOOM = 2.5, MAX = 4, s = 1, tx = 0, ty = 0, W = 0, H = 0, t0 = null, pinch = null, moved = false;
+    function rect() { var r = stage.getBoundingClientRect(); W = r.width; H = r.height; return r; }
+    function draw(anim) {
+      if (s <= 1.01) { s = 1; tx = ty = 0; }
+      tx = Math.min(0, Math.max(W * (1 - s), tx)); ty = Math.min(0, Math.max(H * (1 - s), ty));
+      img.style.transition = anim ? '' : 'none';
+      img.style.transform = s > 1 ? 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ')' : '';
+      stage.classList.toggle('is-zoomed', s > 1);
+    }
+    // Amplía a «ns» dejando quieto el punto (px, py) que está bajo el cursor o el dedo.
+    function at(px, py, ns, anim) { tx = px - (px - tx) * ns / s; ty = py - (py - ty) * ns / s; s = ns; draw(anim); }
+    function dist(a, b) { return Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY) || 1; }
+    stage._reset = function () { s = 1; draw(false); };
+
+    stage.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      if (e.target.closest('button')) { if (s > 1) { s = 1; draw(true); } return; }   // sobre las flechas se ve la foto completa
+      var r = rect(), px = e.clientX - r.left, py = e.clientY - r.top;
+      s = ZOOM; tx = px * (1 - s); ty = py * (1 - s); draw(false);
+    });
+    stage.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' && s > 1) { s = 1; draw(true); } });
+
+    stage.addEventListener('touchstart', function (e) {
+      if (e.target.closest('button')) { t0 = pinch = null; return; }
+      var r = rect();
+      if (e.touches.length === 2) {
+        var a = e.touches[0], b = e.touches[1];
+        pinch = { d: dist(a, b), s: s, tx: tx, ty: ty, x: (a.clientX + b.clientX) / 2 - r.left, y: (a.clientY + b.clientY) / 2 - r.top };
+        t0 = null; moved = true;
+      } else if (e.touches.length === 1 && !pinch) {
+        t0 = { x: e.touches[0].clientX, y: e.touches[0].clientY, tx: tx, ty: ty }; moved = false;
+      }
+    }, { passive: true });
+    stage.addEventListener('touchmove', function (e) {
+      if (pinch && e.touches.length === 2) {
+        e.preventDefault();
+        var r = rect(), a = e.touches[0], b = e.touches[1];
+        var ns = Math.min(MAX, Math.max(1, pinch.s * dist(a, b) / pinch.d));
+        // El punto de la foto que estaba entre los dedos sigue entre los dedos.
+        tx = (a.clientX + b.clientX) / 2 - r.left - (pinch.x - pinch.tx) * ns / pinch.s;
+        ty = (a.clientY + b.clientY) / 2 - r.top - (pinch.y - pinch.ty) * ns / pinch.s;
+        s = ns; draw(false); return;
+      }
+      if (!t0 || e.touches.length !== 1) return;
+      var dx = e.touches[0].clientX - t0.x, dy = e.touches[0].clientY - t0.y;
+      if (Math.abs(dx) > 8 || Math.abs(dy) > 8) moved = true;
+      if (s > 1) { e.preventDefault(); tx = t0.tx + dx; ty = t0.ty + dy; draw(false); }
+      else if (Math.abs(dx) > Math.abs(dy)) e.preventDefault();   // deslizar de lado cambia de foto, no mueve la página
+    }, { passive: false });
+    stage.addEventListener('touchend', function (e) {
+      if (pinch) {
+        if (e.touches.length < 2) pinch = null;
+        if (e.touches.length === 1) t0 = { x: e.touches[0].clientX, y: e.touches[0].clientY, tx: tx, ty: ty };
+        return;
+      }
+      if (!t0 || e.touches.length) return;
+      var c = e.changedTouches[0], dx = c.clientX - t0.x, dy = c.clientY - t0.y; t0 = null;
+      if (moved) { if (s === 1 && Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.3) swipe(dx < 0 ? 1 : -1); return; }
+      e.preventDefault();   // un toque: acerca donde se tocó o vuelve a la foto completa
+      var r = rect();
+      if (s > 1) { s = 1; draw(true); } else at(c.clientX - r.left, c.clientY - r.top, ZOOM, true);
+    });
+    stage.addEventListener('touchcancel', function () { t0 = pinch = null; });
+    stage.addEventListener('gesturestart', function (e) { e.preventDefault(); });   // Safari: el pellizco no agranda la página
+  }
+
   /* ---------- detalle de producto (imagen, galería, características) ---------- */
   function openProduct(id) {
     var x = CAT.P.filter(function (p) { return p.id === id; })[0]; if (!x) return;
@@ -572,7 +653,9 @@
         : '<span class="pmodal__tag pmodal__tag--in">' + x.s + ' ' + esc(cfg.inStockLabel || 'disp.') + '</span>') : '');
     if (badges) badges = '<div class="pmodal__tags">' + badges + '</div>';
     m.innerHTML = '<div class="pmodal__box' + (imgs.length ? '' : ' pmodal__box--noimg') + '"><button class="pmodal__close" aria-label="Cerrar">&times;</button>' +
-      (imgs.length ? '<div class="pmodal__media"><div class="pmodal__stage"><img class="pmodal__bg" alt="" aria-hidden="true" /><img class="pmodal__img" alt="' + esc(alt) + '" />' +
+      (imgs.length ? '<div class="pmodal__media"><div class="pmodal__stage"><img class="pmodal__img" alt="' + esc(alt) + '" />' +
+        '<span class="pmodal__hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4M11 8v6M8 11h6"/></svg>' +
+        '<span class="pmodal__hint-m">Pasa el cursor para ampliar</span><span class="pmodal__hint-t">Toca para acercar</span></span>' +
         (imgs.length > 1 ? '<button class="pmodal__nav pmodal__nav--prev" data-d="-1" aria-label="Foto anterior">‹</button><button class="pmodal__nav pmodal__nav--next" data-d="1" aria-label="Foto siguiente">›</button>' +
           '<span class="pmodal__count" aria-live="polite"></span>' : '') + '</div>' +
         (imgs.length > 1 ? '<div class="pmodal__thumbs">' + imgs.map(function (u, k) {
@@ -583,11 +666,20 @@
       ((x.features || []).length ? '<ul class="ticks">' + x.features.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul>' : '') +
       priceHTML(x, CAT.cfg) + '<a class="btn ' + (x.url && !/^https:\/\/(wa\.me|api\.whatsapp\.com)\//.test(x.url) ? 'btn--volt' : 'btn--wa') + ' btn--block" ' +
       productLink(x, CAT.cfg) + '>' + esc(x.cta || CAT.cfg.buttonLabel || 'Consultar') + '</a></div></div>';
+    var stage = m.querySelector('.pmodal__stage'), pimg = m.querySelector('.pmodal__img');
+    if (stage) {
+      // El recuadro toma la forma de la foto principal (entre 3:4 vertical y 4:3 horizontal) para que no queden franjas vacías.
+      pimg.onload = function () {
+        pimg.onload = null;
+        if (pimg.naturalWidth && pimg.naturalHeight) stage.style.setProperty('--ar', Math.min(4 / 3, Math.max(3 / 4, pimg.naturalWidth / pimg.naturalHeight)).toFixed(4));
+      };
+      zoomable(stage, pimg, function (d) { if (imgs.length > 1) m._show(m._i + d); });
+    }
     m._show = function (n) {
       if (!imgs.length) return;
       m._i = i = (n + imgs.length) % imgs.length;
-      var u = src(imgs[i]);
-      m.querySelector('.pmodal__img').src = u; m.querySelector('.pmodal__bg').src = u;
+      if (stage._reset) stage._reset();
+      pimg.src = src(imgs[i]);
       var cnt = m.querySelector('.pmodal__count'); if (cnt) cnt.textContent = (i + 1) + ' / ' + imgs.length;
       m.querySelectorAll('.pmodal__thumb').forEach(function (t, k) { t.classList.toggle('is-active', k === i); if (k === i) t.setAttribute('aria-current', 'true'); else t.removeAttribute('aria-current'); });
     };

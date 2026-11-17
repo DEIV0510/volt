@@ -568,11 +568,11 @@ html.volt-r-soft{--radius:10px;--radius-lg:14px}
    (2 columnas en móvil). Las tarjetas tienen altura fija para verse uniformes. */
 #cv2{overflow-x:auto;padding:0;scroll-padding:0;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
 #cg2{display:flex;gap:0;overflow:visible;align-items:stretch;flex-wrap:nowrap}
-.catpage{flex:0 0 auto;box-sizing:border-box;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-content:start;scroll-snap-align:start}
+.catpage{flex:0 0 auto;box-sizing:border-box;display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;gap:22px;align-content:start;scroll-snap-align:start}
 .catpage .model{width:auto !important;min-width:0 !important;max-width:none !important;flex:none !important;scroll-snap-align:none}
-.model{height:406px}
-/* Zona de foto igual en todas las tarjetas (con foto o con icono) para que la cuadrícula quede pareja */
-.model__media{aspect-ratio:auto;flex:0 0 150px;height:150px;min-height:0}
+/* Foto cuadrada igual en todas las tarjetas (con foto o con icono); las filas de cada página tienen la misma altura */
+.model__media{aspect-ratio:1/1;flex:none;min-height:0}
+@media (max-width:980px){.catpage{grid-template-columns:repeat(3,1fr)}}
 .model__icon{font-size:2.2rem;width:76px;height:76px}
 .model__body{padding-top:14px;padding-bottom:16px;flex:1;display:flex;flex-direction:column}
 .model__brand{margin-bottom:2px}
@@ -586,8 +586,6 @@ html.volt-r-soft{--radius:10px;--radius-lg:14px}
 .model__stock--out{background:#fdeaea;color:#c0392b}
 .page-ellipsis{display:grid;place-items:center;min-width:24px;height:44px;color:var(--muted);font-weight:700}
 @media (max-width:620px){
-  .model{height:398px}
-  .model__media{flex-basis:124px;height:124px}
   .model__icon{font-size:1.9rem;width:64px;height:64px}
   .catpage{grid-template-columns:repeat(2,1fr);gap:12px}
   .model__stock{font-size:.66rem;padding:3px 6px;top:10px;right:10px}
@@ -618,12 +616,16 @@ html.volt-sp-wide .section{padding:120px 0}
 .model__off{display:inline-block;vertical-align:.12em;margin-left:3px;padding:3px 5px;font-size:.6rem;font-weight:800;line-height:1;
   color:#1a7a34;background:#e6f6ea}
 .model__max{display:inline-block;white-space:nowrap}
-/* Foto del producto: completa (sin recortar) y centrada sobre un fondo difuminado de la misma imagen */
-.model__media.has-img{background:var(--bg-soft-2);border-bottom:1px solid var(--line-2)}
-.model__media .model__bg,.model__media .model__img{position:absolute;inset:0;width:100%;height:100%}
-.model__media .model__bg{object-fit:cover;filter:blur(16px) saturate(1.15);transform:scale(1.3);opacity:.55}
-.model__media .model__img{object-fit:contain;padding:10px;filter:drop-shadow(0 8px 14px rgba(20,22,45,.18));transition:transform .4s var(--ease)}
-.model:hover .model__img{transform:scale(1.04)}
+/* Foto del producto: llena todo el recuadro (si no es cuadrada se recorta al centro, sin franjas a los lados).
+   Con mouse se acerca un poco al pasar el cursor y, si hay galería, aparece la segunda foto. */
+.model__media.has-img{background:var(--surface);border-bottom:1px solid var(--line-2)}
+.model__media .model__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;
+  transition:transform .6s var(--ease),opacity .45s var(--ease)}
+.model__media .model__img--alt{opacity:0}
+@media (hover:hover){
+  .model:hover .model__img{transform:scale(1.05)}
+  .model:hover .model__img--alt{opacity:1}
+}
 .model__media.is-zoom{cursor:zoom-in}
 .model__media.is-zoom:focus-visible{outline-offset:-3px}
 .footer__legal a{color:inherit;text-decoration:underline;text-underline-offset:3px}
@@ -634,11 +636,25 @@ html.volt-sp-wide .section{padding:120px 0}
 .pmodal__box{position:relative;width:min(860px,100%);max-height:calc(100vh - 40px);overflow:auto;background:var(--surface);
   display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);box-shadow:var(--shadow)}
 .pmodal__box--noimg{grid-template-columns:1fr;max-width:480px}
-.pmodal__media{display:flex;flex-direction:column;min-width:0;background:var(--bg-soft-2)}
-.pmodal__stage{position:relative;height:min(480px,62vh);overflow:hidden;background:var(--bg-soft-2)}
-.pmodal__bg,.pmodal__img{position:absolute;inset:0;width:100%;height:100%}
-.pmodal__bg{object-fit:cover;filter:blur(24px) saturate(1.1);transform:scale(1.25);opacity:.55}
-.pmodal__img{object-fit:contain}
+.pmodal__media{display:flex;flex-direction:column;min-width:0;background:var(--surface);border-right:1px solid var(--line-2)}
+/* El recuadro toma la forma de la foto (--ar, entre 3:4 y 4:3) y la foto lo llena; se amplía sin agrandar la página */
+.pmodal__stage{position:relative;aspect-ratio:var(--ar,1);max-height:min(620px,74vh);overflow:hidden;background:var(--surface);
+  touch-action:pan-y;cursor:zoom-in;-webkit-user-select:none;user-select:none}
+.pmodal__stage.is-zoomed{touch-action:none;cursor:crosshair}
+.pmodal__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:0 0;
+  transition:transform .3s var(--ease);will-change:transform;-webkit-user-drag:none}
+.pmodal__hint{position:absolute;z-index:2;left:10px;bottom:10px;display:flex;align-items:center;gap:6px;padding:5px 10px 5px 8px;
+  border-radius:99px;font-family:var(--ff-head);font-weight:600;font-size:.72rem;line-height:1;color:#fff;background:rgba(18,18,25,.62);
+  pointer-events:none;transition:opacity .2s}
+.pmodal__hint svg{width:14px;height:14px;flex:none}
+.pmodal__hint-t{display:none}
+@media (hover:none){.pmodal__hint-m{display:none}.pmodal__hint-t{display:inline}}
+.pmodal__stage.is-zoomed .pmodal__hint,.pmodal__stage.is-zoomed .pmodal__count{opacity:0}
+.pmodal__stage .pmodal__count{left:auto;right:10px;transform:none;transition:opacity .2s}
+/* El precio y el botón quedan juntos al pie de la tarjeta, alineados en toda la fila */
+.model__body .btn{margin-top:0}
+/* Producto sin foto: ícono grande y centrado para que el recuadro cuadrado no se vea vacío */
+.model__media:not(.has-img) .model__icon{width:46%;height:auto;aspect-ratio:1/1;font-size:clamp(2rem,4.2vw,3.4rem)}
 .pmodal__nav{position:absolute;z-index:2;top:50%;transform:translateY(-50%);width:42px;height:42px;border:0;cursor:pointer;
   background:rgba(18,18,25,.75);color:#fff;font-size:1.5rem;line-height:1}
 .pmodal__nav:hover{background:rgba(18,18,25,.92)}
@@ -663,7 +679,8 @@ html.volt-sp-wide .section{padding:120px 0}
 @media (max-width:620px){
   .pmodal{padding:12px}
   .pmodal__box{grid-template-columns:1fr}
-  .pmodal__stage{height:min(340px,46vh)}
+  .pmodal__media{border-right:0;border-bottom:1px solid var(--line-2)}
+  .pmodal__stage{max-height:60vh}
   .pmodal__thumb{flex-basis:48px;height:48px}
   .pmodal__body{padding:24px 20px 22px}
   .model__feat{left:42px;font-size:.58rem;top:10px}
@@ -686,12 +703,10 @@ html.volt-sp-wide .section{padding:120px 0}
   font-family:var(--ff-head);font-weight:700;font-size:.74rem;padding:.35em .8em;border-radius:99px}
 .contact__list small a{color:inherit;text-decoration:underline;text-underline-offset:3px}
 /* Catálogo: «Destacado» va al pie de la foto para no tapar la etiqueta de existencias; textos largos se recortan con «…» */
-.model{--mh:150px}
-.model__feat{top:calc(var(--mh) - 30px);left:10px;max-width:calc(100% - 20px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.model__feat{top:auto;bottom:10px;left:10px;max-width:calc(100% - 20px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .model__stock{max-width:calc(100% - 64px);overflow:hidden;text-overflow:ellipsis}
 @media (max-width:620px){
-  .model{--mh:124px}
-  .model__feat{top:calc(var(--mh) - 26px);left:8px}
+  .model__feat{top:auto;bottom:8px;left:8px}
 }
 /* Ficha del producto: etiquetas de destacado y existencias */
 .pmodal__tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
