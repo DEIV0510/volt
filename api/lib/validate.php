@@ -96,7 +96,7 @@ function clean_product(array $p, bool $partial = false): array {
     if (!val('SELECT 1 FROM categories WHERE id = ?', [$cid])) fail(400, 'La categoría no existe.', 'invalid');
     $out['category_id'] = $cid;
   }
-  foreach (['brand' => [60, 'La marca'], 'detail' => [300, 'La descripción'], 'image_alt' => [160, 'El texto alternativo'],
+  foreach (['brand' => [60, 'La marca'], 'detail' => [2000, 'La descripción'], 'image_alt' => [160, 'El texto alternativo'],
             'cta_label' => [30, 'El texto del botón'], 'cta_message' => [300, 'El mensaje de WhatsApp']] as $k => [$max, $label]) {
     if (!$partial || $has($k)) $out[$k] = str_or_null($p[$k] ?? null, $max, $label);
   }
@@ -125,6 +125,23 @@ function clean_product(array $p, bool $partial = false): array {
     $f = array_values(array_filter(array_map(fn($x) => is_string($x) ? trim($x) : fail(400, 'Característica no válida.', 'invalid'), $f), fn($x) => $x !== ''));
     foreach ($f as $x) if (mb_strlen($x) > 100) fail(400, 'Cada característica admite como máximo 100 caracteres.', 'invalid');
     $out['features'] = jenc($f);
+  }
+  if (!$partial || $has('specs')) {
+    // Tabla de la ficha: filas «Característica / valor» (por ejemplo «Batería» / «85 %»). Las filas sin valor se descartan
+    // (así se puede usar una plantilla y llenar solo lo que aplica).
+    $s = $p['specs'] ?? [];
+    if (!is_array($s) || !array_is_list($s) || count($s) > 24) fail(400, 'Las especificaciones admiten hasta 24 filas.', 'invalid');
+    $rows = [];
+    foreach ($s as $r) {
+      if (!is_array($r) || !is_string($r['label'] ?? '') || !is_string($r['value'] ?? '')) fail(400, 'Especificación no válida.', 'invalid');
+      $l = trim($r['label'] ?? ''); $v = trim($r['value'] ?? '');
+      if ($v === '') continue;
+      if ($l === '') fail(400, 'Cada especificación necesita un nombre (por ejemplo «Batería» para «85 %»).', 'invalid');
+      if (mb_strlen($l) > 40) fail(400, 'El nombre de cada especificación admite como máximo 40 caracteres.', 'invalid');
+      if (mb_strlen($v) > 160) fail(400, 'El valor de cada especificación admite como máximo 160 caracteres.', 'invalid');
+      $rows[] = ['label' => $l, 'value' => $v];
+    }
+    $out['specs'] = jenc($rows);
   }
   return $out;
 }

@@ -757,3 +757,62 @@ html.volt-r-soft .pmodal__trust svg,html.volt-r-round .pmodal__trust svg{border-
   .pmodal__buy .model__price{flex:1;min-width:0;font-size:1.15rem}
   .pmodal__buy .btn--block{flex:0 0 52%;width:auto;padding:.85em .8em}
 }
+
+/* ===== Ficha del producto: especificaciones, descripción, compartir y sugeridos ===== */
+.pmodal__box{width:min(1040px,100%);grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}
+.pmodal__media--icon{display:grid;place-items:center;min-height:320px;background:radial-gradient(circle at 50% 40%,var(--surface),var(--bg-soft-2))}
+.pmodal__media--icon .model__icon{width:46%;height:auto;aspect-ratio:1/1;font-size:clamp(2.6rem,6vw,4.2rem)}
+.pmodal__top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding-right:44px;min-height:26px}
+.pmodal__top .pmodal__tags{margin:0}
+.pmodal__share{display:inline-flex;align-items:center;gap:6px;flex:none;margin-left:auto;padding:6px 10px;border:1px solid var(--line);background:var(--surface);
+  color:var(--ink-soft);font-family:var(--ff-head);font-weight:600;font-size:.76rem;cursor:pointer;transition:border-color .2s,color .2s}
+.pmodal__share:hover{border-color:var(--volt-2);color:var(--ink)}
+.pmodal__lead{color:var(--muted);font-size:.92rem;line-height:1.5;margin:0}
+.pmodal__desc{color:var(--ink-soft);font-size:.92rem;line-height:1.6;margin:0}
+.pacc{border-top:1px solid var(--line-2)}
+.pacc:first-of-type{margin-top:6px}
+.pacc summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;
+  font-family:var(--ff-head);font-weight:700;font-size:.96rem;color:var(--ink)}
+.pacc summary::-webkit-details-marker{display:none}
+.pacc summary::after{content:"";flex:none;width:8px;height:8px;margin-right:4px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform .2s var(--ease)}
+.pacc[open] summary::after{transform:rotate(-135deg) translateY(-2px)}
+.pacc summary:focus-visible{outline-offset:2px}
+.pacc__body{padding:0 0 16px}
+.pacc__body .ticks{margin:0}
+.pspec{width:100%;border-collapse:collapse;font-size:.88rem;border:1px solid var(--line-2)}
+.pspec th,.pspec td{padding:9px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line-2);line-height:1.4}
+.pspec tr:last-child th,.pspec tr:last-child td{border-bottom:0}
+.pspec th{width:40%;font-weight:600;color:var(--muted);background:var(--bg-soft)}
+.pspec td{color:var(--ink);font-weight:500;overflow-wrap:anywhere}
+.pmodal__more{grid-column:1/-1;padding:22px 28px 26px;border-top:1px solid var(--line-2);background:var(--bg-soft)}
+.pmodal__more h4{font-size:1.02rem;margin:0 0 14px}
+.prel{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.prel__item{display:flex;flex-direction:column;gap:6px;padding:0 0 12px;background:var(--surface);border:1px solid var(--line);color:inherit;text-decoration:none;
+  overflow:hidden;transition:transform .25s var(--ease),border-color .25s,box-shadow .25s}
+.prel__item:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--volt-2) 60%,transparent);box-shadow:var(--shadow-sm)}
+.prel__img{position:relative;display:grid;place-items:center;aspect-ratio:1/1;background:radial-gradient(circle at 50% 40%,var(--surface),var(--bg-soft-2));overflow:hidden}
+.prel__img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.prel__img .model__icon{width:46%;height:auto;aspect-ratio:1/1;font-size:1.6rem}
+.prel__img .model__promo{position:absolute;left:6px;bottom:6px}
+.prel__name{padding:0 10px;font-family:var(--ff-head);font-weight:600;font-size:.8rem;line-height:1.3;color:var(--ink);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.prel__price{padding:0 10px;font-family:var(--ff-head);font-weight:800;font-size:.86rem;color:var(--ink)}
+.model__link{color:inherit;text-decoration:none}
+.model__link:hover{text-decoration:underline;text-underline-offset:3px}
+.vflash{position:fixed;left:50%;bottom:24px;z-index:9200;transform:translate(-50%,16px);max-width:calc(100% - 32px);padding:11px 16px;
+  background:#15161C;color:#fff;font-size:.88rem;box-shadow:var(--shadow);opacity:0;visibility:hidden;transition:.25s var(--ease)}
+.vflash.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
+@media (max-width:620px){
+  .pmodal__box{grid-template-columns:minmax(0,1fr)}
+  /* La barra de precio y compra va al final de la ficha y queda fija abajo mientras se lee todo lo demás */
+  .pmodal__buy{order:99}
+  .pmodal__media--icon{min-height:150px}
+  .pmodal__media--icon .model__icon{width:96px}
+  .pmodal__more{padding:18px 16px 20px}
+  .prel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;margin:0 -16px;padding:0 16px 4px;scrollbar-width:none}
+  .prel::-webkit-scrollbar{display:none}
+  .prel__item{flex:0 0 42%;scroll-snap-align:start}
+  .pmodal__top{padding-right:40px}
+}
+/* En computador la foto acompaña mientras se leen las especificaciones */
+@media (min-width:621px){.pmodal__media{position:sticky;top:0;align-self:start}}

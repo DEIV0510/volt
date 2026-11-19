@@ -128,6 +128,17 @@ r = await owner.post('product_save', { product: { ...mouse, price: 46000 }, vers
 ok(r.status === 409, 'producto editado por otra persona → 409', r.status);
 pub = await (await fetch(BASE + '/api/?a=public')).json();
 ok(pub.products.find(p => p.id === mouse.id).price === 45000, 'el precio nuevo es público');
+let cur = (await owner.get('products')).data.find(p => p.id === mouse.id);
+r = await owner.post('product_save', { product: { ...cur, specs: [{ label: '', value: 'Bluetooth' }] }, version: cur.version });
+ok(r.status === 400, 'especificación con valor pero sin nombre → rechazada', r.error);
+r = await owner.post('product_save', { product: { ...cur, specs: [{ label: 'Conexión', value: 'Bluetooth 5.0' }, { label: '', value: '' }, { label: 'Color', value: '' }, { label: 'Batería', value: '12 meses' }] }, version: cur.version });
+ok(r.status === 200 && r.data.specs.length === 2 && r.data.specs[1].label === 'Batería', 'guardar especificaciones (las filas sin valor se descartan)', r.error);
+pub = await (await fetch(BASE + '/api/?a=public')).json();
+ok(JSON.stringify(pub.products.find(p => p.id === mouse.id).specs) === JSON.stringify([['Conexión', 'Bluetooth 5.0'], ['Batería', '12 meses']]), 'las especificaciones son públicas');
+cur = r.data;
+r = await owner.post('product_save', { product: { ...cur, detail: 'x'.repeat(1500) }, version: cur.version });
+ok(r.status === 200, 'descripción larga (hasta 2000 caracteres)', r.error);
+mouse.version = r.data.version;
 r = await owner.post('products_update', { ids: [mouse.id], fields: { active: false } });
 pub = await (await fetch(BASE + '/api/?a=public')).json();
 ok(!pub.products.some(p => p.id === mouse.id), 'ocultar producto → desaparece de la página');

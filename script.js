@@ -18,6 +18,7 @@
 
   var ICONS = {
     wa: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.515 5.26l-.999 3.648 3.973-1.607zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>',
+    share: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>',
     bolt: function (s) { return '<svg viewBox="0 0 24 24" width="' + s + '" height="' + s + '" aria-hidden="true"><path fill="currentColor" d="M13 2 L4 14 H11 L9 22 L20 9 H13 Z"/></svg>'; },
     apple: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16.365 1.43c0 1.14-.42 2.2-1.13 3.02-.78.9-2.06 1.6-3.13 1.51-.13-1.06.42-2.2 1.06-2.94.78-.86 2.13-1.5 3.2-1.59zM20.5 17.2c-.6 1.4-.9 2-1.67 3.24-1.07 1.72-2.58 3.86-4.45 3.88-1.66.02-2.08-1.08-4.33-1.07-2.25.01-2.72 1.09-4.38 1.07-1.87-.02-3.3-1.95-4.37-3.67C-1.2 16.5-2.05 9.8 1.5 6.6c1.27-1.14 2.92-1.81 4.5-1.81 1.66 0 2.7 1.09 4.07 1.09 1.33 0 2.14-1.09 4.07-1.09 1.4 0 2.89.76 3.95 2.08-3.47 1.9-2.9 6.86 1.91 9.33z"/></svg>',
     ig: '<svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0 1.44c-3.15 0-3.52.01-4.76.07-1.15.05-1.77.24-2.19.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.42-.35 1.04-.4 2.19-.06 1.24-.07 1.61-.07 4.76s.01 3.52.07 4.76c.05 1.15.24 1.77.4 2.19.21.55.47.94.88 1.35.41.41.8.67 1.35.88.42.16 1.04.35 2.19.4 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c1.15-.05 1.77-.24 2.19-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.42.35-1.04.4-2.19.06-1.24.07-1.61.07-4.76s-.01-3.52-.07-4.76c-.05-1.15-.24-1.77-.4-2.19-.21-.55-.47-.94-.88-1.35-.41-.41-.8-.67-1.35-.88-.42-.16-1.04-.35-2.19-.4-1.24-.06-1.61-.07-4.76-.07zm0 2.45a5.95 5.95 0 110 11.9 5.95 5.95 0 010-11.9zm0 1.44a4.51 4.51 0 100 9.02 4.51 4.51 0 000-9.02zm6.19-.19a1.39 1.39 0 11-2.78 0 1.39 1.39 0 012.78 0z"/></svg>'
@@ -457,7 +458,7 @@
     if (x.url) return linkAttrs(x.url);
     var price = x.price == null ? '' : money(onPromo(x) ? x.promo : x.price);
     var msg = String(x.msg || cfg.productMessage || 'Hola, quiero consultar disponibilidad y precio de: {producto} ({categoria}) en VOLT STORE CO.')
-      .split('{producto}').join(x.n).split('{categoria}').join(cat.singular || '').split('{precio}').join(price);
+      .split('{producto}').join(x.n).split('{categoria}').join(cat.singular || '').split('{precio}').join(price).split('{enlace}').join(productUrl(x));
     return 'href="' + esc(wa(msg)) + '" target="_blank" rel="noopener"';
   }
   // Botón de compra: verde con el ícono de WhatsApp si abre WhatsApp; amarillo si lleva a otro enlace.
@@ -473,7 +474,7 @@
       stk = x.s <= 0 ? '<span class="model__stock model__stock--out">' + esc(cfg.outOfStockLabel || 'Agotado') + '</span>'
                      : '<span class="model__stock model__stock--in">' + x.s + ' ' + esc(cfg.inStockLabel || 'disp.') + '</span>';
     }
-    var zoom = x.img || (x.gallery && x.gallery.length) || (x.features && x.features.length);
+    var zoom = true;   // toda tarjeta abre la ficha del producto
     // La foto llena todo el recuadro cuadrado. Con mouse, si hay galería, al pasar el cursor se ve la segunda foto.
     var alt2 = HOVER && x.img ? (x.gallery || []).filter(function (u) { return u && u !== x.img && src(u); })[0] : '';
     var media = x.img ? '<img class="model__img" src="' + esc(src(x.img)) + '" alt="' + esc(x.alt || x.n) + '" width="600" height="600" loading="lazy" decoding="async" />' +
@@ -483,7 +484,7 @@
       '<div class="model__media' + (x.img ? ' has-img' : '') + (zoom ? ' is-zoom" role="button" tabindex="0" aria-label="Ver detalles de ' + esc(x.n) + '" data-pid="' + esc(x.id) : '') + '">' + media +
       (x.f || onPromo(x) ? '<span class="model__tags">' + (onPromo(x) ? '<span class="model__promo">' + esc(cfg.promoLabel || 'Oferta') + '</span>' : '') +
         (x.f ? '<span class="model__feat">' + esc(cfg.featuredLabel || 'Destacado') + '</span>' : '') + '</span>' : '') + '</div>' +
-      '<div class="model__body"><span class="model__brand">' + esc(x.b || cat.singular || '') + '</span><h3>' + esc(x.n) + '</h3>' +
+      '<div class="model__body"><span class="model__brand">' + esc(x.b || cat.singular || '') + '</span><h3><a class="model__link" href="' + esc(productHash(x)) + '" data-open="' + esc(x.id) + '">' + esc(x.n) + '</a></h3>' +
       (x.d ? '<p class="model__detail">' + esc(x.d) + '</p>' : '') + priceHTML(x, cfg) + buyBtn(x, cfg) + '</div></article>';
   }
   function buildCat(cfg, cats, products) {
@@ -652,6 +653,65 @@
     return '<ul class="pmodal__trust">' + items.map(function (t) { return '<li>' + ICONS.bolt(14) + '<span>' + esc(t) + '</span></li>'; }).join('') + '</ul>';
   }
 
+  // Especificaciones de la ficha: la tabla del panel o, si no tiene, las líneas «Nombre: valor» de la descripción.
+  // La primera línea que no es especificación se muestra como resumen bajo el nombre.
+  function productInfo(x) {
+    var specs = (x.specs || []).filter(function (r) { return r && r[0] && r[1]; }), rest = [];
+    String(x.d || '').split('\n').forEach(function (line) {
+      var m = !(x.specs || []).length && /^\s*([A-Za-zÁÉÍÓÚÜÑáéíóúüñ][\wÁÉÍÓÚÜÑáéíóúüñ .()/-]{1,28}):\s+(\S.{0,240})$/.exec(line);
+      if (m) specs.push([m[1].trim(), m[2].trim().replace(/\.$/, '')]); else if (line.trim()) rest.push(line.trim());
+    });
+    if (!(x.specs || []).length && specs.length < 2) { specs = []; rest = String(x.d || '').split('\n').map(function (l) { return l.trim(); }).filter(Boolean); }
+    var lead = rest.length ? rest.shift() : '';
+    return { specs: specs, lead: lead, text: rest.join('\n') };
+  }
+  function acc(title, body, open) {
+    return '<details class="pacc"' + (open ? ' open' : '') + '><summary>' + esc(title) + '</summary><div class="pacc__body">' + body + '</div></details>';
+  }
+  // «También te puede interesar»: de la misma categoría primero, disponibles y luego el resto del catálogo.
+  function relatedHTML(x) {
+    var avail = function (p) { return p.id !== x.id && !(p.s != null && p.s <= 0); };
+    var list = CAT.P.filter(function (p) { return avail(p) && p.c === x.c; });
+    if (list.length < 4) list = list.concat(CAT.P.filter(function (p) { return avail(p) && p.c !== x.c && (p.f || onPromo(p)); }));
+    list = list.slice(0, 4);
+    if (!list.length) return '';
+    return '<div class="pmodal__more"><h4>' + esc(CAT.cfg.relatedLabel || 'También te puede interesar') + '</h4><div class="prel">' + list.map(function (p) {
+      var c = catByCode(p.c), price = p.price == null ? esc(CAT.cfg.askPriceLabel || 'Consultar precio') : money(onPromo(p) ? p.promo : p.price);
+      return '<a class="prel__item" href="' + esc(productHash(p)) + '" data-open="' + esc(p.id) + '"><span class="prel__img">' +
+        (p.img ? '<img src="' + esc(src(p.img)) + '" alt="" width="300" height="300" loading="lazy" decoding="async" />' : '<span class="model__icon">' + esc(c.icon || '🛒') + '</span>') +
+        (onPromo(p) ? '<span class="model__promo">' + esc(CAT.cfg.promoLabel || 'Oferta') + '</span>' : '') + '</span>' +
+        '<span class="prel__name">' + esc(p.n) + '</span><span class="prel__price">' + price + '</span></a>';
+    }).join('') + '</div></div>';
+  }
+  function slug(s) {
+    return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
+  }
+  function productHash(x) { return '#producto/' + (slug(x.n) || 'producto') + '-' + String(x.id).slice(0, 8); }
+  function productUrl(x) { return location.origin + location.pathname + productHash(x); }
+  function shareProduct(x) {
+    if (!x) return;
+    var url = productUrl(x);
+    if (navigator.share) { navigator.share({ title: x.n, url: url }).catch(function () { /* el cliente canceló */ }); return; }
+    var done = function () { flash('Enlace copiado. Pégalo en WhatsApp o en tus redes.'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () { flash(url); });
+    else flash(url);
+  }
+  function flash(msg) {
+    var t = document.getElementById('vflash');
+    if (!t) { t = document.createElement('div'); t.id = 'vflash'; t.className = 'vflash'; t.setAttribute('role', 'status'); document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._t); t._t = setTimeout(function () { t.classList.remove('show'); }, 2600);
+  }
+  // Abre el producto del enlace compartido (voltstoreco.com/#producto/nombre-xxxxxxxx) cuando el catálogo ya está listo.
+  var hashOpened = false;
+  function openFromHash() {
+    if (hashOpened) return;
+    var m = /^#producto\/(?:[a-z0-9-]*-)?([0-9a-f]{8})$/.exec(location.hash);
+    if (!m) { hashOpened = true; return; }
+    var p = CAT.P.filter(function (q) { return String(q.id).slice(0, 8) === m[1]; })[0];
+    if (p) { hashOpened = true; openProduct(p.id); }
+  }
+
   /* ---------- detalle de producto (imagen, galería, características) ---------- */
   function openProduct(id) {
     var x = CAT.P.filter(function (p) { return p.id === id; })[0]; if (!x) return;
@@ -664,18 +724,23 @@
       document.body.appendChild(m);
       m.addEventListener('click', function (e) {
         if (e.target === m || e.target.closest('.pmodal__close')) { closeProduct(); return; }
+        var rel = e.target.closest('[data-open]');
+        if (rel) { e.preventDefault(); e.stopPropagation(); openProduct(rel.getAttribute('data-open')); return; }   // «También te puede interesar»
+        if (e.target.closest('[data-share]')) { shareProduct(m._x); return; }
         if (e.target.closest('a[href^="#"]')) { closeProduct(); return; }   // enlace a una sección: cierra y deja que la página baje
         var b = e.target.closest('[data-d], [data-i]');
         if (b && m._show) m._show(b.hasAttribute('data-i') ? parseInt(b.getAttribute('data-i'), 10) : m._i + parseInt(b.getAttribute('data-d'), 10));
       });
     }
-    var cat = catByCode(x.c), cfg = CAT.cfg;
+    var cat = catByCode(x.c), cfg = CAT.cfg, info = productInfo(x);
     var alt = x.alt || x.n;
     var badges = (x.f ? '<span class="pmodal__tag pmodal__tag--feat">' + esc(cfg.featuredLabel || 'Destacado') + '</span>' : '') +
       (cfg.showStock !== false && x.s != null ? (x.s <= 0 ? '<span class="pmodal__tag pmodal__tag--out">' + esc(cfg.outOfStockLabel || 'Agotado') + '</span>'
         : '<span class="pmodal__tag pmodal__tag--in">' + x.s + ' ' + esc(cfg.inStockLabel || 'disp.') + '</span>') : '');
     if (badges) badges = '<div class="pmodal__tags">' + badges + '</div>';
-    m.innerHTML = '<div class="pmodal__box' + (imgs.length ? '' : ' pmodal__box--noimg') + '"><button class="pmodal__close" aria-label="Cerrar">&times;</button>' +
+    m.setAttribute('aria-labelledby', 'pmodal-title');
+    m.innerHTML = '<div class="pmodal__box"><button class="pmodal__close" aria-label="Cerrar">&times;</button>' +
+      (!imgs.length ? '<div class="pmodal__media pmodal__media--icon"><span class="model__icon">' + esc(cat.icon || '🛒') + '</span></div>' : '') +
       (imgs.length ? '<div class="pmodal__media"><div class="pmodal__stage"><img class="pmodal__img" alt="' + esc(alt) + '" />' +
         '<span class="pmodal__hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4M11 8v6M8 11h6"/></svg>' +
         '<span class="pmodal__hint-m">Pasa el cursor para ampliar</span><span class="pmodal__hint-t">Toca para acercar</span></span>' +
@@ -684,11 +749,18 @@
         (imgs.length > 1 ? '<div class="pmodal__thumbs">' + imgs.map(function (u, k) {
           return '<button class="pmodal__thumb" data-i="' + k + '" aria-label="Ver foto ' + (k + 1) + '"><img src="' + esc(src(u)) + '" alt="" width="96" height="96" loading="lazy" /></button>';
         }).join('') + '</div>' : '') + '</div>' : '') +
-      '<div class="pmodal__body">' + badges + '<span class="model__brand">' + esc(x.b || cat.singular || '') + '</span><h3>' + esc(x.n) + '</h3>' +
-      (x.d ? '<p class="model__detail">' + esc(x.d) + '</p>' : '') +
-      ((x.features || []).length ? '<ul class="ticks">' + x.features.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul>' : '') +
+      '<div class="pmodal__body"><div class="pmodal__top">' + badges + '<button type="button" class="pmodal__share" data-share>' + ICONS.share + '<span>Compartir</span></button></div>' +
+      '<span class="model__brand">' + esc(x.b || cat.singular || '') + '</span><h3 id="pmodal-title">' + esc(x.n) + '</h3>' +
+      (info.lead ? '<p class="pmodal__lead">' + esc(info.lead) + '</p>' : '') +
       // Precio y botón juntos; en el celular quedan fijos al pie de la ficha mientras se lee.
-      '<div class="pmodal__buy">' + priceHTML(x, cfg, true) + buyBtn(x, cfg, ' btn--block') + '</div>' + trustHTML(cfg) + '</div></div>';
+      '<div class="pmodal__buy">' + priceHTML(x, cfg, true) + buyBtn(x, cfg, ' btn--block') + '</div>' + trustHTML(cfg) +
+      // Detalle en secciones plegables: especificaciones (abierta), descripción y características.
+      (info.specs.length ? acc('Especificaciones', '<table class="pspec"><tbody>' + info.specs.map(function (r) {
+        return '<tr><th scope="row">' + esc(r[0]) + '</th><td>' + esc(r[1]) + '</td></tr>';
+      }).join('') + '</tbody></table>', true) : '') +
+      (info.text ? acc('Descripción', '<p class="pmodal__desc">' + txt(info.text) + '</p>', !info.specs.length) : '') +
+      ((x.features || []).length ? acc('Características destacadas', '<ul class="ticks">' + x.features.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul>', !info.specs.length && !info.text) : '') +
+      '</div>' + relatedHTML(x) + '</div>';
     var stage = m.querySelector('.pmodal__stage'), pimg = m.querySelector('.pmodal__img');
     if (stage) {
       // El recuadro toma la forma de la foto principal (entre 3:4 vertical y 4:3 horizontal) para que no queden franjas vacías.
@@ -707,12 +779,17 @@
       m.querySelectorAll('.pmodal__thumb').forEach(function (t, k) { t.classList.toggle('is-active', k === i); if (k === i) t.setAttribute('aria-current', 'true'); else t.removeAttribute('aria-current'); });
     };
     m._show(0);
+    m._x = x;
     m.classList.add('open'); m.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden';
+    var box = m.querySelector('.pmodal__box'); if (box) box.scrollTop = 0;
+    // Cada producto tiene su propio enlace (para compartirlo por WhatsApp o redes).
+    try { history.replaceState(null, '', productHash(x)); } catch (e) { /* sin historial */ }
     var c = m.querySelector('.pmodal__close'); if (c) c.focus();
   }
   function closeProduct() {
     var m = document.getElementById('pmodal'); if (!m || !m.classList.contains('open')) return;
     m.classList.remove('open'); m.setAttribute('aria-hidden', 'true'); document.body.style.overflow = '';
+    if (/^#producto\//.test(location.hash)) try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* sin historial */ }
   }
 
   /* ---------- aplicar todo el contenido ---------- */
@@ -769,7 +846,7 @@
     return fetchLive().then(function (s) {
       if (gotPreview) return;          // en vista previa mandan los borradores del panel
       if (!PREVIEW) writeCache(s);
-      apply(s);
+      apply(s); openFromHash();
     }).catch(function () {
       if (lastJSON || gotPreview) return;   // ya se mostró la copia guardada
       return fetchSnapshot().then(function (s) { if (!gotPreview) apply(s); })
@@ -863,6 +940,8 @@
       lb.classList.add('open'); lb.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden';
       return;
     }
+    var op = e.target.closest('[data-open]');
+    if (op && !op.closest('#pmodal')) { e.preventDefault(); openProduct(op.getAttribute('data-open')); return; }
     var z = e.target.closest('.model__media.is-zoom');
     if (z) { openProduct(z.getAttribute('data-pid')); return; }
     var a = e.target.closest('a[href^="#"]');
@@ -906,7 +985,7 @@
   }
   // Lo publicado viene dentro del HTML (index.php); si no está, se usa la última versión guardada en este navegador.
   var cached = !PREVIEW && (readInline() || readCache());
-  if (cached) apply(cached);       // la página aparece de inmediato con su contenido real
+  if (cached) { apply(cached); openFromHash(); }       // la página aparece de inmediato con su contenido real
   load();
   if (!PREVIEW) setInterval(load, REFRESH_MS);
 })();

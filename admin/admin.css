@@ -322,3 +322,13 @@ a.stat:hover{border-color:var(--volt-2)}
   .ptable td[colspan]{grid-column:1/-1}
   .cell-sub{max-width:none;white-space:normal}
 }
+
+/* Tabla de especificaciones del producto (Característica / valor) */
+.list.specs{display:grid;gap:6px}
+.specs__row{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr) auto auto auto;gap:6px;align-items:center}
+.specs__tpl{width:auto;min-width:170px}
+@media (max-width:560px){
+  .specs__row{grid-template-columns:minmax(0,1fr) auto auto auto}
+  .specs__row .specs__lab{grid-column:1/-1}
+  .specs__item{padding-bottom:8px;border-bottom:1px dashed var(--line)}
+}

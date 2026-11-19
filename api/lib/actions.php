@@ -8,7 +8,7 @@ function ints(array $r, array $keys): array { foreach ($keys as $k) if (isset($r
 function product_out(array $p): array {
   $p = ints($p, ['price', 'price_max', 'promo_price', 'stock', 'sort_order', 'version']);
   $p['active'] = (bool)$p['active']; $p['featured'] = (bool)$p['featured'];
-  $p['gallery'] = jdec($p['gallery']); $p['features'] = jdec($p['features']);
+  $p['gallery'] = jdec($p['gallery']); $p['features'] = jdec($p['features']); $p['specs'] = jdec($p['specs'] ?? '[]');
   return $p;
 }
 function category_out(array $c): array { $c = ints($c, ['sort_order', 'version']); $c['active'] = (bool)$c['active']; return $c; }

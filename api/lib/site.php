@@ -11,12 +11,13 @@ function catalog_public(): array {
   $out = [];
   foreach ($prods as $p) {
     $gallery = jdec($p['gallery']); $features = jdec($p['features']);
+    $specs = array_map(fn($r) => [$r['label'], $r['value']], jdec($p['specs'] ?? '[]') ?: []);
     $out[] = array_filter([
       'id' => $p['id'], 'c' => $code[$p['category_id']], 'n' => $p['name'], 'b' => $p['brand'], 'd' => $p['detail'],
       'price' => $p['price'] === null ? null : (int)$p['price'], 'price_max' => $p['price_max'] === null ? null : (int)$p['price_max'],
       'promo' => $p['promo_price'] === null ? null : (int)$p['promo_price'], 's' => $p['stock'] === null ? null : (int)$p['stock'],
       'f' => $p['featured'] ? true : null, 'img' => $p['image_url'], 'alt' => $p['image_alt'],
-      'gallery' => $gallery ?: null, 'features' => $features ?: null,
+      'gallery' => $gallery ?: null, 'features' => $features ?: null, 'specs' => $specs ?: null,
       'cta' => $p['cta_label'], 'msg' => $p['cta_message'], 'url' => $p['cta_url'],
     ], fn($v) => $v !== null);
   }

@@ -18,10 +18,20 @@ function anchorsList() {
   return 'volt-anchors';
 }
 
+// Nombres sugeridos y plantillas para la tabla de especificaciones de los productos.
+const SPEC_TEMPLATES = {
+  'Celular': ['Almacenamiento', 'Color', 'Batería', 'Estado', 'Pantalla', 'Cámara', 'Procesador', 'SIM', 'Revisado', 'Incluye', 'Garantía'],
+  'Accesorio': ['Compatibilidad', 'Potencia', 'Conector', 'Largo del cable', 'Calidad', 'Incluye', 'Garantía'],
+  'Audífonos': ['Conexión', 'Batería', 'Cancelación de ruido', 'Compatibilidad', 'Incluye', 'Garantía'],
+  'Portátil': ['Procesador', 'Memoria RAM', 'Almacenamiento', 'Pantalla', 'Sistema operativo', 'Estado', 'Batería', 'Incluye', 'Garantía'],
+  'Televisor': ['Tamaño', 'Resolución', 'Sistema', 'Conexiones', 'Estado', 'Incluye', 'Garantía']
+};
+const SPEC_NAMES = [...new Set(Object.values(SPEC_TEMPLATES).flat().concat(['Modelo', 'Peso', 'Material', 'Resistencia al agua', 'Salud de batería', 'Tiempo de carga']))];
+
 export function defaultFor(f) {
   switch (f.t) {
     case 'bool': return f.def ?? false;
-    case 'list': case 'strings': return [];
+    case 'list': case 'strings': case 'specs': return [];
     case 'button': return { label: '', kind: 'whatsapp', message: '', href: '' };
     case 'select': return f.options[0][0];
     case 'color': return '#000000';
@@ -149,6 +159,7 @@ export function createForm(fields, initial, opts = {}) {
       case 'button': return buttonField(f, obj, path);
       case 'strings': return stringsField(f, obj, path);
       case 'list': return listField(f, obj, path);
+      case 'specs': return specsField(f, obj, path);
     }
     return h('div', { text: 'Campo no soportado: ' + f.t });
   }
@@ -197,6 +208,44 @@ export function createForm(fields, initial, opts = {}) {
     }
     draw();
     return wrapField(f, path, h('div', null, list, h('div', { class: 'row' }, add, f.max ? h('span', { class: 'small muted', text: `Máximo ${f.max}` }) : null)));
+  }
+
+  // Tabla «Característica / valor» de la ficha del producto, con nombres sugeridos y plantillas por tipo de producto.
+  function specsField(f, obj, path) {
+    const arr = obj[f.k] = Array.isArray(obj[f.k]) ? obj[f.k] : [];
+    const listId = 'volt-spec-names';
+    if (!document.getElementById(listId)) {
+      document.body.append(h('datalist', { id: listId }, SPEC_NAMES.map(n => h('option', { value: n }))));
+    }
+    const list = h('div', { class: 'list specs' });
+    const add = h('button', { type: 'button', class: 'btn btn--sm', onclick: () => { arr.push({ label: '', value: '' }); changed(); draw(); list.querySelector('.specs__item:last-child input').focus(); } }, icon('plus'), 'Agregar fila');
+    const tpl = h('select', { class: 'select specs__tpl', 'aria-label': 'Agregar una plantilla de especificaciones' },
+      h('option', { value: '', text: 'Usar plantilla…' }), Object.keys(SPEC_TEMPLATES).map(k => h('option', { value: k, text: k })));
+    tpl.addEventListener('change', () => {
+      const names = SPEC_TEMPLATES[tpl.value] || []; tpl.value = '';
+      const have = new Set(arr.map(r => String(r.label || '').trim().toLowerCase()));
+      names.forEach(n => { if (!have.has(n.toLowerCase()) && (!f.max || arr.length < f.max)) arr.push({ label: n, value: '' }); });
+      changed(); draw();
+      const empty = [...list.querySelectorAll('.specs__val')].find(i => !i.value); if (empty) empty.focus();
+    });
+    function draw() {
+      clear(list);
+      if (!arr.length) list.append(h('p', { class: 'small muted', text: 'Sin especificaciones. Agrega filas o elige una plantilla.' }));
+      arr.forEach((r, i) => {
+        const lab = h('input', { class: 'input specs__lab', value: r.label || '', maxlength: 40, list: listId, placeholder: 'Ej.: Batería', 'aria-label': 'Característica ' + (i + 1), autocomplete: 'off' });
+        const val = h('input', { class: 'input specs__val', value: r.value || '', maxlength: 160, placeholder: 'Ej.: 85 %', 'aria-label': 'Valor ' + (i + 1), autocomplete: 'off' });
+        lab.addEventListener('input', () => { r.label = lab.value; changed(); });
+        val.addEventListener('input', () => { r.value = val.value; changed(); });
+        const err = h('div', { class: 'field__error', hidden: true });
+        const row = h('div', { class: 'specs__row' }, lab, val, moveBtns(arr, i, draw),
+          h('button', { type: 'button', class: 'btn btn--ghost btn--icon btn--sm', 'aria-label': 'Eliminar fila', onclick: () => { arr.splice(i, 1); changed(); draw(); } }, icon('trash')));
+        list.append(h('div', { class: 'specs__item' }, row, err));
+        reg.set(path.concat(i).join('.'), { wrap: row.parentElement, err });
+      });
+      add.disabled = f.max && arr.length >= f.max;
+    }
+    draw();
+    return wrapField(f, path, h('div', null, list, h('div', { class: 'row' }, add, tpl, f.max ? h('span', { class: 'small muted', text: 'Máximo ' + f.max }) : null)));
   }
 
   function listField(f, obj, path) {
@@ -253,6 +302,14 @@ export function createForm(fields, initial, opts = {}) {
     if (f.t === 'list') {
       (v || []).forEach((it, i) => f.fields.forEach(sf => check(sf, it[sf.k], path.concat(i, sf.k), errs)));
       if (f.max && (v || []).length > f.max) add(`Máximo ${f.max} elementos.`);
+      return;
+    }
+    if (f.t === 'specs') {
+      (v || []).forEach((r, i) => {
+        const l = String(r.label || '').trim(), val = String(r.value || '').trim();
+        if (l === '' && val !== '') add('Escribe el nombre de esta especificación (ej.: «Batería»).', path.concat(i).join('.'));
+      });
+      if (f.max && (v || []).length > f.max) add('Máximo ' + f.max + ' filas.');
       return;
     }
     if (f.t === 'strings') {

@@ -190,7 +190,7 @@ export async function productEditView(ctx, id) {
     { k: 'name', t: 'text', label: 'Nombre', max: 120, required: true },
     { k: 'category_id', t: 'select', label: 'Categoría', options: cats.map(c => [c.id, `${c.icon} ${c.name}`]) },
     { k: 'brand', t: 'text', label: 'Marca o etiqueta superior', max: 60, help: 'Vacío = se muestra el nombre de la categoría (ej.: “Cargador”).' },
-    { k: 'detail', t: 'textarea', label: 'Descripción corta', max: 300 },
+    { k: 'detail', t: 'textarea', label: 'Descripción', max: 2000, help: 'La tarjeta muestra las primeras líneas y la ficha del producto, todo. Si el producto no tiene tabla de especificaciones, las líneas escritas como «Nombre: valor» (ej.: «Garantía: 6 meses») se muestran como tabla.' },
     { k: 'price', t: 'number', label: 'Precio (COP)', money: true, help: 'Sin puntos. Vacío = se muestra “Consultar precio”.' },
     { k: 'price_max', t: 'number', label: 'Precio máximo (opcional)', money: true, help: 'Para rangos, como $10.000–$20.000.' },
     { k: 'promo_price', t: 'number', label: 'Precio promocional (opcional)', money: true, help: 'Se muestra el precio normal tachado.' },
@@ -200,7 +200,8 @@ export async function productEditView(ctx, id) {
     { k: 'image_url', t: 'image', label: 'Imagen principal', help: 'Ideal: foto cuadrada (1:1), por ejemplo 1200 × 1200 px, con el producto al centro. En el catálogo la foto llena todo el recuadro; si no es cuadrada se recorta un poco por los bordes. Sin imagen se muestra el ícono de la categoría.' },
     { k: 'image_alt', t: 'text', label: 'Texto alternativo de la imagen', max: 160 },
     { k: 'gallery', t: 'images', label: 'Galería (hasta 8 imágenes)', max: 8, help: 'Se ven al abrir el producto, donde se pueden ampliar. En computador, la primera de la galería aparece al pasar el cursor por la tarjeta.' },
-    { k: 'features', t: 'strings', label: 'Características', max: 12, itemMax: 100 },
+    { k: 'specs', t: 'specs', label: 'Especificaciones', max: 24, help: 'Se muestran como tabla al abrir el producto: almacenamiento, color, batería, estado, garantía… Elige una plantilla para no empezar de cero; las filas que dejes sin valor no se publican.' },
+    { k: 'features', t: 'strings', label: 'Características destacadas', max: 12, itemMax: 100, help: 'Frases cortas que se muestran con ✓ en la ficha (ej.: «Face ID funcionando»).' },
     { k: 'cta_label', t: 'text', label: 'Texto del botón', max: 30, help: 'Vacío = “Consultar”.' },
     { k: 'cta_message', t: 'textarea', label: 'Mensaje de WhatsApp', max: 300, help: 'Vacío = el mensaje general del catálogo con el nombre del producto.' },
     { k: 'cta_url', t: 'link', label: 'Enlace en vez de WhatsApp (opcional)' }

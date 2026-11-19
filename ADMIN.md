@@ -63,7 +63,12 @@ La clave se borra al usarla. Nadie puede registrarse desde internet: solo quien 
   - Los destacados van primero y los agotados al final.
   - El botón de cada producto es verde, con el ícono de WhatsApp.
   - La ficha muestra cuánto se ahorra, las garantías («Garantía en cada compra», etc.) y, en el celular, el precio y el botón quedan fijos al pie.
-  - Todo se edita en **Catálogo (textos)**. El mensaje de WhatsApp acepta {producto}, {categoria} y {precio}.
+  - Todo se edita en **Catálogo (textos)**. El mensaje de WhatsApp acepta {producto}, {categoria}, {precio} y {enlace}.
+- **Ficha del producto** (al tocar la foto o el nombre):
+  - **Especificaciones** en tabla. Se llenan en Productos → *Especificaciones*, con plantillas (Celular, Accesorio, Audífonos, Portátil, Televisor); las filas sin valor no se publican. Si el producto no tiene tabla, las líneas de la descripción escritas como «Nombre: valor» se muestran como tabla.
+  - Descripción (hasta 2000 caracteres) y características destacadas en secciones plegables.
+  - Botón **Compartir** y **«También te puede interesar»** (misma categoría primero).
+  - Cada producto tiene su enlace: `voltstoreco.com/#producto/nombre-xxxxxxxx` abre directamente su ficha.
 - **Fotos de productos:**
   - **Formato ideal:** cuadradas (1:1), por ejemplo 1200 × 1200 px, con el producto al centro.
   - **En el catálogo:** la foto llena todo el recuadro. Si no es cuadrada, se recorta un poco por los bordes, sin franjas vacías.

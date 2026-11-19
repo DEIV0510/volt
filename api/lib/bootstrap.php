@@ -107,7 +107,23 @@ function tx(callable $fn): mixed {
 }
 
 function migrate(PDO $pdo): void {
-  if ((int)$pdo->query('PRAGMA user_version')->fetchColumn() >= 1) return;
+  $v = (int)$pdo->query('PRAGMA user_version')->fetchColumn();
+  if ($v < 1) migrate_v1($pdo);
+  if ($v < 2) migrate_v2($pdo);
+}
+// v2: especificaciones de cada producto (la tabla «Característica / valor» de la ficha).
+function migrate_v2(PDO $pdo): void {
+  $pdo->exec('BEGIN IMMEDIATE');   // si dos visitas llegan a la vez, la segunda espera y ya encuentra la columna
+  try {
+    if ((int)$pdo->query('PRAGMA user_version')->fetchColumn() < 2) {
+      $cols = array_column($pdo->query('PRAGMA table_info(products)')->fetchAll(PDO::FETCH_ASSOC), 'name');
+      if (!in_array('specs', $cols, true)) $pdo->exec("ALTER TABLE products ADD COLUMN specs TEXT NOT NULL DEFAULT '[]'");
+      $pdo->exec('PRAGMA user_version = 2');
+    }
+    $pdo->exec('COMMIT');
+  } catch (Throwable $e) { $pdo->exec('ROLLBACK'); throw $e; }
+}
+function migrate_v1(PDO $pdo): void {
   $pdo->beginTransaction();
   try {
     $pdo->exec(<<<SQL
