@@ -1,7 +1,7 @@
 /* Catálogo: productos y categorías. Los cambios de productos se ven en la
    página al guardar (como antes con la hoja); "Visible" permite preparar sin mostrar. */
 import { api } from './api.js';
-import { h, icon, clear, toast, modal, confirmDialog, money, fmtRel, loadingBox, notice, busy, deepEqual, clone, imgUrl } from './ui.js';
+import { h, icon, clear, fill, toast, modal, confirmDialog, money, fmtRel, loadingBox, notice, busy, deepEqual, clone, imgUrl } from './ui.js';
 import { createForm } from './forms.js';
 import { pickMedia } from './media.js';
 
@@ -212,7 +212,7 @@ export async function productEditView(ctx, id) {
   const dirty = () => !deepEqual(cleanRow(form.state), cleanRow(saved));
   function refresh() {
     btnSave.disabled = !dirty() && !isNew;
-    clear(status).append(dirty() ? h('span', { class: 'badge badge--warn', text: 'Cambios sin guardar' }) :
+    fill(status, dirty() ? h('span', { class: 'badge badge--warn', text: 'Cambios sin guardar' }) :
       prod ? h('span', null, 'Última edición ', h('strong', { text: fmtRel(prod.updated_at) }), prod.updated_by_email ? ` por ${prod.updated_by_email}` : '') : null);
   }
   function cleanRow(s) {

@@ -328,7 +328,7 @@
         (isIg ? ICONS.ig + ' ' : '') + esc(c.buttonLabel) + '</a>' : ''));
     setHTML($('.gallery__grid', s), (c.images || []).map(function (x) {
       var size = x.size === 'tall' ? ' g-item--tall' : x.size === 'wide' ? ' g-item--wide' : '';
-      return '<figure class="g-item' + size + ' reveal"><img src="' + esc(src(x.image)) + '" alt="' + esc(x.alt) + '" loading="lazy" /></figure>';
+      return '<figure class="g-item' + size + ' reveal"><img src="' + esc(src(x.image)) + '" alt="' + esc(x.alt) + '" width="800" height="800" loading="lazy" decoding="async" /></figure>';
     }).join(''));
   }
 
@@ -439,13 +439,15 @@
   function perPage() { return window.innerWidth > 980 ? 8 : 6; }
   var HOVER = !!(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches);
   function catByCode(code) { for (var i = 0; i < CAT.cats.length; i++) if (CAT.cats[i].code === code) return CAT.cats[i]; return {}; }
-  function priceHTML(x, cfg) {
+  function onPromo(x) { return x.price != null && x.promo != null && x.promo < x.price; }
+  function priceHTML(x, cfg, save) {
     if (x.price == null) return '<span class="model__price model__price--ask">' + esc(cfg.askPriceLabel || 'Consultar precio') + '</span>';
-    if (x.promo != null && x.promo < x.price) {
+    if (onPromo(x)) {
       // En oferta se compara con el precio normal más bajo (no con el rango), en dos líneas.
       var off = Math.round((1 - x.promo / x.price) * 100);
       return '<span class="model__price model__price--promo"><s class="model__old">' + money(x.price) + '</s>' +
-        '<span class="model__now">' + money(x.promo) + (off >= 1 ? ' <span class="model__off">-' + off + '%</span>' : '') + '</span></span>';
+        '<span class="model__now">' + money(x.promo) + (off >= 1 ? ' <span class="model__off">-' + off + '%</span>' : '') + '</span>' +
+        (save ? '<span class="model__save">Ahorras ' + money(x.price - x.promo) + '</span>' : '') + '</span>';
     }
     var max = x.price_max && x.price_max > x.price ? x.price_max : 0;
     return '<span class="model__price">' + money(x.price) + (max ? '<span class="model__max"> – ' + money(max) + '</span>' : '') + '</span>';
@@ -453,9 +455,16 @@
   function productLink(x, cfg) {
     var cat = catByCode(x.c);
     if (x.url) return linkAttrs(x.url);
+    var price = x.price == null ? '' : money(onPromo(x) ? x.promo : x.price);
     var msg = String(x.msg || cfg.productMessage || 'Hola, quiero consultar disponibilidad y precio de: {producto} ({categoria}) en VOLT STORE CO.')
-      .split('{producto}').join(x.n).split('{categoria}').join(cat.singular || '');
+      .split('{producto}').join(x.n).split('{categoria}').join(cat.singular || '').split('{precio}').join(price);
     return 'href="' + esc(wa(msg)) + '" target="_blank" rel="noopener"';
+  }
+  // Botón de compra: verde con el ícono de WhatsApp si abre WhatsApp; amarillo si lleva a otro enlace.
+  function buyBtn(x, cfg, extra) {
+    var isWa = !x.url || /^https:\/\/(wa\.me|api\.whatsapp\.com)\//.test(x.url);
+    return '<a class="btn ' + (isWa ? 'btn--wa' : 'btn--volt') + (extra || '') + '" ' + productLink(x, cfg) + '>' + (isWa ? ICONS.wa : '') +
+      '<span>' + esc(x.cta || cfg.buttonLabel || 'Consultar') + '</span></a>';
   }
   function card(x, n, cfg) {
     var cat = catByCode(x.c);
@@ -467,33 +476,36 @@
     var zoom = x.img || (x.gallery && x.gallery.length) || (x.features && x.features.length);
     // La foto llena todo el recuadro cuadrado. Con mouse, si hay galería, al pasar el cursor se ve la segunda foto.
     var alt2 = HOVER && x.img ? (x.gallery || []).filter(function (u) { return u && u !== x.img && src(u); })[0] : '';
-    var media = x.img ? '<img class="model__img" src="' + esc(src(x.img)) + '" alt="' + esc(x.alt || x.n) + '" loading="lazy" />' +
-      (alt2 ? '<img class="model__img model__img--alt" src="' + esc(src(alt2)) + '" alt="" aria-hidden="true" loading="lazy" />' : '')
+    var media = x.img ? '<img class="model__img" src="' + esc(src(x.img)) + '" alt="' + esc(x.alt || x.n) + '" width="600" height="600" loading="lazy" decoding="async" />' +
+      (alt2 ? '<img class="model__img model__img--alt" src="' + esc(src(alt2)) + '" alt="" aria-hidden="true" width="600" height="600" loading="lazy" decoding="async" />' : '')
       : '<span class="model__icon">' + esc(cat.icon || '🛒') + '</span>';
     return '<article class="model' + (x.f ? ' model--featured' : '') + '" data-c="' + esc(x.c) + '"><span class="model__num">' + n + '</span>' + stk +
       '<div class="model__media' + (x.img ? ' has-img' : '') + (zoom ? ' is-zoom" role="button" tabindex="0" aria-label="Ver detalles de ' + esc(x.n) + '" data-pid="' + esc(x.id) : '') + '">' + media +
-      (x.f ? '<span class="model__feat">' + esc(cfg.featuredLabel || 'Destacado') + '</span>' : '') + '</div>' +
+      (x.f || onPromo(x) ? '<span class="model__tags">' + (onPromo(x) ? '<span class="model__promo">' + esc(cfg.promoLabel || 'Oferta') + '</span>' : '') +
+        (x.f ? '<span class="model__feat">' + esc(cfg.featuredLabel || 'Destacado') + '</span>' : '') + '</span>' : '') + '</div>' +
       '<div class="model__body"><span class="model__brand">' + esc(x.b || cat.singular || '') + '</span><h3>' + esc(x.n) + '</h3>' +
-      (x.d ? '<p class="model__detail">' + esc(x.d) + '</p>' : '') + priceHTML(x, cfg) +
-      '<a class="btn btn--soft" ' + productLink(x, cfg) + '>' + esc(x.cta || cfg.buttonLabel || 'Consultar') + '</a></div></article>';
+      (x.d ? '<p class="model__detail">' + esc(x.d) + '</p>' : '') + priceHTML(x, cfg) + buyBtn(x, cfg) + '</div></article>';
   }
   function buildCat(cfg, cats, products) {
     var cont = document.querySelector('#catalogo .container'); if (!cont) return;
-    // Destacados primero (el orden estable conserva el resto tal como viene del panel).
-    CAT.P = (products || []).slice().sort(function (a, b) { return (b.f ? 1 : 0) - (a.f ? 1 : 0); });
+    // Destacados primero y agotados al final (el orden estable conserva el resto tal como viene del panel).
+    var rank = function (x) { return (x.f ? 0 : 1) + (x.s != null && x.s <= 0 ? 2 : 0); };
+    CAT.P = (products || []).slice().sort(function (a, b) { return rank(a) - rank(b); });
     CAT.cats = cats || []; CAT.cfg = cfg || {};
-    var present = {}; CAT.P.forEach(function (x) { present[x.c] = 1; });
-    var chips = [['all', cfg.allLabel || 'Todos']].concat(CAT.cats.filter(function (c) { return present[c.code]; }).map(function (c) { return [c.code, c.name]; }));
+    var present = {}; CAT.P.forEach(function (x) { present[x.c] = 1; if (onPromo(x)) present.promo = 1; });
+    // Si hay productos en oferta aparece el filtro «Ofertas», justo después de «Todos».
+    var chips = [['all', cfg.allLabel || 'Todos']].concat(present.promo ? [['promo', cfg.promoFilterLabel || 'Ofertas']] : [])
+      .concat(CAT.cats.filter(function (c) { return present[c.code] && c.code !== 'promo'; }).map(function (c) { return [c.code, c.name]; }));
     if (CAT.brand !== 'all' && !present[CAT.brand]) { CAT.brand = 'all'; CAT.page = 1; }
     cont.innerHTML = '<header class="section__head reveal in" data-volt-cat>' + head(cfg) + '</header>' +
       '<div class="catalog__filters" id="cf2">' + chips.map(function (c) {
-        return '<button class="chip' + (c[0] === CAT.brand ? ' is-active' : '') + '" data-c="' + esc(c[0]) + '">' + esc(c[1]) + '</button>';
+        return '<button class="chip' + (c[0] === CAT.brand ? ' is-active' : '') + (c[0] === 'promo' ? ' chip--promo' : '') + '" data-c="' + esc(c[0]) + '">' + esc(c[1]) + '</button>';
       }).join('') + '</div><div class="catalog__viewport" id="cv2"><div class="catalog__track" id="cg2"></div></div><nav class="catalog__pages" id="cp2" aria-label="Páginas del catálogo"></nav>' +
       (CAT.P.length ? '' : '<p class="catalog__note">El catálogo no está disponible en este momento. <a href="' + esc(wa(cfg.noteMessage)) + '" target="_blank" rel="noopener">Escríbenos por WhatsApp</a> y te ayudamos.</p>') +
       (cfg.noteText || cfg.noteLinkLabel ? '<p class="catalog__note reveal in">' + esc(cfg.noteText) +
         (cfg.noteLinkLabel ? ' <a href="' + esc(wa(cfg.noteMessage)) + '" target="_blank" rel="noopener">' + esc(cfg.noteLinkLabel) + '</a>.' : '') + '</p>' : '');
     var grid = document.getElementById('cg2'), cf = document.getElementById('cf2'), cp = document.getElementById('cp2'), vp = document.getElementById('cv2');
-    function listF() { return CAT.P.filter(function (x) { return CAT.brand === 'all' || x.c === CAT.brand; }); }
+    function listF() { return CAT.P.filter(function (x) { return CAT.brand === 'all' || (CAT.brand === 'promo' ? onPromo(x) : x.c === CAT.brand); }); }
     function vw() { return Math.round(vp.getBoundingClientRect().width) || 1; }
     function pageCount() { return Math.max(1, Math.ceil(listF().length / PS)); }
     function setW() { var w = vw(); var pgs = grid.querySelectorAll('.catpage'); for (var i = 0; i < pgs.length; i++) pgs[i].style.width = w + 'px'; }
@@ -631,6 +643,15 @@
     stage.addEventListener('gesturestart', function (e) { e.preventDefault(); });   // Safari: el pellizco no agranda la página
   }
 
+  // Garantías bajo el botón de compra de la ficha (editables en Catálogo (textos)).
+  var TRUST = ['Garantía en cada compra', 'iPhone a crédito y de contado', 'Tienda física en Convención'];
+  function trustHTML(cfg) {
+    if (cfg.showTrust === false) return '';
+    var items = (cfg.trust || []).filter(function (t) { return String(t || '').trim(); });
+    if (!items.length) items = TRUST;
+    return '<ul class="pmodal__trust">' + items.map(function (t) { return '<li>' + ICONS.bolt(14) + '<span>' + esc(t) + '</span></li>'; }).join('') + '</ul>';
+  }
+
   /* ---------- detalle de producto (imagen, galería, características) ---------- */
   function openProduct(id) {
     var x = CAT.P.filter(function (p) { return p.id === id; })[0]; if (!x) return;
@@ -661,13 +682,13 @@
         (imgs.length > 1 ? '<button class="pmodal__nav pmodal__nav--prev" data-d="-1" aria-label="Foto anterior">‹</button><button class="pmodal__nav pmodal__nav--next" data-d="1" aria-label="Foto siguiente">›</button>' +
           '<span class="pmodal__count" aria-live="polite"></span>' : '') + '</div>' +
         (imgs.length > 1 ? '<div class="pmodal__thumbs">' + imgs.map(function (u, k) {
-          return '<button class="pmodal__thumb" data-i="' + k + '" aria-label="Ver foto ' + (k + 1) + '"><img src="' + esc(src(u)) + '" alt="" loading="lazy" /></button>';
+          return '<button class="pmodal__thumb" data-i="' + k + '" aria-label="Ver foto ' + (k + 1) + '"><img src="' + esc(src(u)) + '" alt="" width="96" height="96" loading="lazy" /></button>';
         }).join('') + '</div>' : '') + '</div>' : '') +
       '<div class="pmodal__body">' + badges + '<span class="model__brand">' + esc(x.b || cat.singular || '') + '</span><h3>' + esc(x.n) + '</h3>' +
       (x.d ? '<p class="model__detail">' + esc(x.d) + '</p>' : '') +
       ((x.features || []).length ? '<ul class="ticks">' + x.features.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul>' : '') +
-      priceHTML(x, CAT.cfg) + '<a class="btn ' + (x.url && !/^https:\/\/(wa\.me|api\.whatsapp\.com)\//.test(x.url) ? 'btn--volt' : 'btn--wa') + ' btn--block" ' +
-      productLink(x, CAT.cfg) + '>' + esc(x.cta || CAT.cfg.buttonLabel || 'Consultar') + '</a></div></div>';
+      // Precio y botón juntos; en el celular quedan fijos al pie de la ficha mientras se lee.
+      '<div class="pmodal__buy">' + priceHTML(x, cfg, true) + buyBtn(x, cfg, ' btn--block') + '</div>' + trustHTML(cfg) + '</div></div>';
     var stage = m.querySelector('.pmodal__stage'), pimg = m.querySelector('.pmodal__img');
     if (stage) {
       // El recuadro toma la forma de la foto principal (entre 3:4 vertical y 4:3 horizontal) para que no queden franjas vacías.
@@ -739,6 +760,7 @@
   function fetchSnapshot() {
     return timeout(fetch(BASE + 'data/site.json', { cache: 'no-store' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }), 6000);
   }
+  function readInline() { var el = document.getElementById('volt-data'); try { return el ? JSON.parse(el.textContent) : null; } catch (e) { return null; } }
   function readCache() { try { return JSON.parse(localStorage.getItem(CACHE_KEY) || 'null'); } catch (e) { return null; } }
   function writeCache(s) { try { localStorage.setItem(CACHE_KEY, JSON.stringify(s)); } catch (e) { /* almacenamiento no disponible */ } }
 
@@ -763,19 +785,23 @@
     loader.classList.add('is-hidden');
     document.body.style.overflow = '';
   }
-  if (loader) {
+  // Breve y solo al entrar por primera vez en la visita: el cliente ve los productos enseguida.
+  var seenLoader = false;
+  try { seenLoader = sessionStorage.getItem('volt-loader') === '1'; sessionStorage.setItem('volt-loader', '1'); } catch (e) { /* sin almacenamiento */ }
+  if (loader && (seenLoader || PREVIEW)) hideLoader();
+  if (loader && !loaderDone) {
     var fill = document.getElementById('loaderFill'), pctEl = document.getElementById('loaderPct');
-    var DURATION = 2100, startTs = null;
+    var DURATION = 650, startTs = null;
     var tick = function (ts) {
       if (loaderDone) return;
       if (startTs === null) startTs = ts;
       var t = Math.min(1, (ts - startTs) / DURATION), pct = Math.round((1 - Math.pow(1 - t, 2)) * 100);
       if (pctEl) pctEl.textContent = pct + '%';
       if (fill) fill.style.width = pct + '%';
-      if (t < 1) requestAnimationFrame(tick); else setTimeout(hideLoader, 180);
+      if (t < 1) requestAnimationFrame(tick); else setTimeout(hideLoader, 60);
     };
     requestAnimationFrame(tick);
-    setTimeout(hideLoader, 5000); // failsafe
+    setTimeout(hideLoader, 2000); // por si la pestaña está en segundo plano y no anima
   }
 
   /* ---------- header al hacer scroll ---------- */
@@ -878,8 +904,9 @@
     var parentWin = window.opener || (window.parent !== window ? window.parent : null);
     if (parentWin) parentWin.postMessage({ type: 'volt:preview-ready' }, location.origin);
   }
-  var cached = !PREVIEW && readCache();
-  if (cached) apply(cached);       // muestra al instante la última versión conocida
+  // Lo publicado viene dentro del HTML (index.php); si no está, se usa la última versión guardada en este navegador.
+  var cached = !PREVIEW && (readInline() || readCache());
+  if (cached) apply(cached);       // la página aparece de inmediato con su contenido real
   load();
   if (!PREVIEW) setInterval(load, REFRESH_MS);
 })();

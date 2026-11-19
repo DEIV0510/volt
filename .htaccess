@@ -1,6 +1,6 @@
 # =====================================================================
 # VOLT STORE CO — Hostinger (LiteSpeed/Apache): página estática + panel con API en PHP (/api)
-# Lo publica GitHub Actions por FTP (.github/workflows/publicar-hostinger.yml) desde DEIV0510/volt, rama main.
+# Se actualiza solo desde GitHub (DEIV0510/volt, rama main): ver api/lib/deploy.php y .github/workflows/publicar-hostinger.yml.
 # Si cambias las cabeceras de seguridad, refléjalas también en scripts/dev-router.php (desarrollo).
 # =====================================================================
 
@@ -48,12 +48,17 @@ ErrorDocument 404 /404.html
   <FilesMatch "\.(webp|png|jpe?g|gif|svg|ico)$">
     Header set Cache-Control "public, max-age=2592000"
   </FilesMatch>
+  # Fuentes: un año (no cambian; si cambiaran, cambia el nombre del archivo).
+  <FilesMatch "\.woff2$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
 </IfModule>
 
 <IfModule mod_mime.c>
   AddType application/javascript .js .mjs
   AddType image/webp .webp
   AddType image/svg+xml .svg
+  AddType font/woff2 .woff2
   AddCharset utf-8 .html .css .js .json .xml .txt
 </IfModule>
 

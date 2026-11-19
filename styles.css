@@ -1,6 +1,9 @@
 /* =========================================================
    VOLT STORE CO — Estilos (tema claro premium + acentos oscuros)
    ========================================================= */
+/* Fuentes alojadas en el sitio (archivos variables, alfabeto latino con tildes y ñ) */
+@font-face{font-family:'Sora';font-style:normal;font-weight:100 800;font-display:swap;src:url(fonts/sora-latin.woff2) format('woff2')}
+@font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:swap;src:url(fonts/inter-latin.woff2) format('woff2')}
 :root{
   --bg:#FFFFFF;
   --bg-soft:#F3F4F7;
@@ -108,7 +111,7 @@ section{position:relative}
   position:fixed;inset:0;z-index:9999;overflow:hidden;
   display:flex;align-items:center;justify-content:center;
   background:radial-gradient(circle at 50% 42%,#171823 0%,#0a0a10 72%);
-  transition:opacity .6s var(--ease),visibility .6s;
+  transition:opacity .35s var(--ease),visibility .35s;
 }
 .loader.is-hidden{opacity:0;visibility:hidden}
 .loader__fx{position:absolute;inset:0;overflow:hidden;pointer-events:none}
@@ -464,6 +467,10 @@ section{position:relative}
 /* ===== REVEAL ===== */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
 .reveal.in{opacity:1;transform:none}
+/* Portada: visible desde el primer momento (sin esperar al script), solo con un leve deslizamiento */
+.hero-in{animation:heroIn .7s var(--ease) both}
+.hero__media.hero-in{animation-delay:.08s}
+@keyframes heroIn{from{transform:translateY(18px)}to{transform:none}}
 
 /* =========================================================
    RESPONSIVE
@@ -718,3 +725,35 @@ html.volt-sp-wide .section{padding:120px 0}
 /* Esquinas «suaves»: botones, filtros y etiquetas dejan de ser píldoras */
 html.volt-r-soft .btn,html.volt-r-soft .chip,html.volt-r-soft .kicker,html.volt-r-soft .hero__badge,html.volt-r-soft .tag,
 html.volt-r-soft .soon,html.volt-r-soft .contact__socials a,html.volt-r-soft .pmodal__count,html.volt-r-soft .page-btn{border-radius:10px}
+
+/* ===== Catálogo comercial: oferta, filtro de ofertas, botón de compra y ficha con compra fija ===== */
+.model__tags{position:absolute;left:10px;bottom:10px;z-index:3;display:flex;flex-wrap:wrap;gap:5px;max-width:calc(100% - 20px);pointer-events:none}
+.model__tags .model__feat{position:static;max-width:100%}
+.model__promo{font-family:var(--ff-head);font-weight:800;font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;line-height:1;
+  padding:5px 7px;color:#fff;background:#E0312B;box-shadow:0 6px 14px rgba(224,49,43,.28)}
+.chip--promo{color:#C62828;border-color:rgba(224,49,43,.35)}
+.chip--promo::before{content:"🔥";margin-right:.35em}
+.chip--promo.is-active{background:#E0312B;color:#fff;box-shadow:0 10px 24px rgba(224,49,43,.30)}
+.model__body .btn--wa,.model__body .btn--volt{font-size:.88rem;padding:.72em 1em;box-shadow:0 8px 20px rgba(37,211,102,.22)}
+.model__body .btn--volt{box-shadow:var(--shadow-volt)}
+.model__body .btn svg{flex:none;width:17px;height:17px}
+.model__save{display:block;margin-top:3px;font-size:.78rem;font-weight:700;color:#1a7a34}
+.pmodal__buy{display:flex;flex-direction:column;gap:12px;margin-top:6px}
+.pmodal__buy .model__price{margin:0}
+.pmodal__trust{list-style:none;margin:6px 0 0;padding:14px 0 0;border-top:1px solid var(--line-2);display:grid;gap:8px}
+.pmodal__trust li{display:flex;align-items:center;gap:9px;font-size:.86rem;color:var(--ink-soft)}
+.pmodal__trust svg{flex:none;width:22px;height:22px;padding:4px;color:var(--volt-ink);background:linear-gradient(135deg,var(--volt),var(--volt-2))}
+html:not(.volt-r-soft):not(.volt-r-round) .pmodal__trust svg{border-radius:0}
+html.volt-r-soft .pmodal__trust svg,html.volt-r-round .pmodal__trust svg{border-radius:50%}
+@media (max-width:620px){
+  .model__tags{left:8px;bottom:8px;gap:4px}
+  .model__promo{font-size:.58rem;padding:4px 6px}
+  .model__body .btn--wa,.model__body .btn--volt{font-size:.8rem;padding:.68em .5em;gap:.4em}
+  .model__body .btn svg{width:15px;height:15px}
+  /* En el celular la compra queda fija al pie de la ficha mientras se lee la descripción */
+  .pmodal__buy{position:sticky;bottom:0;z-index:2;margin:6px -20px 0;padding:12px 20px calc(14px + env(safe-area-inset-bottom));
+    background:var(--surface);border-top:1px solid var(--line-2);box-shadow:0 -12px 24px rgba(20,22,45,.08);
+    flex-direction:row;align-items:center;gap:12px}
+  .pmodal__buy .model__price{flex:1;min-width:0;font-size:1.15rem}
+  .pmodal__buy .btn--block{flex:0 0 52%;width:auto;padding:.85em .8em}
+}

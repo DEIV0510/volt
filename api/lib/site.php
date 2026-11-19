@@ -67,6 +67,16 @@ function apply_seo(string $html): string {
   return $html;
 }
 
+/* Lo publicado va dentro del HTML como datos (no se ejecuta, así que la CSP lo permite): la página
+   se dibuja con el contenido real desde el primer momento, sin esperar a /api ni cambiar de golpe. */
+function inline_public(string $html): string {
+  $json = (string)file_get_contents(public_file());
+  if ($json === '' || !str_contains($html, '<script src="script.js"></script>')) return $html;
+  // «<» solo puede aparecer dentro de textos JSON; así nadie puede cerrar la etiqueta desde el contenido.
+  $tag = '<script type="application/json" id="volt-data">' . str_replace('<', '<', $json) . '</script>';
+  return str_replace('<script src="script.js"></script>', $tag . "\n  " . '<script src="script.js"></script>', $html);
+}
+
 /* Resumen del panel. */
 function overview(): array {
   $pending = array_column(rows('SELECT key FROM content WHERE published IS NULL OR draft <> published ORDER BY key'), 'key');
@@ -82,6 +92,6 @@ function overview(): array {
     'pending' => $pending,
     'last_publish' => $last,
     'code' => deploy_info(),
-    'recent' => rows('SELECT at, user_email, action, entity, label FROM audit_log ORDER BY id DESC LIMIT 8'),
+    'recent' => rows('SELECT at, user_email, action, entity, entity_id, label FROM audit_log ORDER BY id DESC LIMIT 8'),
   ];
 }

@@ -25,6 +25,8 @@ function append(el, children) {
   }
 }
 export function clear(el) { while (el.firstChild) el.removeChild(el.firstChild); return el; }
+// Vacía y vuelve a llenar ignorando null/false (el append nativo los escribiría como texto «null»).
+export function fill(el, ...children) { clear(el); append(el, children); return el; }
 
 /* ---------- Íconos (trazos fijos del propio panel) ---------- */
 const P = {

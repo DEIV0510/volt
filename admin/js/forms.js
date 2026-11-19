@@ -29,6 +29,9 @@ export function defaultFor(f) {
   }
 }
 export function newItem(fields) { const o = {}; fields.forEach(f => { o[f.k] = defaultFor(f); }); return o; }
+// Completa con sus valores por defecto los campos que aún no existen en lo guardado (p. ej. opciones nuevas),
+// exactamente como lo hace el formulario al dibujarse.
+export function withDefaults(fields, obj) { return clone(createForm(fields, obj || {}).state); }
 
 export function createForm(fields, initial, opts = {}) {
   const state = clone(initial) || {};

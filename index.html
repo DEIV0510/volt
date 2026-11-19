@@ -20,9 +20,9 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta property="og:locale" content="es_CO" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Fuentes en el propio sitio (sin pedirlas a Google): cargan antes y no bloquean la página -->
+  <link rel="preload" href="fonts/sora-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="styles.css" />
 
   <!-- SEO: datos estructurados -->
@@ -126,7 +126,7 @@
         <div class="orb orb--2"></div>
       </div>
       <div class="container hero__inner">
-        <div class="hero__content reveal">
+        <div class="hero__content hero-in">
           <span class="eyebrow"><i class="dot"></i> Convención, Norte de Santander</span>
           <h1>Tecnología, celulares y servicio técnico en <span class="hl">Convención</span></h1>
           <p class="hero__sub">En VOLT STORE CO encuentras celulares, iPhone, accesorios, portátiles, televisores y reparación de equipos con atención confiable y rápida.</p>
@@ -141,9 +141,9 @@
             <li><strong>Servicio</strong><span>Técnico confiable</span></li>
           </ul>
         </div>
-        <div class="hero__media reveal">
+        <div class="hero__media hero-in">
           <div class="hero__frame">
-            <img src="img/cases.webp" alt="iPhones con accesorios MagSafe disponibles en VOLT STORE CO" width="900" height="1100" loading="eager" />
+            <img src="img/cases.webp" alt="iPhones con accesorios MagSafe disponibles en VOLT STORE CO" width="900" height="1100" loading="eager" fetchpriority="high" />
             <div class="hero__chip hero__chip--top"><svg viewBox="0 0 24 24" width="15" height="15"><path fill="currentColor" d="M13 2 L4 14 H11 L9 22 L20 9 H13 Z"/></svg> Energía VOLT</div>
             <div class="hero__chip hero__chip--bottom">📍 Atención personalizada</div>
           </div>
@@ -324,11 +324,11 @@
           </a>
         </header>
         <div class="gallery__grid">
-          <figure class="g-item g-item--tall reveal"><img src="img/cases.webp" alt="iPhones con accesorios MagSafe" loading="lazy" /></figure>
-          <figure class="g-item reveal"><img src="img/products.webp" alt="iPhone 14 y equipos disponibles" loading="lazy" /></figure>
-          <figure class="g-item reveal"><img src="img/store.webp" alt="Vitrina con celulares y accesorios" loading="lazy" /></figure>
-          <figure class="g-item reveal"><img src="img/team.webp" alt="Equipo de VOLT STORE CO atendiendo" loading="lazy" /></figure>
-          <figure class="g-item g-item--wide reveal"><img src="img/taller.webp" alt="Servicio técnico de VOLT STORE CO" loading="lazy" /></figure>
+          <figure class="g-item g-item--tall reveal"><img src="img/cases.webp" alt="iPhones con accesorios MagSafe" width="800" height="800" loading="lazy" /></figure>
+          <figure class="g-item reveal"><img src="img/products.webp" alt="iPhone 14 y equipos disponibles" width="800" height="800" loading="lazy" /></figure>
+          <figure class="g-item reveal"><img src="img/store.webp" alt="Vitrina con celulares y accesorios" width="800" height="800" loading="lazy" /></figure>
+          <figure class="g-item reveal"><img src="img/team.webp" alt="Equipo de VOLT STORE CO atendiendo" width="800" height="800" loading="lazy" /></figure>
+          <figure class="g-item g-item--wide reveal"><img src="img/taller.webp" alt="Servicio técnico de VOLT STORE CO" width="800" height="800" loading="lazy" /></figure>
         </div>
       </div>
     </section>

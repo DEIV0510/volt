@@ -1,9 +1,9 @@
 /* Editor de contenido: borrador → vista previa → publicar, con control de
    ediciones simultáneas, validación y aviso de cambios sin guardar. */
 import { api } from './api.js';
-import { h, icon, clear, toast, modal, confirmDialog, fmtRel, fmtDate, loadingBox, notice, busy, deepEqual, clone, debounce } from './ui.js';
+import { h, icon, clear, fill, toast, modal, confirmDialog, fmtRel, fmtDate, loadingBox, notice, busy, deepEqual, clone, debounce } from './ui.js';
 import { CONTENT, SECTION_IDS, SECTION_NAMES } from './schema.js';
-import { createForm } from './forms.js';
+import { createForm, withDefaults } from './forms.js';
 import { pickMedia } from './media.js';
 import { previewPanel, invalidatePreview, openPreviewTab } from './preview.js';
 
@@ -52,6 +52,11 @@ export async function contentView(ctx, key) {
   let published = pubRow ? pubRow.data : null;
   if (key === 'theme') saved = { ...THEME_DEFAULT, ...saved };
   if (key === 'layout') saved = normalizeLayout(saved);
+  // Así abrir una sección que todavía no tiene una opción nueva no la marca como «cambios sin guardar».
+  if (spec.special !== 'layout') {
+    saved = withDefaults(spec.fields, saved);
+    if (published) published = withDefaults(spec.fields, key === 'theme' ? { ...THEME_DEFAULT, ...published } : published);
+  }
 
   let form, preview = null;
   const statusEl = h('div', { class: 'actionbar__status' });
@@ -72,7 +77,7 @@ export async function contentView(ctx, key) {
 
   function refresh() {
     const d = dirty(), p = pending();
-    clear(badges).append(
+    fill(badges,
       d ? h('span', { class: 'badge badge--warn', text: 'Cambios sin guardar' }) : null,
       !d && p ? h('span', { class: 'badge badge--info', text: 'Borrador sin publicar' }) : null,
       !d && !p ? h('span', { class: 'badge badge--ok', text: 'Publicado' }) : null);
@@ -80,7 +85,7 @@ export async function contentView(ctx, key) {
     btnRevert.hidden = !d;
     btnDiscard.hidden = d || !p || !published;
     btnPublish.disabled = !d && !p;
-    clear(statusEl).append(
+    fill(statusEl,
       draftRow && draftRow.updated_at ? h('span', null, 'Última edición ', h('strong', { text: fmtRel(draftRow.updated_at) }),
         draftRow.updated_by_email ? ` por ${draftRow.updated_by_email}` : '') : null,
       pubRow && pubRow.published_at ? h('span', null, ' · Publicado ', h('strong', { text: fmtRel(pubRow.published_at) })) : null);

@@ -19,7 +19,7 @@ voltstoreco.com  ◀── lee ── /api/?a=public          uploads/          
 1. Editas una sección → **Guardar borrador**. Los visitantes todavía no lo ven.
 2. **Vista previa** muestra la página real con tus cambios, en vivo mientras escribes.
 3. **Publicar** pasa el borrador a lo publicado en una sola transacción, guarda una versión y hace una copia automática.
-4. La página lee lo publicado al cargar y cada 3 minutos. La portada (`index.php`) incluye en el HTML el título, la descripción y la imagen del SEO publicado, que es lo que leen Google, WhatsApp y Facebook.
+4. La portada (`index.php`) entrega el HTML con lo publicado ya incluido: el SEO (título, descripción e imagen, que es lo que leen Google, WhatsApp y Facebook) y todo el contenido como datos, así la página aparece de inmediato y sin saltos. Después revisa cambios cada 3 minutos.
 
 Los **productos y categorías** se aplican al guardar, como antes con la hoja. Para preparar un producto sin mostrarlo, desactiva «Visible». La hoja de Google ya no se usa: los 234 productos se migraron con sus precios, stock y orden (`api/seed/`).
 
@@ -58,6 +58,12 @@ La clave se borra al usarla. Nadie puede registrarse desde internet: solo quien 
 - Se guardan en `uploads/`. Esa carpeta no ejecuta PHP ni scripts (`.htaccess` propio).
 - **No se puede borrar una imagen en uso**: el servidor lo impide e indica dónde se usa. **Reemplazar** cambia la imagen en todo el contenido (en borrador) y en los productos.
 - Las imágenes originales del sitio (`img/`) aparecen como «Original» y no se pueden borrar desde el panel.
+- **Catálogo comercial:**
+  - Los productos con precio de oferta llevan la etiqueta «Oferta» sobre la foto, y aparece solo el filtro «🔥 Ofertas».
+  - Los destacados van primero y los agotados al final.
+  - El botón de cada producto es verde, con el ícono de WhatsApp.
+  - La ficha muestra cuánto se ahorra, las garantías («Garantía en cada compra», etc.) y, en el celular, el precio y el botón quedan fijos al pie.
+  - Todo se edita en **Catálogo (textos)**. El mensaje de WhatsApp acepta {producto}, {categoria} y {precio}.
 - **Fotos de productos:**
   - **Formato ideal:** cuadradas (1:1), por ejemplo 1200 × 1200 px, con el producto al centro.
   - **En el catálogo:** la foto llena todo el recuadro. Si no es cuadrada, se recorta un poco por los bordes, sin franjas vacías.
@@ -117,7 +123,8 @@ node tests/deploy-test.mjs http://localhost:5230 ../volt-data-dev ../volt-deploy
 | Ruta | Qué es |
 |---|---|
 | `index.html`, `styles.css`, `script.js`, `img/` | La página (contenido por defecto, estilos, lectura de lo publicado e interacciones) |
-| `index.php` | Entrega `index.html` con el SEO publicado en el `<head>` |
+| `fonts/` | Tipografías Sora e Inter alojadas en el sitio (cargan más rápido que desde Google) |
+| `index.php` | Entrega `index.html` con el SEO publicado en el `<head>` y lo publicado como datos |
 | `admin/` | Panel (HTML, CSS y módulos JS sin frameworks) |
 | `admin/js/schema.js` | Modelo de contenido: genera los formularios y la validación del servidor |
 | `api/index.php` | API: rutas, permisos, CSRF y errores |
