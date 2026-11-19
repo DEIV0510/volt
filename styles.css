@@ -566,11 +566,12 @@ html.volt-r-soft{--radius:10px;--radius-lg:14px}
 /* ===== Catálogo 3×2 paginado + tarjetas uniformes (conectado a Google Sheets) =====
    Cada "página" es un slide de ancho completo con grid de 3 columnas × 2 filas
    (2 columnas en móvil). Las tarjetas tienen altura fija para verse uniformes. */
-#cv2{overflow-x:auto;padding:0;scroll-padding:0;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
-#cg2{display:flex;gap:0;overflow:visible;align-items:stretch;flex-wrap:nowrap}
-.catpage{flex:0 0 auto;box-sizing:border-box;display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;gap:22px;align-content:start;scroll-snap-align:start}
+#cv2{overflow-x:auto;padding:0;scroll-padding:0;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;transition:height .35s var(--ease)}
+/* Cada página mide lo que sus filas: una página con menos productos no estira sus tarjetas hasta el alto de la más llena */
+#cg2{display:flex;gap:0;overflow:visible;align-items:flex-start;flex-wrap:nowrap}
+.catpage{flex:0 0 auto;box-sizing:border-box;display:grid;grid-template-columns:repeat(4,1fr);gap:22px;align-content:start;scroll-snap-align:start}
 .catpage .model{width:auto !important;min-width:0 !important;max-width:none !important;flex:none !important;scroll-snap-align:none}
-/* Foto cuadrada igual en todas las tarjetas (con foto o con icono); las filas de cada página tienen la misma altura */
+/* Foto cuadrada igual en todas las tarjetas (con foto o con icono); las tarjetas de una misma fila tienen la misma altura */
 .model__media{aspect-ratio:1/1;flex:none;min-height:0}
 @media (max-width:980px){.catpage{grid-template-columns:repeat(3,1fr)}}
 .model__icon{font-size:2.2rem;width:76px;height:76px}

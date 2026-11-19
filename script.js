@@ -510,7 +510,9 @@
       }
       return h + '<button class="page-btn page-btn--nav" data-g="next" aria-label="Siguiente"' + (page === tp ? ' disabled' : '') + '>›</button>';
     }
-    function updPag() { cp.innerHTML = pagHTML(pageCount()); }
+    function updPag() { cp.innerHTML = pagHTML(pageCount()); fitH(); }
+    // El catálogo toma el alto de la página que se está viendo (una última página con menos productos no deja un hueco).
+    function fitH() { var pg = grid.children[CAT.page - 1], h = pg ? pg.offsetHeight : 0; vp.style.height = h ? h + 'px' : ''; }
     function render() {
       PS = perPage();
       var L = listF(), tp = pageCount(); if (CAT.page > tp) CAT.page = tp;
