@@ -23,6 +23,58 @@
     apple: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16.365 1.43c0 1.14-.42 2.2-1.13 3.02-.78.9-2.06 1.6-3.13 1.51-.13-1.06.42-2.2 1.06-2.94.78-.86 2.13-1.5 3.2-1.59zM20.5 17.2c-.6 1.4-.9 2-1.67 3.24-1.07 1.72-2.58 3.86-4.45 3.88-1.66.02-2.08-1.08-4.33-1.07-2.25.01-2.72 1.09-4.38 1.07-1.87-.02-3.3-1.95-4.37-3.67C-1.2 16.5-2.05 9.8 1.5 6.6c1.27-1.14 2.92-1.81 4.5-1.81 1.66 0 2.7 1.09 4.07 1.09 1.33 0 2.14-1.09 4.07-1.09 1.4 0 2.89.76 3.95 2.08-3.47 1.9-2.9 6.86 1.91 9.33z"/></svg>',
     ig: '<svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0 1.44c-3.15 0-3.52.01-4.76.07-1.15.05-1.77.24-2.19.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.42-.35 1.04-.4 2.19-.06 1.24-.07 1.61-.07 4.76s.01 3.52.07 4.76c.05 1.15.24 1.77.4 2.19.21.55.47.94.88 1.35.41.41.8.67 1.35.88.42.16 1.04.35 2.19.4 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c1.15-.05 1.77-.24 2.19-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.42.35-1.04.4-2.19.06-1.24.07-1.61.07-4.76s-.01-3.52-.07-4.76c-.05-1.15-.24-1.77-.4-2.19-.21-.55-.47-.94-.88-1.35-.41-.41-.8-.67-1.35-.88-.42-.16-1.04-.35-2.19-.4-1.24-.06-1.61-.07-4.76-.07zm0 2.45a5.95 5.95 0 110 11.9 5.95 5.95 0 010-11.9zm0 1.44a4.51 4.51 0 100 9.02 4.51 4.51 0 000-9.02zm6.19-.19a1.39 1.39 0 11-2.78 0 1.39 1.39 0 012.78 0z"/></svg>'
   };
+  // Íconos de línea propios: los emoji que se eligen en el panel se muestran con estos dibujos (iguales en todos los celulares).
+  var LI = {
+    search: '<circle cx="11" cy="11" r="7"/><path d="M20.5 20.5l-4.6-4.6"/>',
+    phone: '<rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/>',
+    battery: '<rect x="2.5" y="7" width="17" height="10" rx="2"/><path d="M22 10.5v3M11.5 9l-2.2 3h3.4l-2.2 3"/>',
+    plug: '<path d="M9 2.5v5M15 2.5v5M6 7.5h12v3.5a6 6 0 0 1-12 0zM12 17v4.5"/>',
+    laptop: '<rect x="4" y="4.5" width="16" height="11" rx="1.5"/><path d="M2 19.5h20"/>',
+    tv: '<rect x="2.5" y="4" width="19" height="13" rx="1.5"/><path d="M8 21h8M12 17v4"/>',
+    tools: '<path d="M14.6 3.6a5 5 0 0 0-4.4 7L3.6 17.2a2.2 2.2 0 0 0 3.2 3.2l6.6-6.6a5 5 0 0 0 7-4.4l-3 3-3.3-.5-.5-3.3z"/>',
+    star: '<path d="M12 2.8l2.8 5.8 6.4.8-4.7 4.4 1.2 6.3L12 17l-5.7 3.1 1.2-6.3-4.7-4.4 6.4-.8z"/>',
+    person: '<circle cx="9.5" cy="8" r="3.8"/><path d="M2.5 20.5a7 7 0 0 1 14 0M16 11.5l2 2 4-4"/>',
+    quality: '<path d="M12 2.5l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10v-6z"/><path d="M8.5 12l2.5 2.5 4.6-5"/>',
+    shield: '<path d="M12 2.5l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10v-6z"/>',
+    card: '<rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M2.5 10h19M6.5 15h4"/>',
+    pin: '<path d="M12 21.5s-7-6.1-7-11.5a7 7 0 0 1 14 0c0 5.4-7 11.5-7 11.5z"/><circle cx="12" cy="10" r="2.6"/>',
+    chat: '<path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.6L3 20.5l1.5-5.2A8.5 8.5 0 1 1 21 11.5z"/>',
+    store: '<path d="M4 10v10.5h16V10M3 3.5h18l1 5.2a3 3 0 0 1-5.7 1.1 3.1 3.1 0 0 1-5.6 0 3 3 0 0 1-5.7-1.1zM9.5 20.5v-5.5h5v5.5"/>',
+    call: '<path d="M5.2 3.5h3.3l1.8 4.4-2.3 1.5a11.2 11.2 0 0 0 6.6 6.6l1.5-2.3 4.4 1.8v3.3a2 2 0 0 1-2.1 2A16.6 16.6 0 0 1 3.2 5.6a2 2 0 0 1 2-2.1z"/>',
+    mail: '<rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.4 2"/>',
+    map: '<path d="M9 4L3 6.5V20l6-2.5 6 2.5 6-2.5V4l-6 2.5zM9 4v13.5M15 6.5V20"/>',
+    audio: '<path d="M3.5 17.5V13a8.5 8.5 0 0 1 17 0v4.5"/><rect x="3" y="13.5" width="4.5" height="7" rx="1.5"/><rect x="16.5" y="13.5" width="4.5" height="7" rx="1.5"/>',
+    watch: '<rect x="6" y="6" width="12" height="12" rx="3"/><path d="M9 6l1-3.5h4L15 6M9 18l1 3.5h4l1-3.5M12 9.3V12l1.7 1.5"/>',
+    box: '<path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5zM3.5 7.5L12 12l8.5-4.5M12 12v9"/>',
+    cart: '<circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2.5 3.5h3l2.4 11.5h11.2l2-8H6.6"/>',
+    truck: '<path d="M2.5 5.5h11v10.5h-11zM13.5 9h4.2l3.3 3.6V16h-7.5"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
+    check: '<path d="M4.5 12.5l4.8 4.8L19.5 7"/>',
+    flame: '<path d="M12 21.5a6.5 6.5 0 0 0 6.5-6.5c0-4-3-6.2-3.6-10-2 1.5-3.2 3.6-3.2 5.8-1.1-.8-1.7-2.1-1.7-3.6C7.8 9.4 5.5 12 5.5 15a6.5 6.5 0 0 0 6.5 6.5z"/>',
+    arrow: '<path d="M4.5 12h15M13.5 6l6 6-6 6"/>'
+  };
+  var EMOJI = { '🔍': 'search', '🔎': 'search', '📱': 'phone', '📲': 'card', '💳': 'card', '💰': 'card', '🔋': 'battery', '🪫': 'battery',
+    '🔌': 'plug', '💻': 'laptop', '🖥': 'laptop', '📺': 'tv', '🛠': 'tools', '🔧': 'tools', '🔨': 'tools', '⚙': 'tools', '🧰': 'box',
+    '⭐': 'star', '🌟': 'star', '✨': 'quality', '🏆': 'quality', '✅': 'check', '✔': 'check', '🤝': 'person', '👤': 'person', '🙋': 'person',
+    '📍': 'pin', '📌': 'pin', '💬': 'chat', '🗨': 'chat', '🏪': 'store', '🏬': 'store', '☎': 'call', '📞': 'call', '✉': 'mail', '📧': 'mail',
+    '🕒': 'clock', '⏰': 'clock', '🕐': 'clock', '🗺': 'map', '🎧': 'audio', '🔊': 'audio', '⌚': 'watch', '🛡': 'shield', '📦': 'box',
+    '🛒': 'cart', '🚚': 'truck', '🔥': 'flame' };
+  function lineIcon(k, s) {
+    return LI[k] ? '<svg class="li" viewBox="0 0 24 24" width="' + (s || 22) + '" height="' + (s || 22) + '" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + LI[k] + '</svg>' : '';
+  }
+  // Ícono propio para un emoji o nombre del panel ('' si no hay equivalente).
+  function svgIcon(i, s) {
+    var k = String(i || '').replace(/️/g, '').trim();
+    if (k === 'rayo' || k === 'bolt' || k === '⚡') return ICONS.bolt(s || 22);
+    if (k === 'apple') return ICONS.apple;
+    return lineIcon(EMOJI[k] || k, s);
+  }
+  // Si un texto empieza con un emoji conocido («📍 Atención…»), el emoji se cambia por el ícono propio.
+  function iconText(t) {
+    var m = /^\s*(\S+)\s+(.+)$/.exec(String(t || ''));
+    var ic = m && EMOJI[m[1].replace(/️/g, '')] ? lineIcon(EMOJI[m[1].replace(/️/g, '')], 15) : '';
+    return ic ? ic + ' ' + esc(m[2]) : esc(t);
+  }
   // Ancla de cada sección (para ocultar del menú los enlaces a secciones ocultas).
   var ANCHOR = { hero: 'inicio', marquee: 'franja', productos: 'productos', catalogo: 'catalogo', iphone: 'iphone',
                  servicio: 'servicio', beneficios: 'beneficios', galeria: 'galeria', cta: 'cta', contacto: 'contacto' };
@@ -64,11 +116,7 @@
     return (c.kicker ? '<span class="kicker">' + esc(c.kicker) + '</span>' : '') +
       (c.title ? '<h2>' + txt(c.title) + '</h2>' : '') + (c.text ? '<p>' + txt(c.text) + '</p>' : '');
   }
-  function icon(i) {
-    if (i === 'apple') return '';
-    if (i === 'rayo' || i === 'bolt') return ICONS.bolt(22);
-    return esc(i || '');
-  }
+  function icon(i) { return svgIcon(i) || esc(i || ''); }
   function setHTML(el, html) { if (el && el.innerHTML !== html) el.innerHTML = html; }
 
   /* ---------- tema (colores, tipografía, esquinas) con límites seguros ---------- */
@@ -206,6 +254,7 @@
     var useWhite = document.documentElement.getAttribute('data-volt-bg') === 'dark' && h.logoWhite;
     var lsrc = src(useWhite ? h.logoWhite : (h.logo || 'img/logo.webp'));
     if (logo && lsrc) { if (logo.getAttribute('src') !== lsrc) logo.src = lsrc; logo.alt = h.logoAlt || G.name || ''; }
+    LOGO = src(h.logo || 'img/logo.webp');   // el de fondo claro: es el que va en los recuadros de productos sin foto
     setHTML(document.getElementById('nav'), navHTML(h.nav));
     var hw = $('.header__wa');
     if (hw) {
@@ -252,14 +301,14 @@
     if (img && c.image) { img.src = src(c.image); img.alt = c.imageAlt || ''; }
     var top = $('.hero__chip--top', s), bot = $('.hero__chip--bottom', s);
     if (top) { top.style.display = c.chipTop ? '' : 'none'; setHTML(top, ICONS.bolt(15) + ' ' + esc(c.chipTop)); }
-    if (bot) { bot.style.display = c.chipBottom ? '' : 'none'; bot.textContent = c.chipBottom || ''; }
+    if (bot) { bot.style.display = c.chipBottom ? '' : 'none'; setHTML(bot, iconText(c.chipBottom)); }
   }
 
   function renderMarquee(c) {
     var t = $('.marquee__track'); if (!t) return;
     var items = (c.items || []).filter(function (x) { return x && String(x).trim(); });
     var m = sec('marquee'); if (m) m.classList.toggle('is-empty', !items.length);
-    var one = items.map(function (x) { return '<span>' + esc(x) + '</span><i>⚡</i>'; }).join('');
+    var one = items.map(function (x) { return '<span>' + esc(x) + '</span><i>' + ICONS.bolt(18) + '</i>'; }).join('');
     // Cada mitad repite los textos hasta cubrir pantallas anchas (sin huecos); la velocidad se mantiene.
     var reps = Math.max(1, Math.ceil(12 / Math.max(1, items.length)));
     var half = new Array(reps + 1).join(one);
@@ -287,11 +336,22 @@
     setHTML($('.cards', s), cards);
   }
 
+  // «Desde $…»: el precio más bajo de los iPhone disponibles en el catálogo (se actualiza solo con los precios del panel).
+  function iphoneFrom() {
+    var min = null;
+    CAT.P.forEach(function (x) {
+      // Solo equipos (no cargadores, cables ni forros «para iPhone»).
+      if (!/iphone/i.test((x.b || '') + ' ' + x.n) || artKind(x, catByCode(x.c)) !== 'phone' || x.price == null || (x.s != null && x.s <= 0)) return;
+      var v = onPromo(x) ? x.promo : x.price;
+      if (min == null || v < min) min = v;
+    });
+    return min == null ? '' : '<p class="iphone__from"><span>Desde</span><strong>' + money(min) + '</strong></p>';
+  }
   function renderIphone(c) {
     var s = sec('iphone'); if (!s) return;
     setHTML($('.iphone__content', s),
       (c.kicker ? '<span class="kicker">' + esc(c.kicker) + '</span>' : '') + (c.title ? '<h2>' + txt(c.title) + '</h2>' : '') +
-      (c.text ? '<p class="lead">' + txt(c.text) + '</p>' : '') +
+      (c.text ? '<p class="lead">' + txt(c.text) + '</p>' : '') + iphoneFrom() +
       ((c.ticks || []).length ? '<ul class="ticks">' + c.ticks.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : '') +
       ((c.primary && c.primary.label) || (c.secondary && c.secondary.label) ?
         '<div class="iphone__cta">' + btn(c.primary, 'btn--volt btn--lg') + btn(c.secondary, 'btn--ghost btn--lg') + '</div>' : ''));
@@ -303,8 +363,7 @@
     var s = sec('servicio'); if (!s) return;
     setHTML($('.section__head', s), head(c));
     setHTML($('.service__grid', s), (c.items || []).map(function (x) {
-      var h3 = x.icon === 'apple' ? '<h3 class="srv__apple">' + ICONS.apple + ' ' + esc(x.title) + '</h3>' : '<h3>' + esc(x.title) + '</h3>';
-      return '<div class="srv' + (x.soon ? ' srv--soon' : '') + ' reveal"><span class="srv__ic">' + icon(x.icon) + '</span>' + h3 +
+      return '<div class="srv' + (x.soon ? ' srv--soon' : '') + ' reveal"><span class="srv__ic">' + icon(x.icon) + '</span><h3>' + esc(x.title) + '</h3>' +
         (x.text ? '<p>' + txt(x.text) + '</p>' : '') + (x.soon ? '<span class="soon">' + esc(x.soonLabel || 'Próximamente') + '</span>' : '') + '</div>';
     }).join(''));
     var cta = $('.service__cta', s);
@@ -434,18 +493,50 @@
   }
 
   /* ---------- catálogo ---------- */
-  var CAT = { P: [], cats: [], cfg: {}, brand: 'all', page: 1 };
+  var CAT = { P: [], cats: [], cfg: {}, brand: 'all', page: 1, q: '' };
   var PS = 6;
   // Productos por página: 4 × 2 en computador, 3 × 2 en tableta y 2 × 3 en celular (igual que las columnas del CSS).
   function perPage() { return window.innerWidth > 980 ? 8 : 6; }
   var HOVER = !!(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches);
   function catByCode(code) { for (var i = 0; i < CAT.cats.length; i++) if (CAT.cats[i].code === code) return CAT.cats[i]; return {}; }
   function onPromo(x) { return x.price != null && x.promo != null && x.promo < x.price; }
-  function priceHTML(x, cfg, save) {
+  function offPct(x) { return onPromo(x) ? Math.round((1 - x.promo / x.price) * 100) : 0; }
+  function norm(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+  // Quita los corchetes de plantilla que quedan en los textos («[128gb]» → «128gb»).
+  function clean(s) { return String(s == null ? '' : s).replace(/\[([^[\]]*)\]/g, '$1').replace(/[ \t]{2,}/g, ' ').trim(); }
+  // «iPhone 13 pro max · 128 GB · Negro» → modelo «iPhone 13 Pro Max» y datos [«128 GB», «Negro»].
+  function nameParts(x) {
+    var segs = String(x.n || '').split(/\s+[·•|]\s+/).map(clean).filter(Boolean);
+    var model = (segs.shift() || clean(x.n)).replace(/\b(pro|max|plus|mini|ultra|lite)\b/g, function (w) { return w.charAt(0).toUpperCase() + w.slice(1); });
+    var chips = segs.slice(0, 4);
+    if (!chips.length) chips = (x.specs || []).filter(function (r) { return r && r[1]; }).slice(0, 3).map(function (r) { return clean(r[1]); });
+    return { model: model, chips: chips };
+  }
+
+  /* ---------- producto sin foto ----------
+     Recuadro limpio con el logo de la tienda (sin íconos ni dibujos). Al subir la foto en el panel, la foto lo reemplaza. */
+  var LOGO = '';   // logotipo del encabezado (Encabezado y menú → Logotipo)
+  function art(x) {
+    return '<span class="pa"><img class="pa__logo" src="' + esc(LOGO || src('img/logo.webp')) + '" alt="" width="180" height="38" loading="lazy" decoding="async" /></span>';
+  }
+  // Tipo de producto (para saber qué es un celular: el «Desde $…» de iPhone no cuenta cargadores ni forros).
+  function artKind(x, cat) {
+    var n = norm(x.n), t = norm((cat.name || '') + ' ' + (cat.singular || '') + ' ' + x.n), e = String(cat.icon || '').replace(/\uFE0F/g, '');
+    if (/\bcable/.test(n)) return 'cable';
+    if (/airpod|audifon|auricular|\bbuds|diadema|parlante|bafle/.test(t) || e === '🎧') return 'buds';
+    if (/reloj|watch/.test(t) || e === '⌚') return 'watch';
+    if (/vidrio|templado|protector de pantalla|\bmica/.test(t) || e === '🛡') return 'glass';
+    if (/forro|funda|\bcase\b|estuche/.test(t)) return 'case';
+    if (/cargador|adaptador|\bcarga/.test(t) || e === '🔌') return 'charger';
+    if (/celular|iphone|smartphone|telefono|galaxy|xiaomi|redmi|motorola/.test(t) || e === '📱') return 'phone';
+    return 'other';
+  }
+
+  function priceHTML(x, cfg, save, noOff) {
     if (x.price == null) return '<span class="model__price model__price--ask">' + esc(cfg.askPriceLabel || 'Consultar precio') + '</span>';
     if (onPromo(x)) {
       // En oferta se compara con el precio normal más bajo (no con el rango), en dos líneas.
-      var off = Math.round((1 - x.promo / x.price) * 100);
+      var off = noOff ? 0 : offPct(x);
       return '<span class="model__price model__price--promo"><s class="model__old">' + money(x.price) + '</s>' +
         '<span class="model__now">' + money(x.promo) + (off >= 1 ? ' <span class="model__off">-' + off + '%</span>' : '') + '</span>' +
         (save ? '<span class="model__save">Ahorras ' + money(x.price - x.promo) + '</span>' : '') + '</span>';
@@ -467,25 +558,32 @@
     return '<a class="btn ' + (isWa ? 'btn--wa' : 'btn--volt') + (extra || '') + '" ' + productLink(x, cfg) + '>' + (isWa ? ICONS.wa : '') +
       '<span>' + esc(x.cta || cfg.buttonLabel || 'Consultar') + '</span></a>';
   }
+  // Existencias como en una tienda: «Última unidad», «8 disp.» o «Agotado».
+  function availHTML(x, cfg) {
+    if (cfg.showStock === false || x.s == null) return '';
+    if (x.s <= 0) return '<span class="model__avail model__avail--out">' + esc(cfg.outOfStockLabel || 'Agotado') + '</span>';
+    if (x.s === 1) return '<span class="model__avail model__avail--low">Última unidad</span>';
+    return '<span class="model__avail">' + x.s + ' ' + esc(cfg.inStockLabel || 'disp.') + '</span>';
+  }
+  function chipsHTML(list, cls) {
+    return list.length ? '<ul class="model__chips' + (cls || '') + '">' + list.map(function (c) { return '<li>' + esc(c) + '</li>'; }).join('') + '</ul>' : '';
+  }
   function card(x, n, cfg) {
-    var cat = catByCode(x.c);
-    var stk = '';
-    if (cfg.showStock !== false && x.s != null) {
-      stk = x.s <= 0 ? '<span class="model__stock model__stock--out">' + esc(cfg.outOfStockLabel || 'Agotado') + '</span>'
-                     : '<span class="model__stock model__stock--in">' + x.s + ' ' + esc(cfg.inStockLabel || 'disp.') + '</span>';
-    }
-    var zoom = true;   // toda tarjeta abre la ficha del producto
+    var cat = catByCode(x.c), np = nameParts(x), off = offPct(x);
     // La foto llena todo el recuadro cuadrado. Con mouse, si hay galería, al pasar el cursor se ve la segunda foto.
     var alt2 = HOVER && x.img ? (x.gallery || []).filter(function (u) { return u && u !== x.img && src(u); })[0] : '';
     var media = x.img ? '<img class="model__img" src="' + esc(src(x.img)) + '" alt="' + esc(x.alt || x.n) + '" width="600" height="600" loading="lazy" decoding="async" />' +
       (alt2 ? '<img class="model__img model__img--alt" src="' + esc(src(alt2)) + '" alt="" aria-hidden="true" width="600" height="600" loading="lazy" decoding="async" />' : '')
-      : '<span class="model__icon">' + esc(cat.icon || '🛒') + '</span>';
-    return '<article class="model' + (x.f ? ' model--featured' : '') + '" data-c="' + esc(x.c) + '"><span class="model__num">' + n + '</span>' + stk +
-      '<div class="model__media' + (x.img ? ' has-img' : '') + (zoom ? ' is-zoom" role="button" tabindex="0" aria-label="Ver detalles de ' + esc(x.n) + '" data-pid="' + esc(x.id) : '') + '">' + media +
-      (x.f || onPromo(x) ? '<span class="model__tags">' + (onPromo(x) ? '<span class="model__promo">' + esc(cfg.promoLabel || 'Oferta') + '</span>' : '') +
-        (x.f ? '<span class="model__feat">' + esc(cfg.featuredLabel || 'Destacado') + '</span>' : '') + '</span>' : '') + '</div>' +
-      '<div class="model__body"><span class="model__brand">' + esc(x.b || cat.singular || '') + '</span><h3><a class="model__link" href="' + esc(productHash(x)) + '" data-open="' + esc(x.id) + '">' + esc(x.n) + '</a></h3>' +
-      (x.d ? '<p class="model__detail">' + esc(x.d) + '</p>' : '') + priceHTML(x, cfg) + buyBtn(x, cfg) + '</div></article>';
+      : art(x, cat);
+    var tags = (onPromo(x) ? '<span class="model__promo">' + esc(cfg.promoLabel || 'Oferta') + (off >= 1 ? ' −' + off + '%' : '') + '</span>' : '') +
+      (x.f ? '<span class="model__feat">' + esc(cfg.featuredLabel || 'Destacado') + '</span>' : '');
+    // Toda la tarjeta abre la ficha del producto (foto y nombre); el botón escribe por WhatsApp.
+    return '<article class="model' + (x.f ? ' model--featured' : '') + (x.s != null && x.s <= 0 ? ' model--out' : '') + '" data-c="' + esc(x.c) + '">' +
+      '<div class="model__media ' + (x.img ? 'has-img' : 'has-art') + ' is-zoom" role="button" tabindex="0" aria-label="Ver detalles de ' + esc(x.n) + '" data-pid="' + esc(x.id) + '">' + media +
+      (tags ? '<span class="model__tags">' + tags + '</span>' : '') + '</div>' +
+      '<div class="model__body"><span class="model__brand">' + esc(x.b || cat.singular || '') + '</span>' +
+      '<h3><a class="model__link" href="' + esc(productHash(x)) + '" data-open="' + esc(x.id) + '">' + esc(np.model) + '</a></h3>' + chipsHTML(np.chips) +
+      '<div class="model__foot">' + priceHTML(x, cfg, false, true) + availHTML(x, cfg) + buyBtn(x, cfg) + '</div></div></article>';
   }
   function buildCat(cfg, cats, products) {
     var cont = document.querySelector('#catalogo .container'); if (!cont) return;
@@ -495,18 +593,30 @@
     CAT.cats = cats || []; CAT.cfg = cfg || {};
     var present = {}; CAT.P.forEach(function (x) { present[x.c] = 1; if (onPromo(x)) present.promo = 1; });
     // Si hay productos en oferta aparece el filtro «Ofertas», justo después de «Todos».
-    var chips = [['all', cfg.allLabel || 'Todos']].concat(present.promo ? [['promo', cfg.promoFilterLabel || 'Ofertas']] : [])
-      .concat(CAT.cats.filter(function (c) { return present[c.code] && c.code !== 'promo'; }).map(function (c) { return [c.code, c.name]; }));
+    var chips = [['all', cfg.allLabel || 'Todos', '']].concat(present.promo ? [['promo', cfg.promoFilterLabel || 'Ofertas', lineIcon('flame', 16)]] : [])
+      .concat(CAT.cats.filter(function (c) { return present[c.code] && c.code !== 'promo'; }).map(function (c) { return [c.code, c.name, svgIcon(c.icon, 16)]; }));
     if (CAT.brand !== 'all' && !present[CAT.brand]) { CAT.brand = 'all'; CAT.page = 1; }
+    // Buscador + filtros: como en una tienda en línea, se puede escribir «iphone 13», «cargador», «airpods»…
     cont.innerHTML = '<header class="section__head reveal in" data-volt-cat>' + head(cfg) + '</header>' +
+      (CAT.P.length ? '<div class="catalog__bar"><label class="catalog__search">' + lineIcon('search', 19) +
+        '<input type="search" id="cq2" placeholder="Buscar iPhone, cargador, AirPods…" autocomplete="off" enterkeyhint="search" aria-label="Buscar en el catálogo" value="' + esc(CAT.q) + '" /></label>' +
+        '<span class="catalog__count" id="cn2" aria-live="polite"></span></div>' : '') +
       '<div class="catalog__filters" id="cf2">' + chips.map(function (c) {
-        return '<button class="chip' + (c[0] === CAT.brand ? ' is-active' : '') + (c[0] === 'promo' ? ' chip--promo' : '') + '" data-c="' + esc(c[0]) + '">' + esc(c[1]) + '</button>';
+        return '<button class="chip' + (c[0] === CAT.brand ? ' is-active' : '') + (c[0] === 'promo' ? ' chip--promo' : '') + '" data-c="' + esc(c[0]) + '">' + c[2] + '<span>' + esc(c[1]) + '</span></button>';
       }).join('') + '</div><div class="catalog__viewport" id="cv2"><div class="catalog__track" id="cg2"></div></div><nav class="catalog__pages" id="cp2" aria-label="Páginas del catálogo"></nav>' +
       (CAT.P.length ? '' : '<p class="catalog__note">El catálogo no está disponible en este momento. <a href="' + esc(wa(cfg.noteMessage)) + '" target="_blank" rel="noopener">Escríbenos por WhatsApp</a> y te ayudamos.</p>') +
       (cfg.noteText || cfg.noteLinkLabel ? '<p class="catalog__note reveal in">' + esc(cfg.noteText) +
         (cfg.noteLinkLabel ? ' <a href="' + esc(wa(cfg.noteMessage)) + '" target="_blank" rel="noopener">' + esc(cfg.noteLinkLabel) + '</a>.' : '') + '</p>' : '');
     var grid = document.getElementById('cg2'), cf = document.getElementById('cf2'), cp = document.getElementById('cp2'), vp = document.getElementById('cv2');
-    function listF() { return CAT.P.filter(function (x) { return CAT.brand === 'all' || (CAT.brand === 'promo' ? onPromo(x) : x.c === CAT.brand); }); }
+    var cq = document.getElementById('cq2'), cn = document.getElementById('cn2');
+    // Búsqueda sin tildes ni mayúsculas; todas las palabras deben aparecer (nombre, marca, categoría o descripción).
+    function hit(x) {
+      var words = norm(CAT.q).split(/\s+/).filter(Boolean);
+      if (!words.length) return true;
+      var hay = norm([x.n, x.b, catByCode(x.c).name, x.d].join(' '));
+      return words.every(function (w) { return hay.indexOf(w) >= 0; });
+    }
+    function listF() { return CAT.P.filter(function (x) { return (CAT.brand === 'all' || (CAT.brand === 'promo' ? onPromo(x) : x.c === CAT.brand)) && hit(x); }); }
     function vw() { return Math.round(vp.getBoundingClientRect().width) || 1; }
     function pageCount() { return Math.max(1, Math.ceil(listF().length / PS)); }
     function setW() { var w = vw(); var pgs = grid.querySelectorAll('.catpage'); for (var i = 0; i < pgs.length; i++) pgs[i].style.width = w + 'px'; }
@@ -535,6 +645,11 @@
         for (var k = 0; k < PS; k++) { var idx = p * PS + k; if (idx >= L.length) break; h += card(L[idx], idx + 1, CAT.cfg); }
         h += '</div>';
       }
+      if (!L.length && CAT.P.length) {
+        h = '<div class="catpage catpage--empty"><p class="catalog__empty">' + lineIcon('search', 26) + '<span>No encontramos ' + (CAT.q ? '«' + esc(CAT.q) + '»' : 'productos aquí') +
+          ' en el catálogo publicado. <a href="' + esc(wa('Hola, busco ' + (CAT.q || 'un producto') + ' en VOLT STORE CO. ¿Lo tienen disponible?')) + '" target="_blank" rel="noopener">Pregúntanos por WhatsApp</a> y te lo conseguimos.</span></p></div>';
+      }
+      if (cn) cn.textContent = L.length + (L.length === 1 ? ' producto' : ' productos');
       grid.innerHTML = h; setW(); updPag(); vp.scrollLeft = (CAT.page - 1) * vw();
     }
     function go(n) { var tp = pageCount(); CAT.page = Math.min(tp, Math.max(1, n)); vp.scrollTo({ left: (CAT.page - 1) * vw(), behavior: 'smooth' }); updPag(); }
@@ -548,6 +663,7 @@
       cf.querySelectorAll('.chip').forEach(function (c) { c.classList.toggle('is-active', c === b); });
       CAT.brand = b.dataset.c; CAT.page = 1; render();
     });
+    if (cq) cq.addEventListener('input', function () { CAT.q = cq.value.trim(); CAT.page = 1; render(); });
     cp.addEventListener('click', function (ev) {
       var b = ev.target.closest('.page-btn'); if (!b || b.disabled) return;
       var g = b.dataset.g; if (g === 'prev') go(CAT.page - 1); else if (g === 'next') go(CAT.page + 1); else go(parseInt(g, 10));
@@ -572,6 +688,26 @@
   }
   var rtmr; window.addEventListener('resize', function () { clearTimeout(rtmr); rtmr = setTimeout(function () { if (CAT.realign) CAT.realign(); }, 150); });
   window.addEventListener('load', function () { if (CAT.realign) CAT.realign(); });
+
+  /* ---------- oferta destacada en la portada ----------
+     Sale sola del catálogo: el producto en oferta con mayor ahorro (los destacados primero). Al tocarla se abre su ficha. */
+  function renderDeal() {
+    var media = document.querySelector('.hero__media'); if (!media) return;
+    var el = media.querySelector('.hero__deal');
+    var live = CAT.P.filter(function (x) { return x.price != null && !(x.s != null && x.s <= 0); });
+    var pick = live.filter(onPromo).sort(function (a, b) { return ((b.f ? 1 : 0) - (a.f ? 1 : 0)) || ((b.price - b.promo) - (a.price - a.promo)); })[0] ||
+      live.filter(function (x) { return x.f; })[0];
+    if (!pick) { if (el) el.remove(); return; }
+    if (!el) { el = document.createElement('a'); el.className = 'hero__deal'; media.appendChild(el); }
+    var np = nameParts(pick), cat = catByCode(pick.c), promo = onPromo(pick);
+    el.href = productHash(pick); el.setAttribute('data-open', pick.id);
+    setHTML(el, '<span class="hero__deal-img">' + (pick.img ? '<img src="' + esc(src(pick.img)) + '" alt="" width="160" height="160" loading="lazy" decoding="async" />' : art(pick, cat)) + '</span>' +
+      '<span class="hero__deal-info"><span class="hero__deal-k">' + ICONS.bolt(13) + ' ' + (promo ? 'Oferta destacada' : esc(CAT.cfg.featuredLabel || 'Destacado')) +
+      (offPct(pick) >= 1 ? ' <em>−' + offPct(pick) + '%</em>' : '') + '</span>' +
+      '<span class="hero__deal-n">' + esc(np.model) + '</span>' + (np.chips.length ? '<span class="hero__deal-c">' + esc(np.chips.slice(0, 3).join(' · ')) + '</span>' : '') +
+      '<span class="hero__deal-p">' + (promo ? '<s>' + money(pick.price) + '</s>' : '') + '<b>' + money(promo ? pick.promo : pick.price) + '</b></span>' +
+      '<span class="hero__deal-go">Ver producto ' + lineIcon('arrow', 16) + '</span></span>');
+  }
 
   /* ---------- zoom dentro de la foto de la ficha (sin agrandar la página) ----------
      Con mouse: al pasar el cursor la foto se amplía y sigue al cursor.
@@ -656,12 +792,12 @@
   // Especificaciones de la ficha: la tabla del panel o, si no tiene, las líneas «Nombre: valor» de la descripción.
   // La primera línea que no es especificación se muestra como resumen bajo el nombre.
   function productInfo(x) {
-    var specs = (x.specs || []).filter(function (r) { return r && r[0] && r[1]; }), rest = [];
-    String(x.d || '').split('\n').forEach(function (line) {
+    var specs = (x.specs || []).filter(function (r) { return r && r[0] && r[1]; }).map(function (r) { return [clean(r[0]), clean(r[1])]; }), rest = [];
+    String(clean(x.d)).split('\n').forEach(function (line) {
       var m = !(x.specs || []).length && /^\s*([A-Za-zÁÉÍÓÚÜÑáéíóúüñ][\wÁÉÍÓÚÜÑáéíóúüñ .()/-]{1,28}):\s+(\S.{0,240})$/.exec(line);
       if (m) specs.push([m[1].trim(), m[2].trim().replace(/\.$/, '')]); else if (line.trim()) rest.push(line.trim());
     });
-    if (!(x.specs || []).length && specs.length < 2) { specs = []; rest = String(x.d || '').split('\n').map(function (l) { return l.trim(); }).filter(Boolean); }
+    if (!(x.specs || []).length && specs.length < 2) { specs = []; rest = clean(x.d).split('\n').map(function (l) { return l.trim(); }).filter(Boolean); }
     var lead = rest.length ? rest.shift() : '';
     return { specs: specs, lead: lead, text: rest.join('\n') };
   }
@@ -678,9 +814,9 @@
     return '<div class="pmodal__more"><h4>' + esc(CAT.cfg.relatedLabel || 'También te puede interesar') + '</h4><div class="prel">' + list.map(function (p) {
       var c = catByCode(p.c), price = p.price == null ? esc(CAT.cfg.askPriceLabel || 'Consultar precio') : money(onPromo(p) ? p.promo : p.price);
       return '<a class="prel__item" href="' + esc(productHash(p)) + '" data-open="' + esc(p.id) + '"><span class="prel__img">' +
-        (p.img ? '<img src="' + esc(src(p.img)) + '" alt="" width="300" height="300" loading="lazy" decoding="async" />' : '<span class="model__icon">' + esc(c.icon || '🛒') + '</span>') +
+        (p.img ? '<img src="' + esc(src(p.img)) + '" alt="" width="300" height="300" loading="lazy" decoding="async" />' : art(p, c)) +
         (onPromo(p) ? '<span class="model__promo">' + esc(CAT.cfg.promoLabel || 'Oferta') + '</span>' : '') + '</span>' +
-        '<span class="prel__name">' + esc(p.n) + '</span><span class="prel__price">' + price + '</span></a>';
+        '<span class="prel__name">' + esc(nameParts(p).model) + '</span><span class="prel__price">' + price + '</span></a>';
     }).join('') + '</div></div>';
   }
   function slug(s) {
@@ -732,15 +868,18 @@
         if (b && m._show) m._show(b.hasAttribute('data-i') ? parseInt(b.getAttribute('data-i'), 10) : m._i + parseInt(b.getAttribute('data-d'), 10));
       });
     }
-    var cat = catByCode(x.c), cfg = CAT.cfg, info = productInfo(x);
+    var cat = catByCode(x.c), cfg = CAT.cfg, info = productInfo(x), np = nameParts(x);
+    // El resumen no se repite si solo dice lo mismo que las etiquetas («128gb · Negro» ya está en «128 GB», «Negro»).
+    var compact = function (s) { return norm(s).replace(/[^a-z0-9%]/g, ''); }, chipsC = compact(np.chips.join(' '));
+    var leadDup = !!(info.lead && np.chips.length) && info.lead.split(/[·•|,]/).every(function (p) { var c = compact(p); return !c || chipsC.indexOf(c) >= 0; });
     var alt = x.alt || x.n;
     var badges = (x.f ? '<span class="pmodal__tag pmodal__tag--feat">' + esc(cfg.featuredLabel || 'Destacado') + '</span>' : '') +
       (cfg.showStock !== false && x.s != null ? (x.s <= 0 ? '<span class="pmodal__tag pmodal__tag--out">' + esc(cfg.outOfStockLabel || 'Agotado') + '</span>'
-        : '<span class="pmodal__tag pmodal__tag--in">' + x.s + ' ' + esc(cfg.inStockLabel || 'disp.') + '</span>') : '');
+        : '<span class="pmodal__tag pmodal__tag--in">' + (x.s === 1 ? 'Última unidad' : x.s + ' ' + esc(cfg.inStockLabel || 'disp.')) + '</span>') : '');
     if (badges) badges = '<div class="pmodal__tags">' + badges + '</div>';
     m.setAttribute('aria-labelledby', 'pmodal-title');
     m.innerHTML = '<div class="pmodal__box"><button class="pmodal__close" aria-label="Cerrar">&times;</button>' +
-      (!imgs.length ? '<div class="pmodal__media pmodal__media--icon"><span class="model__icon">' + esc(cat.icon || '🛒') + '</span></div>' : '') +
+      (!imgs.length ? '<div class="pmodal__media pmodal__media--art">' + art(x, cat) + '</div>' : '') +
       (imgs.length ? '<div class="pmodal__media"><div class="pmodal__stage"><img class="pmodal__img" alt="' + esc(alt) + '" />' +
         '<span class="pmodal__hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4M11 8v6M8 11h6"/></svg>' +
         '<span class="pmodal__hint-m">Pasa el cursor para ampliar</span><span class="pmodal__hint-t">Toca para acercar</span></span>' +
@@ -750,8 +889,8 @@
           return '<button class="pmodal__thumb" data-i="' + k + '" aria-label="Ver foto ' + (k + 1) + '"><img src="' + esc(src(u)) + '" alt="" width="96" height="96" loading="lazy" /></button>';
         }).join('') + '</div>' : '') + '</div>' : '') +
       '<div class="pmodal__body"><div class="pmodal__top">' + badges + '<button type="button" class="pmodal__share" data-share>' + ICONS.share + '<span>Compartir</span></button></div>' +
-      '<span class="model__brand">' + esc(x.b || cat.singular || '') + '</span><h3 id="pmodal-title">' + esc(x.n) + '</h3>' +
-      (info.lead ? '<p class="pmodal__lead">' + esc(info.lead) + '</p>' : '') +
+      '<span class="model__brand">' + esc(x.b || cat.singular || '') + '</span><h3 id="pmodal-title">' + esc(np.model) + '</h3>' + chipsHTML(np.chips, ' pmodal__chips') +
+      (info.lead && !leadDup ? '<p class="pmodal__lead">' + esc(info.lead) + '</p>' : '') +
       // Precio y botón juntos; en el celular quedan fijos al pie de la ficha mientras se lee.
       '<div class="pmodal__buy">' + priceHTML(x, cfg, true) + buyBtn(x, cfg, ' btn--block') + '</div>' + trustHTML(cfg) +
       // Detalle en secciones plegables: especificaciones (abierta), descripción y características.
@@ -810,6 +949,7 @@
       ['franja', function () { if (c.marquee) renderMarquee(c.marquee); }],
       ['productos', function () { if (c.productos) renderProductos(c.productos); }],
       ['catálogo', function () { buildCat(c.catalogo || {}, site.categories, site.products); }],
+      ['oferta de la portada', renderDeal],
       ['iPhone', function () { if (c.iphone) renderIphone(c.iphone); }],
       ['servicio', function () { if (c.servicio) renderServicio(c.servicio); }],
       ['beneficios', function () { if (c.beneficios) renderBeneficios(c.beneficios); }],
@@ -942,6 +1082,13 @@
     }
     var op = e.target.closest('[data-open]');
     if (op && !op.closest('#pmodal')) { e.preventDefault(); openProduct(op.getAttribute('data-open')); return; }
+    // Lupa del encabezado: baja al catálogo y deja el cursor en el buscador.
+    if (e.target.closest('[data-search]')) {
+      var q = document.getElementById('cq2'), cs = document.getElementById('catalogo');
+      if (cs) window.scrollTo({ top: cs.getBoundingClientRect().top + window.scrollY - 64, behavior: 'smooth' });
+      if (q) try { q.focus({ preventScroll: true }); } catch (err) { q.focus(); }
+      return;
+    }
     var z = e.target.closest('.model__media.is-zoom');
     if (z) { openProduct(z.getAttribute('data-pid')); return; }
     var a = e.target.closest('a[href^="#"]');
