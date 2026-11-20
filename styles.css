@@ -963,7 +963,19 @@ html.volt-r-soft .pmodal__trust svg,html.volt-r-round .pmodal__trust svg{border-
 .model__foot .btn{margin-top:12px}
 .model--out .model__media{opacity:.55;filter:grayscale(.6)}
 
-/* Ficha y sugeridos con el dibujo del equipo cuando no hay foto */
+/* Ficha: la foto y los datos tienen su propia cuadrícula (.pmodal__main). La foto, fija mientras se leen los datos,
+   se detiene al final de esa parte y no tapa «También te puede interesar». */
+.pmodal__box{display:block}
+.pmodal__main{position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}
+@media (max-width:620px){
+  .pmodal__main{grid-template-columns:minmax(0,1fr)}
+  /* Barra fija de compra: el precio completo cabe junto al botón (el ahorro ya se ve en «Ahorras $…») */
+  .pmodal__buy .model__price{font-size:1.06rem;min-width:0}
+  .pmodal__buy .model__off{display:none}
+  .pmodal__buy .btn--block{flex:0 0 44%;padding:.85em .6em}
+}
+
+/* Ficha y sugeridos con el logo cuando no hay foto */
 .pmodal__media--art{position:relative;display:block;aspect-ratio:1/1;background:radial-gradient(circle at 50% 40%,#FFFFFF 0%,#EDEFF3 75%)}
 .pmodal__media--art .pa img.pa__logo{width:36%}
 .pmodal__chips{margin:4px 0 6px}

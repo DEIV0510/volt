@@ -878,7 +878,9 @@
         : '<span class="pmodal__tag pmodal__tag--in">' + (x.s === 1 ? 'Última unidad' : x.s + ' ' + esc(cfg.inStockLabel || 'disp.')) + '</span>') : '');
     if (badges) badges = '<div class="pmodal__tags">' + badges + '</div>';
     m.setAttribute('aria-labelledby', 'pmodal-title');
-    m.innerHTML = '<div class="pmodal__box"><button class="pmodal__close" aria-label="Cerrar">&times;</button>' +
+    // Foto y datos van juntos en .pmodal__main: así la foto, fija mientras se leen los datos, se detiene al terminar
+    // esa parte y no tapa «También te puede interesar».
+    m.innerHTML = '<div class="pmodal__box"><button class="pmodal__close" aria-label="Cerrar">&times;</button><div class="pmodal__main">' +
       (!imgs.length ? '<div class="pmodal__media pmodal__media--art">' + art(x, cat) + '</div>' : '') +
       (imgs.length ? '<div class="pmodal__media"><div class="pmodal__stage"><img class="pmodal__img" alt="' + esc(alt) + '" />' +
         '<span class="pmodal__hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4M11 8v6M8 11h6"/></svg>' +
@@ -899,7 +901,7 @@
       }).join('') + '</tbody></table>', true) : '') +
       (info.text ? acc('Descripción', '<p class="pmodal__desc">' + txt(info.text) + '</p>', !info.specs.length) : '') +
       ((x.features || []).length ? acc('Características destacadas', '<ul class="ticks">' + x.features.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul>', !info.specs.length && !info.text) : '') +
-      '</div>' + relatedHTML(x) + '</div>';
+      '</div></div>' + relatedHTML(x) + '</div>';
     var stage = m.querySelector('.pmodal__stage'), pimg = m.querySelector('.pmodal__img');
     if (stage) {
       // El recuadro toma la forma de la foto principal (entre 3:4 vertical y 4:3 horizontal) para que no queden franjas vacías.
