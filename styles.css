@@ -831,6 +831,13 @@ html.volt-r-soft .pmodal__trust svg,html.volt-r-round .pmodal__trust svg{border-
 .header__search{display:grid;place-items:center;width:44px;height:44px;padding:0;border:1px solid var(--line);background:var(--surface);
   color:var(--ink);cursor:pointer;transition:border-color .2s,background .2s,color .2s}
 .header__search:hover{border-color:var(--volt-2);background:var(--volt);color:var(--volt-ink)}
+/* Computadores pequeños: el menú se compacta para que quepa en una sola línea junto a la lupa y WhatsApp */
+@media (min-width:981px) and (max-width:1180px){
+  .header__inner{gap:12px}
+  .nav{flex-wrap:nowrap;gap:0}
+  .nav a{padding:.5em .55em;font-size:.86rem;white-space:nowrap}
+  .header__wa{padding:.7em 1.1em}
+}
 
 /* Etiqueta superior: un rayo amarillo en vez de la píldora de plantilla */
 .kicker,.eyebrow{padding:0;border:0;background:none;margin-bottom:14px;color:var(--volt-text-d);font-size:.76rem;letter-spacing:.16em}
@@ -862,13 +869,15 @@ html.volt-r-soft .pmodal__trust svg,html.volt-r-round .pmodal__trust svg{border-
 .hero__stats strong{color:var(--volt)}
 .hero__stats span{color:#9A9BA8}
 .hero__stats li+li{border-left-color:rgba(255,255,255,.14)}
-.hero__media{justify-content:flex-end}
+/* Foto y oferta destacada van en columna: la oferta queda pegada al pie de la foto (igual que en el celular), no flotando encima */
+.hero__media{flex-direction:column;align-items:flex-end}
 .hero__frame{max-width:440px;border:0;animation:none;box-shadow:0 40px 80px rgba(0,0,0,.45);
   clip-path:polygon(0 0,100% 0,100% 100%,56px 100%,0 calc(100% - 56px))}
-.hero__frame img{height:540px}
+.hero__frame img{height:520px}
 .hero__chip{background:rgba(14,14,20,.74);color:#fff;border-color:rgba(255,255,255,.14);box-shadow:none}
 .hero__chip svg{color:var(--volt)}
-.hero__deal{position:absolute;z-index:3;left:0;bottom:44px;width:min(340px,92%);display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;align-items:center;
+.hero__chip--bottom{top:18px;bottom:auto}
+.hero__deal{position:relative;z-index:3;width:min(412px,calc(100% - 28px));margin:-78px 14px 0 0;display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;align-items:center;
   padding:12px 16px 12px 12px;background:var(--surface);color:var(--ink);border-top:3px solid var(--volt);box-shadow:0 26px 54px rgba(0,0,0,.42);
   transition:transform .25s var(--ease),box-shadow .25s}
 .hero__deal:hover{transform:translateY(-4px);box-shadow:0 32px 64px rgba(0,0,0,.5)}
@@ -1046,7 +1055,7 @@ html.volt-r-soft .pmodal__trust svg,html.volt-r-round .pmodal__trust svg{border-
   .hero__stats li:first-child{padding-left:0}
   .hero__frame{max-width:none;width:100%}
   .hero__frame img{height:340px}
-  .hero__deal{position:relative;left:auto;bottom:auto;width:auto;margin:-72px 14px 0}
+  .hero__deal{width:auto;margin:-72px 14px 0}
   .section__head{grid-template-columns:minmax(0,1fr)}
   .section__head .section__head-cta{grid-column:1;grid-row:auto;margin-top:18px}
   .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
