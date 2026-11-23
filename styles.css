@@ -114,6 +114,9 @@ section{position:relative}
   transition:opacity .35s var(--ease),visibility .35s;
 }
 .loader.is-hidden{opacity:0;visibility:hidden}
+/* Seguro: si el servidor tarda en entregar script.js, la pantalla de carga se quita sola y se ve la página */
+.loader{animation:loaderAuto .35s var(--ease) 2.4s forwards}
+@keyframes loaderAuto{to{opacity:0;visibility:hidden}}
 .loader__fx{position:absolute;inset:0;overflow:hidden;pointer-events:none}
 
 /* Rejilla tecnológica en movimiento */
