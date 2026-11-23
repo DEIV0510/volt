@@ -13,6 +13,15 @@ try {
 } catch (Throwable $e) {
   // Se entrega el HTML original.
 }
+// Estilos y código con versión (?v=…): el CDN y el navegador los guardan un año (ver .htaccess), así la página
+// no depende de que el servidor responda rápido. Al publicar un cambio el archivo cambia, y con él la versión.
+foreach (['styles.css' => 'href', 'script.js' => 'src'] as $file => $attr) {
+  $path = __DIR__ . '/' . $file;
+  if (is_file($path)) {
+    $v = substr(md5(filemtime($path) . ':' . filesize($path)), 0, 10);
+    $html = str_replace($attr . '="' . $file . '"', $attr . '="' . $file . '?v=' . $v . '"', $html);
+  }
+}
 header('Content-Type: text/html; charset=utf-8');
 header('Cache-Control: no-cache');
 echo $html;

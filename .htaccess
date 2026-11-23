@@ -41,8 +41,13 @@ ErrorDocument 404 /404.html
   Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'"
 
   # Código y datos: el navegador siempre revisa si hay versión nueva (cambian sin cambiar de nombre).
+  # Excepción: styles.css y script.js pedidos con ?v=… (la versión la pone index.php) se guardan un año en el CDN
+  # y en el navegador; al publicar un cambio la versión cambia sola. Probado en Hostinger (LiteSpeed) el 23-nov-2026.
+  RewriteCond %{QUERY_STRING} (^|&)v=[0-9a-z]+(&|$)
+  RewriteRule ^(styles\.css|script\.js)$ - [E=VOLT_ASSET:1]
   <FilesMatch "\.(html|js|css|json|xml|txt)$">
     Header set Cache-Control "no-cache"
+    Header set Cache-Control "public, max-age=31536000, immutable" env=VOLT_ASSET
   </FilesMatch>
   # Imágenes: 30 días.
   <FilesMatch "\.(webp|png|jpe?g|gif|svg|ico)$">
